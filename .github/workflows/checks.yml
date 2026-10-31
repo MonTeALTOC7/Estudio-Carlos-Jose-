@@ -10,4 +10,4 @@ jobs:
       - uses: actions/setup-node@v4
         with:
           node-version: 22
-      - run: node --check app.js && node --check engine.js && node --check activities.js && node build.cjs && node test.cjs
+      - run: for f in app.js engine.js activities.js content.js skills-a.js skills-b.js skills-c.js games.js build.cjs test.cjs; do node --check $f; done && node build.cjs && node test.cjs

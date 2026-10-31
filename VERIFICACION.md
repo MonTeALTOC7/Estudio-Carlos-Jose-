@@ -37,3 +37,29 @@ Se conserva la aplicación. Desbloqueos permanentes; cantidades en prácticas; r
 - Teléfono 320 px: lección de color–animal sin desbordamiento; se corrigió el reparto de título/etiqueta para evitar partir palabras.
 - Persisten los límites: no audio español real disponible en el navegador remoto, no dispositivo táctil físico, no instalación ni modo avión físicos.
 - Figura–objeto: círculo–rueda y cuadrado–ventana completados por clic; registro de dos respuestas independientes visible en el panel adulto.
+
+## Versión 4.0 · rutas de aprendizaje (rama `claude/blissful-newton-jx8npe`, base `main` f0744f6)
+
+### Automatizadas (`node test.cjs`, también en CI)
+- 22 grupos (10 anteriores + 12 nuevos): estructura de las 40 habilidades; variedad de interacciones; más de 20 000 preguntas generadas en tres niveles de avance sin errores ni textos rotos; no se muestran números/vocales no enseñados; la respuesta correcta cae en todas las posiciones; sesión de 5 fases sin repetir estímulos; semilla reproducible; compatibilidad con progreso anterior y colores/figuras ampliados; trazos nuevos; ayer/hoy/mañana con fecha real; nombre; distribución.
+- La prueba de variedad detectó 8 habilidades que practicaban con un solo gesto y una que repetía el mismo ejercicio de nombre; se corrigieron antes de entregar.
+
+### En navegador (Chromium con pantalla táctil emulada; `qa/ui-smoke.cjs` y `qa/legacy-smoke.cjs`)
+- Recorrido completo (aprender → ejemplos → practicar con pista y error deliberado → reforzar → comprobar → resultado → progreso guardado) de las **40 habilidades**, con clics reales y revisión de desbordamiento horizontal y elementos fuera de pantalla en cada pantalla: ver resultados por tamaño en la sección «Resultado de las corridas».
+- Regresión de lo anterior (`qa/legacy-smoke.cjs`, 390 px): módulos básicos, 5 relaciones, 5 uniones, memoria, recorrido, posiciones, 14 trazos (incluye 9 nuevos), pequeño reto, diálogo de módulos agrupado, tira superior, panel adulto, **progreso de la v3.2 conservado** (nombre, desbloqueos, registros, actividades) y reinicio. 0 fallas.
+- Defectos encontrados y corregidos durante la QA: la lista de trazos ampliada empujaba el lienzo fuera de la pantalla (ahora es una tira de una fila); botón «Cambiar módulo» partido en dos líneas a 320 px (ahora «Módulos»); elementos colocados en un grupo heredaban fondo gris; nombre con espacios iniciales dejaba el juego vacío.
+
+### Sigue pendiente (no verificable en este entorno)
+- Audio con voz española real, volumen y cancelación (el navegador de pruebas no tiene voces españolas: se vio el aviso, no la voz). Los tonos de WebAudio tampoco se escucharon.
+- Arrastre con dedo real, varios dedos, giro del dispositivo, rendimiento en teléfonos modestos.
+- Instalación como app, modo avión y actualización del service worker (el caché pasó a `mis-pasos-v4.0.0`).
+- Cómo se ven los emojis en el teléfono concreto del niño.
+- Uso real con el niño: dificultad, duración y si entiende las consignas. No se afirma aprendizaje logrado ni preparación para admisión.
+
+### Resultado de las corridas (versión final de esta rama, con prueba de «Ver una pista» en cada habilidad)
+| Pantalla | Habilidades completadas | Fallas | Errores de consola |
+|---|---|---|---|
+| 320 × 640 (teléfono chico) | 40 de 40 | 0 | 0 |
+| 390 × 844 (teléfono) | 40 de 40 | 0 | 0 |
+| 768 × 1024 (tablet) | 40 de 40 | 0 | 0 |
+| Regresión de lo anterior a 390 px y a 320 px | todas las comprobaciones | 0 | 0 |
