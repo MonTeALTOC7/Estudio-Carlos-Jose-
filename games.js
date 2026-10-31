@@ -270,7 +270,7 @@ const solved={
 
 /* ---------- progreso guardado ---------- */
 function gdata(){const s=S();s.games=s.games||{skills:{},mixed:null};s.games.skills=s.games.skills||{};return s.games}
-function saveResult(id,res){const g=gdata(),o=g.skills[id]||{runs:0,best:0,ind:0,sup:0,last:null};o.runs++;o.ind+=res.ind;o.sup+=res.sup;o.last={ok:res.ok,of:res.of};o.best=Math.max(o.best,res.ok);o.ts=Date.now();g.skills[id]=o;K.save()}
+function saveResult(id,res){const g=gdata(),o=g.skills[id]||{runs:0,best:0,ind:0,sup:0,last:null};o.runs++;o.ind+=res.ind;o.sup+=res.sup;o.last={ok:res.ok,of:res.of};o.best=Math.max(o.best,res.ok);o.perfectDates=o.perfectDates||[];if(res.of===3&&res.ok===3){const day=new Date().toISOString().slice(0,10);if(!o.perfectDates.includes(day))o.perfectDates.push(day)}o.ts=Date.now();g.skills[id]=o;K.save()}
 
 /* ---------- corredor de 5 fases ---------- */
 const PH=[['learn','💡','Aprendo'],['examples','👀','Ejemplos'],['practice','✋','Practico'],['reinforce','🔁','Refuerzo'],['check','⭐','Compruebo']];
@@ -281,7 +281,7 @@ function ctxNow(){return C.ctxFrom(E,S(),new Date())}
 
 function openModule(id){
  run=null;const mod=C.modules.find(m=>m.id===id),sk=C.skillsOf(id),g=gdata().skills,first=sk.find(s=>!g[s.id]);
- K.page(K.head(mod.title,K.home,'Ruta')+'<div class="gmodhead" style="--bg:'+mod.bg+'"><span class="gmodicon" aria-hidden="true">'+mod.icon+'</span><p>'+esc(mod.blurb)+'. Cada juego tiene cinco pasos: aprendo, veo ejemplos, practico, refuerzo y compruebo.</p></div><div class="gskills">'+sk.map(s=>{const r=g[s.id],st=r?'<small class="stat">'+(r.last.ok===r.last.of?'⭐ ':'')+'Comprobación: '+r.last.ok+' de '+r.last.of+' sin ayuda</small>':'<small class="stat new">'+(s===first?'Empieza aquí':'Nuevo')+'</small>';return '<button class="gskill'+(s===first?' first':'')+'" data-skill="'+s.id+'"><span class="sk-i" aria-hidden="true">'+s.icon+'</span><span class="sk-t"><strong>'+esc(s.title)+'</strong><small>'+esc(s.blurb)+'</small>'+st+'</span></button>'}).join('')+'</div>',view(id));
+ K.page(K.head(mod.title,K.home,'Ruta')+'<div class="gmodhead" style="--bg:'+mod.bg+'"><span class="gmodicon" aria-hidden="true">'+mod.icon+'</span><p>'+esc(mod.blurb)+'. Cada juego tiene cinco pasos: aprendo, veo ejemplos, practico, refuerzo y compruebo.</p></div><div class="gskills">'+sk.map(s=>{const r=g[s.id],level=r?(r.best>=3?((r.perfectDates||[]).length>=2?'En consolidación':'Comprobó una vez'):r.last.ok>=2?'En práctica':'Necesita apoyo'):'Nuevo',st=r?'<small class="stat">'+(r.last.ok===r.last.of?'⭐ ':'')+level+' · '+r.last.ok+' de '+r.last.of+' sin ayuda</small>':'<small class="stat new">'+(s===first?'Empieza aquí':'Nuevo')+'</small>';return '<button class="gskill'+(s===first?' first':'')+'" data-skill="'+s.id+'"><span class="sk-i" aria-hidden="true">'+s.icon+'</span><span class="sk-t"><strong>'+esc(s.title)+'</strong><small>'+esc(s.blurb)+'</small>'+st+'</span></button>'}).join('')+'</div>',view(id));
  K.bindBack(K.home);qa('[data-skill]').forEach(b=>b.onclick=()=>openSkill(b.dataset.skill))}
 
 function openSkill(id){
@@ -314,7 +314,7 @@ function showQuestion(){
  const st={errors:0,hinted:false,done:false};
  const ctl={st,fb:h=>{const f=q1('#gfb');if(f)f.innerHTML=h},
   err(m){st.errors++;sBad();if(m){ctl.fb(m);K.speak(plain(m))}},
-  ok(m){if(st.done)return;st.done=true;sGood();const assisted=st.errors>0||st.hinted,msg=m||(assisted?'¡Lo encontramos juntos!':pickOf(GOODS));ctl.fb(msg);K.speak(plain(msg));const h=q1('#ghint');if(h)h.hidden=true;q1('#gnext').hidden=false;(run.res[ph]=run.res[ph]||[]).push({ok:!assisted,fmt:q.fmt});const nb=q1('#gnext');if(nb&&nb.scrollIntoView)nb.scrollIntoView({block:'nearest',behavior:'smooth'})}};
+  ok(m){if(st.done)return;st.done=true;sGood();const assisted=st.errors>0||st.hinted,msg=m||(assisted?'¡Lo encontramos juntos!':pickOf(GOODS));run.goodStreak=assisted?0:(run.goodStreak||0)+1;if(run.goodStreak===3&&typeof window.CJCelebrate==='function')window.CJCelebrate('¡Tres respuestas seguidas!');ctl.fb(msg);K.speak(plain(msg));const h=q1('#ghint');if(h)h.hidden=true;q1('#gnext').hidden=false;(run.res[ph]=run.res[ph]||[]).push({ok:!assisted,fmt:q.fmt});const nb=q1('#gnext');if(nb&&nb.scrollIntoView)nb.scrollIntoView({block:'nearest',behavior:'smooth'})}};
  const h=M[q.type](q,q1('#gbox'),ctl);
  if(ph!=='check'){q1('#ghint').onclick=()=>{if(st.done)return;st.hinted=true;h.hint()}}
  q1('#gnext').onclick=()=>advance();
