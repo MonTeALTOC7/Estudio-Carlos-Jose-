@@ -47,7 +47,7 @@ test('Garabato de cobertura amplia se rechaza por baja precisión', () => {
 });
 test('Distribución completa, sin marcadores pendientes', () => {
   const html=fs.readFileSync(__dirname+'/dist/index.html','utf8');
-  for(const token of ['/*CSS*/','/*ENGINE*/','/*APP*/']) assert.ok(!html.includes(token));
+  for(const token of ['/*CSS*/','/*ENGINE*/','/*APP*/','/*ACTIVITIES*/']) assert.ok(!html.includes(token));
   const manifest=JSON.parse(fs.readFileSync(__dirname+'/dist/manifest.webmanifest','utf8'));
   for(const icon of manifest.icons) assert.ok(fs.existsSync(__dirname+'/dist/'+icon.src));
   assert.ok(fs.existsSync(__dirname+'/dist/sw.js'));
@@ -61,4 +61,13 @@ test('Desbloqueo persistente hasta diez y migración del estado anterior',()=>{
  const old=E.fresh();delete old.unlocked;assert.equal(E.active(old,'vowels').length,2);
 });
 
+const A=require('./activities.js');
+test('Asociaciones: claves únicas y colores coincidentes en animales y objetos',()=>{
+ const seen=new Set();for(let board=0;board<4;board++){const pairs=A.pairs('colorImage',board);assert.equal(pairs.length,2);assert.equal(new Set(pairs.map(x=>x.key)).size,2);for(const p of pairs){assert.equal(p.left.color,p.right.color);seen.add(p.key)}}assert.equal(seen.size,4);
+ for(let board=0;board<3;board++){const pairs=A.pairs('shapeObject',board);assert.equal(new Set(pairs.map(x=>x.key)).size,2)}
+});
+test('Comparaciones y series: única respuesta válida en cada pregunta',()=>{
+ for(const kind of Object.keys(A.names))for(let i=0;i<6;i++){const q=A.question(kind,i);assert.equal(q.choices.filter(x=>x.key===q.answer).length,1);assert.equal(q.choices.length,2);assert.ok(q.explanation);if(kind==='amount'){const correct=q.choices.find(x=>x.key===q.answer),other=q.choices.find(x=>x.key!==q.answer);assert.equal(correct.count>other.count,q.rule==='more')}if(kind==='pattern'){assert.equal(q.reference[0].key,q.reference[2].key);assert.equal(q.answer,q.reference[1].key)}}
+});
+test('Ayudas en juegos no alteran desbloqueo ni registros de símbolos',()=>{const s=E.fresh();A.record(s,'colorImage',false);A.record(s,'colorImage',true);assert.deepEqual(s.activities.colorImage,{independent:1,supported:1});assert.deepEqual(E.active(s,'colors'),['rojo','azul']);assert.deepEqual(s.records,{})});
 console.log(checks+' grupos de pruebas de lógica y distribución completados.');
