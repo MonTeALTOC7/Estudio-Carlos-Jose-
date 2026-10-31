@@ -144,8 +144,8 @@ test('Mi nombre: solo disponible con nombre, y las letras formadas corresponden 
 });
 test('Distribución v4: todos los módulos incluidos y sin marcadores pendientes',()=>{
  const html=fs.readFileSync(__dirname+'/dist/index.html','utf8');
- for(const t of ['/*CONTENT*/','/*GAMES*/']) assert.ok(!html.includes(t),t);
- for(const t of ['GamesUI','C.skill({id:\'contar\'','C.skill({id:\'planta\'','id="chips"','Versión 4.0','M.simon','M.paint']) assert.ok(html.includes(t),t);
- for(const f of ['content.js','skills-a.js','skills-b.js','skills-c.js','games.js','engine.js','app.js'])assert.ok(html.includes(fs.readFileSync(__dirname+'/'+f,'utf8').slice(0,200)),'falta '+f+' en dist');assert.ok(fs.readFileSync(__dirname+'/sw.js','utf8').includes('v4.0.0'))
+ for(const t of ['/*CONTENT*/','/*GAMES*/','/*CENTRO*/']) assert.ok(!html.includes(t),t);
+ for(const t of ['GamesUI','C.skill({id:\'contar\'','C.skill({id:\'planta\'','id="chips"','Versión candidata 4.1','M.simon','M.paint']) assert.ok(html.includes(t),t);
+ for(const f of ['content.js','skills-a.js','skills-b.js','skills-c.js','games.js','engine.js','app.js','centro-cj.js'])assert.ok(html.includes(fs.readFileSync(__dirname+'/'+f,'utf8').slice(0,200)),'falta '+f+' en dist');assert.ok(fs.readFileSync(__dirname+'/sw.js','utf8').includes('v4.1.0'))
 });
 console.log(checks+' grupos de pruebas de lógica y distribución completados.');
