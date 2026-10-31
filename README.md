@@ -1,4 +1,4 @@
-# Mis primeros pasos · 3.1
+# Mis primeros pasos · 3.2
 
 Continuación del ZIP aportado, conservando HTML/CSS/JavaScript y los juegos existentes. Sin dependencias de ejecución ni cuenta infantil.
 
@@ -34,3 +34,13 @@ Se revisaron CONTINUAR_EN_OTRA_CUENTA.md, ambos PDF aportados y el código previ
 https://colegiocdj.com/preescolar/ no fue accesible mediante la consulta web en esta sesión. No se verificó temario ni examen oficial.
 
 Ver VERIFICACION.md para pruebas ejecutadas y límites.
+
+## Ampliación 3.2
+- Navegación superior permanente: Inicio y Cambiar módulo, sin recorrer pantallas hacia atrás.
+- Relacionamos: color con animales/objetos, figura con objeto, grande/pequeño, más/menos, lleno/vacío, igual/diferente y series AB.
+- Los colores de los animales y objetos son ilustraciones SVG propias y estables entre dispositivos; representan el color de ese dibujo, no una característica universal de la especie.
+- Las comparaciones tienen ejemplo de cada concepto, cuatro prácticas y dos comprobaciones. Las ayudas se guardan aparte en el panel adulto, sin desbloquear símbolos automáticamente ni asignar una nota de admisión.
+- Las parejas nuevas enseñan dos relaciones antes de unirlas; Otras parejas introduce otros colores/objetos. Las respuestas ya terminadas se conservan al cambiar módulo; la ronda incompleta y el dibujo sin guardar no se reanudan.
+- activities.js contiene modelos independientes y deterministas; el build lo incorpora al HTML y no requiere conexión para cargarlo.
+
+La app es un apoyo. Conviene acompañarla con conversación, instrucciones sencillas, juegos con objetos y trazos en papel. El contenido requerido por el colegio sigue sin verificarse.

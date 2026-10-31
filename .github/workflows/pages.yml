@@ -21,7 +21,7 @@ jobs:
       - uses: actions/setup-node@v4
         with:
           node-version: 22
-      - run: node --check app.js && node --check engine.js && node build.cjs && node test.cjs
+      - run: node --check app.js && node --check engine.js && node --check activities.js && node build.cjs && node test.cjs
       - uses: actions/configure-pages@v5
       - uses: actions/upload-pages-artifact@v3
         with:

@@ -27,3 +27,13 @@ Se conserva la aplicación. Desbloqueos permanentes; cantidades en prácticas; r
 - Pages configurado con GitHub Actions y HTTPS; despliegue 41230167366 aprobado.
 - https://montealtoc7.github.io/Estudio-Carlos-Jose-/ abierto en navegador: inicio, primera lección y recarga correctos, sin iniciar sesión.
 - Se mantiene pendiente la prueba física de voz, instalación y modo avión.
+
+## Ampliación 3.2 · navegación y relaciones
+- Main verificado antes de modificar: 77fbd3b07b85a90e7b4029cba17e3f52badc3a9b; 22 archivos coincidentes con la copia de trabajo.
+- 10 grupos de pruebas automatizadas: se añaden claves únicas y colores coincidentes, respuestas únicas de comparaciones/series y registro de ayudas separado del progreso de símbolos.
+- Navegador: cambio directo desde lección a Relacionamos mediante selector superior; error de color, pareja correcta por clic y otra por arrastre completadas.
+- Tamaños: sesión completa con una pista; resultado observado 5 sin ayuda y 1 con ayuda, y comprobación 2/2 independiente.
+- Tablet 768 px: enseñanza y respuesta correcta de más/menos, lleno/vacío, igual/diferente y serie; ancho de contenido igual al disponible, sin desbordamiento horizontal.
+- Teléfono 320 px: lección de color–animal sin desbordamiento; se corrigió el reparto de título/etiqueta para evitar partir palabras.
+- Persisten los límites: no audio español real disponible en el navegador remoto, no dispositivo táctil físico, no instalación ni modo avión físicos.
+- Figura–objeto: círculo–rueda y cuadrado–ventana completados por clic; registro de dos respuestas independientes visible en el panel adulto.
