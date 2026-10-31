@@ -4,7 +4,7 @@ const root=__dirname;
 fs.mkdirSync(path.join(root,'dist'),{recursive:true});
 let html=fs.readFileSync(path.join(root,'page.html'),'utf8');
 const read=f=>fs.readFileSync(path.join(root,f),'utf8');
-for(const [tag,files] of [['CSS',['style.css']],['ENGINE',['engine.js']],['ACTIVITIES',['activities.js']],['CONTENT',['content.js','skills-a.js','skills-b.js','skills-c.js']],['GAMES',['games.js']],['APP',['app.js']]])html=html.replace('/*'+tag+'*/',()=>files.map(read).join('\n'));
+for(const [tag,files] of [['CSS',['style.css']],['ENGINE',['engine.js']],['ACTIVITIES',['activities.js']],['CONTENT',['content.js','skills-a.js','skills-b.js','skills-c.js']],['GAMES',['games.js']],['APP',['app.js']],['CENTRO',['centro-cj.js']]])html=html.replace('/*'+tag+'*/',()=>files.map(read).join('\n'));
 fs.writeFileSync(path.join(root,'dist/index.html'),html);
 for(const f of ['manifest.webmanifest','sw.js','icon.svg','icon-192.png','icon-512.png'])fs.copyFileSync(path.join(root,f),path.join(root,'dist',f));
 console.log('App preparada en dist/');
