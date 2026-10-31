@@ -19,3 +19,11 @@
 
 ## Cambios principales frente al ZIP
 Se conserva la aplicación. Desbloqueos permanentes; cantidades en prácticas; reto de contenido visto; parejas según progreso hasta 10; captura/cancelación de puntero; memoria con negocios; recorrido por todas sus paradas y distinción de ayuda; mejoras de 320 px y avisos de voz; icono Apple; build y pruebas antes de publicar Pages.
+
+## Publicación GitHub
+- PR #1 integrado con autorización del propietario; CI aprobado.
+- Commit de aplicación: fb860b33ea6fb39b4ae254cfaeff53c743dc8758.
+- Los 22 archivos de main se verificaron contra los blobs locales de entrega.
+- Pages configurado con GitHub Actions y HTTPS; despliegue 41230167366 aprobado.
+- https://montealtoc7.github.io/Estudio-Carlos-Jose-/ abierto en navegador: inicio, primera lección y recarga correctos, sin iniciar sesión.
+- Se mantiene pendiente la prueba física de voz, instalación y modo avión.
