@@ -16,7 +16,7 @@ const ok=(n,c,extra)=>{log.push((c?'OK    ':'FALLA ')+n+(extra?' · '+extra:''))
  await p.addInitScript(o=>{if(!localStorage.getItem('primerosPasos3'))localStorage.setItem('primerosPasos3',JSON.stringify(o))},OLD);
  await p.goto(url);await p.waitForSelector('.hero5');
  ok('Carga con progreso antiguo y muestra el nombre guardado',(await p.textContent('.hero5 h1')).includes('Luis'));
- ok('Navegación: barra de secciones en Hoy; Inicio, Módulos y tira de módulos dentro de actividades',await p.locator('.tabbar').isVisible()&&await p.locator('[data-tab]').count()===4);
+ ok('Navegación: barra de 5 secciones (Hoy, Camino, Aprender, Jugar, Logros) en Hoy; Inicio, Módulos y tira de módulos dentro de actividades',await p.locator('.tabbar').isVisible()&&await p.locator('[data-tab]').count()===5);
 
  // áreas básicas: aprender → practicar con aciertos (se prueban opciones hasta acertar)
  const tryOptions=async(sel,doneSel)=>{const n=await p.locator(sel).count();for(let i=0;i<n;i++){const el=p.locator(sel).nth(i);if(!(await el.isEnabled()))continue;await el.click();if(await p.locator(doneSel).isVisible())return true}return await p.locator(doneSel).isVisible()};
@@ -78,7 +78,7 @@ const ok=(n,c,extra)=>{log.push((c?'OK    ':'FALLA ')+n+(extra?' · '+extra:''))
 
  // panel adulto
  await p.click('#parents');await p.fill('#gate','7');await p.click('#enter');await p.waitForSelector('[data-atab]');
- ok('Panel adulto con pestañas Resumen, Progreso, En casa y Ajustes',await p.locator('[data-atab]').count()===4);
+ ok('Panel adulto con pestañas Resumen, Mi camino, Progreso, En casa y Ajustes',await p.locator('[data-atab]').count()===5);
  await p.click('[data-atab="ajustes"]');await p.waitForSelector('#settings');
  const dash=await p.textContent('#dialogContent');
  ok('Ajustes conserva el registro de símbolos y la voz',dash.includes('Lo que está practicando')&&await p.locator('#voice').count()===1);
