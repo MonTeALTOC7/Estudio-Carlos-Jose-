@@ -27,6 +27,8 @@ jobs:
         run: npm ci --no-audit --no-fund && npx playwright install --with-deps chromium
       - name: Diseño, arrastre táctil, persistencia, respaldo, PWA, sin conexión, actualización y canal de prueba
         run: node qa/ci-visual.cjs --out=qa-out
+      - name: Simulación de Cloudflare Pages (compilación exacta, raíz del dominio, cabeceras, PWA, sin conexión, actualización)
+        run: node qa/cloudflare-check.cjs
       - name: Resumen en la página del flujo
         if: always()
         run: if [ -f qa-out/resumen.md ]; then cat qa-out/resumen.md >> "$GITHUB_STEP_SUMMARY"; fi

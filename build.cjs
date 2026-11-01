@@ -20,4 +20,7 @@ let man=JSON.parse(read('manifest.webmanifest'));
 if(preview){man.name='Centro Carlos José · PRUEBA';man.short_name='Carlos PRUEBA';man.theme_color='#8a1c16';man.description='Versión de prueba. No es la aplicación definitiva.'}
 fs.writeFileSync(path.join(out,'manifest.webmanifest'),JSON.stringify(man));
 for(const f of ['icon.svg','icon-192.png','icon-512.png'])fs.copyFileSync(path.join(root,preview&&f.endsWith('.png')?f.replace('icon-','icon-prueba-'):f),path.join(out,f));
+/* Cloudflare Pages (y Netlify) leen _headers: el canal de prueba no se indexa y el service worker, el manifiesto y la página
+   nunca se sirven desde una caché intermedia vieja. GitHub Pages ignora este archivo. Solo se escribe en el canal de prueba. */
+if(preview)fs.writeFileSync(path.join(out,'_headers'),['/*','  X-Robots-Tag: noindex, nofollow','  Referrer-Policy: no-referrer','  X-Content-Type-Options: nosniff','/','  Cache-Control: no-cache','/index.html','  Cache-Control: no-cache','/sw.js','  Cache-Control: no-cache','/manifest.webmanifest','  Cache-Control: no-cache',''].join('\n'));
 console.log('App preparada en '+path.relative(root,out)+'/ ('+info.channel+', build '+build+')');

@@ -12,6 +12,29 @@
 
 Aunque ambos sitios compartan dominio (`usuario.github.io`), no se mezclan datos, cachés ni alcances. Esto **lo verifica automáticamente** `qa/ci-visual.cjs` (mismo origen, rutas `/Estudio-Carlos-Jose-/` y `/Estudio-Carlos-Jose-preview/`).
 
+## Opción recomendada: Cloudflare Pages (sin crear otro repositorio de GitHub)
+Proyecto independiente de Cloudflare Pages conectado al repositorio existente. **No modifica el repositorio ni el sitio de producción** (GitHub Pages sigue intacto; Cloudflare solo lee la rama).
+
+| Ajuste | Valor |
+|---|---|
+| Nombre del proyecto | `carlos-jose-preview` (URL: `https://carlos-jose-preview.pages.dev`; si el nombre está tomado, Cloudflare añade un sufijo) |
+| Repositorio | `MonTeALTOC7/Estudio-Carlos-Jose-` |
+| **Production branch** | `claude/centro-carlos-jose-v5` (así la URL estable sigue a esa rama y no a `main`) |
+| Framework preset | None |
+| Build command | `PREVIEW=1 OUT=dist node build.cjs` |
+| Build output directory | `dist` |
+| Variable de entorno | `NODE_VERSION` = `22` (opcional; `build.cjs` solo usa módulos integrados de Node) |
+| Branch control → Preview branches | **None** (para que no compile otras ramas) |
+
+Notas verificadas con `qa/cloudflare-check.cjs` (corre en CI):
+- `OUT=dist` solo escribe en el clon temporal de Cloudflare; el `dist/` versionado (producción) no se toca.
+- La app usa rutas relativas: funciona igual en la raíz del dominio (`.pages.dev/`) que en una subruta.
+- El canal de prueba genera `_headers`: `X-Robots-Tag: noindex` (el buscador no la indexa) y `Cache-Control: no-cache` en página, service worker y manifiesto.
+- Cada commit nuevo en la rama redespliega; la app instalada muestra el aviso «Actualizar».
+- Para quitarla: borrar el proyecto en Cloudflare. No queda nada en el repositorio.
+- Alternativa sin conectar GitHub a Cloudflare: `PREVIEW=1 OUT=dist-preview node build.cjs && npx wrangler pages deploy dist-preview --project-name carlos-jose-preview --branch claude/centro-carlos-jose-v5` (carga directa desde tu computadora).
+
+## Alternativa: otro repositorio de GitHub
 ## Dónde publicarla sin tocar producción
 GitHub Pages permite **un solo sitio por repositorio**, y el de `Estudio-Carlos-Jose-` es producción. Publicar la prueba desde ese repositorio reemplazaría o alteraría el sitio en uso, así que no se hace. Una URL HTTPS independiente necesita **otro repositorio**:
 
