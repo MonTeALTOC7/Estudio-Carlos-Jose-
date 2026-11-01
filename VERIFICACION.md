@@ -121,3 +121,18 @@ Sin errores de consola en ninguna corrida.
 
 ### Pendiente de validación física
 Ver `docs/VALIDACION.md` §C: instalación real, modo avión, arrastre con dedo real, voz y tonos, descarga y restauración del respaldo en el teléfono, actualización real, emojis, rendimiento y, sobre todo, la experiencia de Carlos José.
+
+
+## Ronda v5.1 · Mi camino de aprendizaje (clases guiadas) y audio
+Diseño y decisiones: `docs/CURSO_GUIADO.md`. Capturas reales de Chromium en `docs/capturas/clases_*_390.png` y `*_1440.png`.
+
+| Prueba | Resultado (local) |
+|---|---|
+| `node test.cjs` | 47 grupos aprobados (10 nuevos: currículo válido, planificador, refuerzo/apoyo, repaso espaciado, propiedades con 600 resultados al azar, independencia de los tres conceptos) |
+| `qa/course-smoke.cjs` 390 px | 45 comprobaciones aprobadas, 0 fallas (10 escenarios: primera clase, reanudar exacto, finalizar y siguiente, juego libre sin mover el curso, repasos y refuerzo, exploración inicial, datos y respaldos anteriores, panel adulto, diseño y audio) |
+| `qa/course-smoke.cjs` 320 y 1440 px (mapa, panel adulto y navegación) | 14/14 y 14/14 |
+| `qa/ci-visual.cjs` (35) · `qa/v5-smoke.cjs` · `qa/legacy-smoke.cjs` · `qa/ui-smoke.cjs` (320 px) · `qa/cloudflare-check.cjs` (15) | 0 fallas |
+
+Defectos reales encontrados durante la ronda y corregidos: avatar de la bienvenida sin tamaño (clase CSS equivocada); el botón «Continuar» antiguo ya no es el principal (pruebas actualizadas); el fallo intermitente del arrastre del diagnóstico tenía como causa real el relleno asíncrono de la tabla de diagnóstico (empuja la pelota ~517 px), no las llamadas a `center()`.
+
+**No verificado (requiere teléfono):** escuchar la voz y la música por el altavoz y juzgar si resultan agradables y si la música estorba a la voz; el arrastre con dedo físico dentro de las clases; la duración real de una clase con Carlos José; el funcionamiento de la pausa del audio al bloquear la pantalla del teléfono.
