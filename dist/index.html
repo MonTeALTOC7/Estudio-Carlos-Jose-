@@ -227,8 +227,26 @@ input[type=checkbox]{width:28px;height:28px;flex:0 0 auto;margin:0;accent-color:
  .gpaint .gscene{max-height:46vh}.gpaint.solo{max-width:min(360px,64vh)}
  .study{min-height:0;padding:14px}.clswel,.clsbridge,.clsclose{padding-top:0}.cb-i{font-size:56px;margin-top:0}.cw-char{margin:4px auto}.cw-char .avimg.cwface,.cw-char .avsvg.cwface{width:72px;height:72px}.clswel h1,.clsbridge h1,.clsclose h1{font-size:30px;margin:6px 0}
  .hero5{min-height:250px}
+ .cw-steps{grid-template-columns:repeat(2,minmax(0,1fr));max-width:680px;gap:6px;margin:8px auto}.cw-steps li{padding:6px 10px}.clswel .small{margin:4px 0}.clswel .row,.clsclose .row,.clsbridge .row{margin:8px 0}.cc-detail{padding:2px 14px;margin:6px 0}.cc-next{margin:6px 0}
 }
-</style></head><body><div class="app" id="app" data-mode="hub"><header class="topbar"><button class="brand" id="home" aria-label="Ir a Hoy"><span class="brandmark" id="logo" aria-hidden="true"></span><span class="brandtxt"><small>Centro de Estudios</small><b>Carlos José</b></span></button><div class="header-actions"><button id="install" hidden>Instalar</button><button id="parents" class="icon" aria-label="Zona de adultos">⚙</button></div></header><nav class="modulebar" aria-label="Navegación de juegos"><div class="modrow"><button id="directHome" class="soft">⌂ Inicio</button><button id="modules" class="primary" aria-haspopup="dialog">▦ <span class="lg">Cambiar módulo</span><span class="sm">Módulos</span></button></div><div class="chips" id="chips" aria-label="Ir directo a un módulo"></div></nav><main id="main"></main><footer><span>Aprendo, juego y descubro · <b>By Carlos Tijerino</b></span><span>Versión 5.1</span></footer></div><nav class="tabbar" id="tabbar" aria-label="Secciones"><button data-tab="hoy"><svg viewBox="0 0 32 32" aria-hidden="true"><circle cx="16" cy="16" r="6"/><path d="M16 3v4M16 25v4M3 16h4M25 16h4M7 7l3 3M22 22l3 3M25 7l-3 3M10 22l-3 3"/></svg><span>Hoy</span></button><button data-tab="camino"><svg viewBox="0 0 32 32" aria-hidden="true"><path d="M7 28c0-6 18-6 18-12S7 12 7 6"/><circle cx="7" cy="5" r="2.6"/><circle cx="25" cy="27" r="2.6"/></svg><span>Camino</span></button><button data-tab="aprender"><svg viewBox="0 0 32 32" aria-hidden="true"><path d="M4 7q6-2 12 2 6-4 12-2v18q-6-2-12 2-6-4-12-2z"/><path d="M16 9v18"/></svg><span>Aprender</span></button><button data-tab="jugar"><svg viewBox="0 0 32 32" aria-hidden="true"><path d="M16 3l3.4 8.4 9 .7-6.9 5.8 2.2 8.8L16 21.9l-7.7 4.8 2.2-8.8-6.9-5.8 9-.7z"/></svg><span>Jugar</span></button><button data-tab="logros"><svg viewBox="0 0 32 32" aria-hidden="true"><circle cx="16" cy="13" r="8"/><path d="M11 20l-3 9 8-4 8 4-3-9"/></svg><span>Logros</span></button></nav><div id="updbar" role="status" aria-live="polite" hidden><span>Hay una versión nueva de la aplicación.</span><button class="primary" id="updgo">Actualizar</button><button class="soft" id="updlater">Después</button></div><div id="cheer" role="status" aria-live="polite"></div><div id="celebrate" aria-live="polite"></div><canvas id="confetti" aria-hidden="true"></canvas><dialog id="dialog"><div id="dialogContent"></div><button id="closeDialog" class="soft">Cerrar</button></dialog><dialog id="moduleDialog" aria-labelledby="moduleTitle"><h2 id="moduleTitle">¿A qué jugamos?</h2><p>Elige directamente. Tu progreso se conserva.</p><div id="moduleChoices" class="module-grid"></div><button id="closeModules" class="soft">Seguir jugando</button></dialog><div id="notice" role="status"></div><script>window.APP={"channel":"producción","key":"primerosPasos3","version":"5.1.0","build":"da3da097","commit":""};window.CJ_ASSETS=window.CJ_ASSETS||{hero:'assets/hero.webp',face:'assets/avatar.webp'};</script><script>(function(root){
+
+/* ===== Personas (partes del cuerpo): fotos y dibujos con zonas táctiles ===== */
+.pfig{display:block;margin:auto;border-radius:16px;background:#fff}
+.pfig.pfull{width:100%;height:clamp(240px,calc(100svh - 380px),520px)}.pfig.pface{width:100%;height:clamp(220px,calc(100svh - 420px),400px)}
+.gpaint.solo:has(.pfig){max-width:520px;padding:6px}.gpaint:has(.pfig) .gscene{max-height:none}
+.pimg .zshape{fill:#0000;stroke:#0000;stroke-width:14px;stroke-linejoin:round;pointer-events:all;vector-effect:non-scaling-stroke}   /* el trazo transparente agranda 7 px por lado el área de toque, sea cual sea la escala */
+.pimg .rg.hl>*,.pimg .rg.ghint>*{fill:#ffd43b66;stroke:#eeb843;stroke-width:4px}.pimg .rg.good>*{fill:#3ec28066;stroke:#287859;stroke-width:4px}.pimg .rg.try>*{fill:#e7873e55;stroke:#e7873e;stroke-width:4px}
+.psvg .rg{cursor:pointer}.psvg .rg.hl>*{filter:drop-shadow(0 0 5px #eeb843)}
+.lfigs{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:12px;margin:12px 0}.lfig{margin:0}.lfig figcaption{font-size:14px;color:var(--muted);margin-top:6px}
+@media (orientation:landscape) and (max-height:620px){
+ .lfigs{grid-template-columns:repeat(2,1fr)}
+ /* figura a la derecha y enunciado a la izquierda: la figura gana altura útil en la tablet apaisada */
+ .gq:has(.pfig){display:grid;grid-template-columns:minmax(0,.85fr) minmax(0,1.15fr);column-gap:18px;align-items:start;text-align:left}
+ .gq:has(.pfig)>*{grid-column:1}.gq:has(.pfig)>#gbox,.gq:has(.pfig)>.gpaint{grid-column:2;grid-row:1/span 7}
+ .gq:has(.pfig)>.row,.gq:has(.pfig) .row.center{justify-content:flex-start}.gq:has(.pfig) .gprompt{text-align:left}
+ .pfig.pfull{height:clamp(240px,calc(100svh - 150px),440px)}.pfig.pface{height:clamp(220px,calc(100svh - 150px),400px)}
+ .modulebar .chips{display:none}.modulebar{padding-bottom:0}}
+</style></head><body><div class="app" id="app" data-mode="hub"><header class="topbar"><button class="brand" id="home" aria-label="Ir a Hoy"><span class="brandmark" id="logo" aria-hidden="true"></span><span class="brandtxt"><small>Centro de Estudios</small><b>Carlos José</b></span></button><div class="header-actions"><button id="install" hidden>Instalar</button><button id="parents" class="icon" aria-label="Zona de adultos">⚙</button></div></header><nav class="modulebar" aria-label="Navegación de juegos"><div class="modrow"><button id="directHome" class="soft">⌂ Inicio</button><button id="modules" class="primary" aria-haspopup="dialog">▦ <span class="lg">Cambiar módulo</span><span class="sm">Módulos</span></button></div><div class="chips" id="chips" aria-label="Ir directo a un módulo"></div></nav><main id="main"></main><footer><span>Aprendo, juego y descubro · <b>By Carlos Tijerino</b></span><span>Versión 5.1</span></footer></div><nav class="tabbar" id="tabbar" aria-label="Secciones"><button data-tab="hoy"><svg viewBox="0 0 32 32" aria-hidden="true"><circle cx="16" cy="16" r="6"/><path d="M16 3v4M16 25v4M3 16h4M25 16h4M7 7l3 3M22 22l3 3M25 7l-3 3M10 22l-3 3"/></svg><span>Hoy</span></button><button data-tab="camino"><svg viewBox="0 0 32 32" aria-hidden="true"><path d="M7 28c0-6 18-6 18-12S7 12 7 6"/><circle cx="7" cy="5" r="2.6"/><circle cx="25" cy="27" r="2.6"/></svg><span>Camino</span></button><button data-tab="aprender"><svg viewBox="0 0 32 32" aria-hidden="true"><path d="M4 7q6-2 12 2 6-4 12-2v18q-6-2-12 2-6-4-12-2z"/><path d="M16 9v18"/></svg><span>Aprender</span></button><button data-tab="jugar"><svg viewBox="0 0 32 32" aria-hidden="true"><path d="M16 3l3.4 8.4 9 .7-6.9 5.8 2.2 8.8L16 21.9l-7.7 4.8 2.2-8.8-6.9-5.8 9-.7z"/></svg><span>Jugar</span></button><button data-tab="logros"><svg viewBox="0 0 32 32" aria-hidden="true"><circle cx="16" cy="13" r="8"/><path d="M11 20l-3 9 8-4 8 4-3-9"/></svg><span>Logros</span></button></nav><div id="updbar" role="status" aria-live="polite" hidden><span>Hay una versión nueva de la aplicación.</span><button class="primary" id="updgo">Actualizar</button><button class="soft" id="updlater">Después</button></div><div id="cheer" role="status" aria-live="polite"></div><div id="celebrate" aria-live="polite"></div><canvas id="confetti" aria-hidden="true"></canvas><dialog id="dialog"><div id="dialogContent"></div><button id="closeDialog" class="soft">Cerrar</button></dialog><dialog id="moduleDialog" aria-labelledby="moduleTitle"><h2 id="moduleTitle">¿A qué jugamos?</h2><p>Elige directamente. Tu progreso se conserva.</p><div id="moduleChoices" class="module-grid"></div><button id="closeModules" class="soft">Seguir jugando</button></dialog><div id="notice" role="status"></div><script>window.APP={"channel":"producción","key":"primerosPasos3","version":"5.1.0","build":"cc8be438","commit":""};window.CJ_ASSETS=window.CJ_ASSETS||{hero:'assets/hero.webp',face:'assets/avatar.webp'};</script><script>(function(root){
  'use strict';
  const groups={numbers:['1','2','3','4','5','6','7','8','9','10'],vowels:['a','e','i','o','u'],colors:['rojo','azul','amarillo','verde','naranja','morado','rosado','café'],shapes:['círculo','X','cuadrado','triángulo','rectángulo','óvalo','rombo']};
  function fresh(){return{version:3,name:'',sound:true,voice:'',rate:.85,unlocked:{},records:{},sessions:0,drawings:0}}
@@ -517,7 +535,7 @@ C.validate=function(q,ctx){
   case'fill':{const p=ids(q.palette);if(!q.blanks.length)errs.push('sin huecos');if(!q.blanks.every(b=>p.includes(b)))errs.push('respuesta fuera de la paleta');if(!uniq(p))errs.push('paleta repetida');q.seq.forEach((a,k)=>a&&A(a,'serie'+k));q.palette.forEach((o,k)=>A(o.art,'paleta'+k));break}
   case'dots':if(q.points.length!==q.n||q.n>Math.max(...ctx.numbers))errs.push('puntos inválidos o número no presentado');break;
   case'paint':{const sc=C.PAINT[q.scene];if(!sc)errs.push('escena');else{if(!q.steps.length)errs.push('sin pasos');q.steps.forEach(s=>{if(!sc.regions[s.region])errs.push('región '+s.region);if(!q.palette.includes(s.color))errs.push('color fuera de la paleta')});if(!uniq(q.steps.map(s=>s.region)))errs.push('región repetida')}break}
-  case'tap':if(!C.TAP[q.scene]||!C.TAP[q.scene][q.answer])errs.push('región de toque inexistente');break;
+  case'tap':{const PE=globalThis.People;if(!C.TAP[q.scene]||!C.TAP[q.scene][q.answer])errs.push('región de toque inexistente');else if(PE&&(!PE.FIGS[q.fig]||PE.FIGS[q.fig].scene!==q.scene||!PE.parts(q.fig).includes(q.answer)))errs.push('parte no visible en la figura '+q.fig+': '+q.answer);break}
   case'clap':if(!(q.word.syl>=1&&q.word.syl<=5))errs.push('sílabas fuera de rango');break;
   case'recall':{if(q.mode==='order'){if(q.items.length<3||!uniq(ids(q.items)))errs.push('recuerdo de orden inválido');q.items.forEach((o,k)=>A(o.art,'recuerdo'+k));break}const i=ids(q.options);if(!uniq(i)||i.filter(x=>x===q.answer).length!==1)errs.push('recuerdo: opciones inválidas');if(q.shown.length<2)errs.push('pocas imágenes');break}
   case'simon':if(q.seq.length<2||q.pads.length<3||!q.seq.every(x=>x>=0&&x<q.pads.length))errs.push('secuencia inválida');break;
@@ -1107,12 +1125,14 @@ C.skill({id:'dias-semana',mod:'espacio',icon:'🐛',title:'Los días de la seman
 
 /* ===================== MI CUERPO Y YO ===================== */
 const TB=Object.keys(C.TAP.body),TF=Object.keys(C.TAP.face);
-const tapGen=sc=>(ctx,rng)=>{const a=pick(Object.keys(C.TAP[sc]),rng);return Q.raw('tap',{key:'tp:'+sc+a,scene:sc,answer:a,prompt:'Toca '+C.TAP[sc][a]+'.',explain:'Esta es '+C.TAP[sc][a]+'.'})};
+/* Las partes se enseñan en personas reales o ilustradas (people.js): fotos de Carlos José, su ilustración y otras personas. Solo se pregunta por partes que se ven en la figura. */
+const tapGen=sc=>(ctx,rng,i,phase)=>{const PE=root.People||require('./people.js'),fig=PE.pick(sc,phase,rng),a=pick(PE.parts(fig),rng),nm=C.TAP[sc][a];return Q.raw('tap',{key:'tp:'+sc+fig+a,scene:sc,fig,answer:a,prompt:'Toca '+nm+' '+PE.de(fig)+'.',explain:'Esta es '+nm+' '+PE.de(fig)+'.'})};
 const USE=[['¿Con qué parte del cuerpo vemos?','ojos','👁️','Con los ojos vemos.'],['¿Con qué parte del cuerpo oímos?','orejas','👂','Con las orejas oímos.'],['¿Con qué parte del cuerpo olemos?','nariz','👃','Con la nariz olemos.'],['¿Con qué parte del cuerpo comemos y hablamos?','boca','👄','Con la boca comemos y hablamos.'],['¿Con qué parte del cuerpo agarramos las cosas?','manos','✋','Con las manos agarramos las cosas.'],['¿Con qué parte del cuerpo caminamos?','pies','🦶','Con los pies caminamos.']];
 C.skill({id:'partes',mod:'cuerpo',icon:'🧍',title:'Partes de mi cuerpo',blurb:'Cabeza, brazos, cara y para qué sirven',
  learn:ctx=>({title:'Mi cuerpo tiene muchas partes',say:'Tengo cabeza, brazos, manos, piernas y pies. En la cara tengo ojos, nariz, boca y orejas. Cada parte sirve para algo.',
   cards:[['ojos','👁️','Estos son los ojos. Con ellos vemos.'],['orejas','👂','Estas son las orejas. Con ellas oímos.'],['nariz','👃','Esta es la nariz. Con ella olemos.'],['boca','👄','Esta es la boca. Con ella comemos y hablamos.'],['manos','✋','Estas son las manos. Con ellas agarramos.'],['pies','🦶','Estos son los pies. Con ellos caminamos.'],['corazón','❤️','El corazón late. Pon tu mano en el pecho y lo sientes.'],['cerebro','🧠','El cerebro está dentro de la cabeza y nos ayuda a pensar.']].map(([n,e,say])=>({arts:[em(e,n)],label:n,say})),
-  adult:'Nombren partes del cuerpo mientras lo bañan o lo visten. Para «por dentro» (corazón, cerebro) basta con que sienta su latido (Cuadernillo MINED, pp. 6 y 16).'}),
+  figs:[{fig:'carlos-campo',cap:'Mira a Carlos José: toca una parte para escuchar su nombre.'},{fig:'carlos-cara',cap:'Y su cara: ojos, nariz, boca, orejas y cabello.'}],
+  adult:'Nombren partes del cuerpo mientras lo bañan o lo visten. Para «por dentro» (corazón, cerebro) basta con que sienta su latido (Cuadernillo MINED, pp. 6 y 16). Después de la pantalla: pídanle que señale su propia cabeza, manos, pies y brazos, y también los de mamá o papá.'}),
  gens:{a:tapGen('body'),b:(ctx,rng)=>{const u=pick(USE,rng),ds=sample(USE.filter(x=>x!==u),2,rng);return Q.choose(rng,{key:'us:'+u[1],prompt:u[0],options:[u,...ds].map(x=>({id:x[1],art:em(x[2],x[1])})),answer:u[1],listen:[u,...ds].map(x=>x[1]),explain:u[3]})},c:PG.a,d:tapGen('face')},
  plan:{examples:['a','b'],practice:['a','d','b'],reinforce:['b','c'],check:['a','d','b']},
  home:'Canten «cabeza, hombros, rodillas y pies» tocando cada parte.'});
@@ -1211,6 +1231,127 @@ C.skill({id:'planta',mod:'mundo',icon:'🌱',title:'Cómo crece una planta',blur
   c:(ctx,rng)=>{const n=pick(NEED,rng),ds=sample(NONE,2,rng);return Q.choose(rng,{key:'gc:'+n[1]+ds.map(x=>x[1]).join(),prompt:'¿Qué necesita una planta para vivir?',options:[n,...ds].map(([e,l])=>({id:l,art:em(e,l)})),answer:n[1],listen:[n,...ds].map(x=>x[1]),explain:'Una planta necesita '+n[1]+'.'})}},
  plan:{examples:['a','b'],practice:['c','a','b'],reinforce:['b','a'],check:['c','a','b']},
  home:'Siembren una semilla en casa y riéguenla juntos cada día.'});
+})(typeof globalThis!=='undefined'?globalThis:this);
+</script><script>/* Personas para aprender las partes del cuerpo (datos + dibujo SVG; sin pantalla ni estado).
+   Principio visual: fotos o ilustraciones fieles de Carlos José cuando aportan al aprendizaje; otras personas ilustradas para que generalice;
+   ilustración limpia cuando una foto no permite ver bien una parte. Cada figura declara SOLO las partes que se ven (no se inventan partes
+   ocultas o fuera del encuadre). Las zonas táctiles de las imágenes reales son polígonos/elipses sobre la propia imagen y se verifican con
+   superposiciones (docs/capturas/personas_zonas_*.png) y pruebas automáticas. Para agregar fotos nuevas basta una entrada en FIGS. */
+(function(root){
+'use strict';
+const P={};
+const STK='#4a3a30';
+const E=(cx,cy,rx,ry)=>({e:[cx,cy,rx,ry]}),Y=pts=>({p:pts});
+/* ---- figuras con imagen real o ilustración (zonas en coordenadas de la imagen) ---- */
+const IMG={
+ 'carlos-campo':{who:'Carlos José',de:'de Carlos José',art:'foto',scene:'body',src:'assets/people/carlos-campo.webp',w:358,h:937,aria:'Foto de Carlos José de cuerpo entero',
+  parts:{
+   cabeza:[E(180,88,62,72)],
+   brazo:[Y([[88,248],[128,236],[150,296],[285,312],[300,334],[300,345],[150,350],[112,318]]),Y([[262,192],[300,206],[310,300],[302,334],[272,330],[258,260]])],
+   mano:[E(252,184,42,50)],
+   barriga:[Y([[128,350],[268,350],[272,445],[124,445]])],
+   pierna:[Y([[78,640],[150,640],[142,742],[100,748],[84,705]]),Y([[152,632],[214,632],[208,735],[166,740]])],
+   pie:[Y([[66,765],[140,805],[152,832],[110,842],[72,812]]),Y([[135,728],[205,735],[218,790],[160,800],[132,760]])]}},
+ 'carlos-doctor':{who:'Carlos José',de:'de Carlos José',art:'ilustracion',scene:'body',src:'assets/hero.webp',w:973,h:1507,aria:'Ilustración de Carlos José vestido de médico',
+  parts:{
+   cabeza:[E(479,139,128,134)],
+   brazo:[Y([[300,345],[385,335],[395,420],[340,540],[420,590],[470,620],[470,690],[400,700],[300,680],[230,690],[195,640],[205,560],[250,440]]),Y([[625,350],[690,345],[700,400],[775,440],[800,560],[760,610],[690,600],[640,520],[620,430]])],
+   mano:[E(462,642,80,56),E(735,408,66,80)],
+   barriga:[Y([[470,640],[610,640],[622,790],[480,800]])],
+   pierna:[Y([[330,1108],[485,1108],[468,1332],[360,1337]]),Y([[505,1098],[640,1098],[628,1312],[528,1318]])],
+   pie:[Y([[320,1340],[470,1340],[470,1495],[320,1490]]),Y([[505,1305],[705,1350],[710,1440],[540,1450]])]}},
+ 'carlos-cara':{who:'Carlos José',de:'de Carlos José',art:'foto',scene:'face',src:'assets/avatar.webp',w:768,h:855,aria:'Foto de la cara de Carlos José',
+  view:[110,20,520,520],
+  parts:{
+   cabello:[Y([[190,230],[185,150],[215,85],[300,55],[390,60],[470,110],[510,170],[520,240],[470,220],[430,160],[350,130],[280,130],[230,170]])],
+   orejas:[E(194,380,24,48),E(526,325,26,52)],
+   ojos:[E(297,292,38,26),E(433,270,36,25)],
+   nariz:[E(375,324,42,36)],
+   boca:[E(385,405,58,32)]}},
+ 'carlos-doctor-cara':{who:'Carlos José',de:'de Carlos José',art:'ilustracion',scene:'face',src:'assets/hero.webp',w:973,h:1507,aria:'Ilustración de la cara de Carlos José',
+  view:[330,0,300,290],
+  parts:{
+   cabello:[Y([[350,150],[352,70],[400,15],[480,0],[560,15],[600,80],[600,150],[560,110],[500,85],[430,95],[385,120]])],
+   orejas:[E(374,188,22,38),E(585,184,22,38)],
+   ojos:[E(432,165,36,22),E(519,149,36,22)],
+   nariz:[E(492,192,26,26)],
+   boca:[E(492,232,50,22)]}}
+};
+/* ---- personas ilustradas por el código (zonas = las propias formas) ---- */
+const SK={mama:'#d9a07a',papa:'#b97a52',nina:'#e3b08c',abuelo:'#ecc5a3'};
+const SPEC={
+ mama:{who:'mamá',de:'de mamá',skin:SK.mama,hair:'#2b1a14',style:'larga',top:'#3b7ea8',bottom:'#7a5ea8',skirt:true,shoe:'#8a3b3b',adult:true},
+ papa:{who:'papá',de:'de papá',skin:SK.papa,hair:'#1d1612',style:'corto',top:'#3f8f5e',bottom:'#40507a',skirt:false,shoe:'#3b3b3b',adult:true,shorts:true},
+ nina:{who:'una niña',de:'de la niña',skin:SK.nina,hair:'#4a2f1d',style:'colitas',top:'#f2b134',bottom:'#e4577e',skirt:true,shoe:'#7a4aa8',adult:false},
+ nino:{who:'un niño',de:'del niño',skin:'#f1c9a8',hair:'#5a3a26',style:'corto',top:'#d9d9d9',bottom:'#d9d9d9',skirt:false,shoe:'#d9d9d9',adult:false,shorts:true},
+ abuelo:{who:'el abuelo',de:'del abuelo',skin:SK.abuelo,hair:'#f1f1ec',style:'blanco',top:'#e4803f',bottom:'#7f8a96',skirt:false,shoe:'#5a4636',adult:true,glasses:true,long:true}};
+const sh=(tag,a,fill,extra)=>'<'+tag+' '+a+' fill="'+fill+'" stroke="'+STK+'" stroke-width="2.2" stroke-linejoin="round" '+(extra||'')+'/>';
+const padE=(cx,cy,rx,ry)=>'<ellipse cx="'+cx+'" cy="'+cy+'" rx="'+rx+'" ry="'+ry+'" fill="#0000" stroke="none" pointer-events="all"/>';   // zona de toque ampliada e invisible (dedos de cinco años)
+const grp=(id,inner,cls)=>'<g class="rg'+(cls||'')+'" data-r="'+id+'">'+inner+'</g>';
+/* peinado: devuelve [detrás de la cabeza, delante] */
+function hairParts(s,cx,cy,rx,ry){const h=s.hair,top=(Math.round(cy-ry*.05));
+ const cap=sh('path','d="M'+(cx-rx*1.04)+' '+(cy-ry*.1)+' Q'+(cx-rx*1.1)+' '+(cy-ry*1.2)+' '+cx+' '+(cy-ry*1.12)+' Q'+(cx+rx*1.1)+' '+(cy-ry*1.2)+' '+(cx+rx*1.04)+' '+(cy-ry*.1)+' Q'+(cx+rx*.75)+' '+(cy-ry*.62)+' '+cx+' '+(cy-ry*.62)+' Q'+(cx-rx*.75)+' '+(cy-ry*.62)+' '+(cx-rx*1.04)+' '+(cy-ry*.1)+'Z"',h);
+ let back='';
+ if(s.style==='larga')back=sh('path','d="M'+(cx-rx*1.08)+' '+(cy-ry*.2)+' Q'+(cx-rx*1.2)+' '+(cy+ry*1.15)+' '+(cx-rx*.8)+' '+(cy+ry*1.3)+' L'+(cx+rx*.8)+' '+(cy+ry*1.3)+' Q'+(cx+rx*1.2)+' '+(cy+ry*1.15)+' '+(cx+rx*1.08)+' '+(cy-ry*.2)+'Z"',h);
+ if(s.style==='colitas')back=sh('ellipse','cx="'+(cx-rx*1.2)+'" cy="'+(cy+ry*.25)+'" rx="'+(rx*.3)+'" ry="'+(ry*.7)+'"',h)+sh('ellipse','cx="'+(cx+rx*1.2)+'" cy="'+(cy+ry*.25)+'" rx="'+(rx*.3)+'" ry="'+(ry*.7)+'"',h);
+ if(s.style==='blanco')back=sh('path','d="M'+(cx-rx*1.06)+' '+(cy-ry*.1)+' Q'+(cx-rx*1.12)+' '+(cy+ry*.45)+' '+(cx-rx*.88)+' '+(cy+ry*.5)+' L'+(cx-rx*.8)+' '+(cy-ry*.1)+'Z M'+(cx+rx*1.06)+' '+(cy-ry*.1)+' Q'+(cx+rx*1.12)+' '+(cy+ry*.45)+' '+(cx+rx*.88)+' '+(cy+ry*.5)+' L'+(cx+rx*.8)+' '+(cy-ry*.1)+'Z"',h);
+ return[back,cap]}
+/* cuerpo entero: viewBox 0 0 200 400. ids: 'sing' (brazo,mano,pierna,pie) o 'plur' (brazos,manos,piernas,pies); fill: pintar por regiones (línea) */
+function bodyFig(s,o){o=o||{};const pl=o.ids==='plur',id=n=>pl?({brazo:'brazos',mano:'manos',pierna:'piernas',pie:'pies'})[n]||n:n,F=o.fill||null,line=!!o.line,
+ hl=r=>o.hl===r?' hl':'',skin=r=>line?((F&&F[r])||'#f7f5ee'):s.skin,shirt=r=>line?'#f7f5ee':s.top,pants=r=>line?'#f7f5ee':s.bottom,shoe=r=>line?((F&&F[r])||'#f7f5ee'):s.shoe;
+ const k=s.adult?1:.8,hr=s.adult?1:1.16;const cx=100,cy=50,rx=27*hr,ry=31*hr,[hb,hf]=hairParts(line?Object.assign({},s,{hair:(F&&F.cabeza)||'#f7f5ee'}):s,cx,cy,rx,ry);
+ const legEnd=348,fy=364;
+ const arm=(side)=>{const x=side<0?60:140,x2=side<0?44:156;return sh('path','d="M'+x+' 106 L'+x2+' 196" stroke-linecap="round" fill="none" stroke-width="19"',shirt('brazo'),'style="fill:none;stroke:'+STK+'"')+''};
+ const armSkin=(side)=>{const x=side<0?60:140,x2=side<0?44:156;return '<path d="M'+x+' 106 L'+x2+' 196" stroke-linecap="round" fill="none" stroke="#0000" stroke-width="36" pointer-events="stroke"/><path d="M'+x+' 106 L'+x2+' 196" stroke-linecap="round" fill="none" stroke="'+STK+'" stroke-width="21"/><path d="M'+x+' 106 L'+x2+' 196" stroke-linecap="round" fill="none" stroke="'+skin('brazo')+'" stroke-width="17"/><path d="M'+x+' 104 L'+(side<0?55:145)+' 142" stroke-linecap="round" fill="none" stroke="'+shirt('brazo')+'" stroke-width="19"/>'};
+ const legPath=(x)=>'<path d="M'+x+' 214 L'+(x<100?x-2:x+2)+' '+legEnd+'" stroke-linecap="round" fill="none" stroke="#0000" stroke-width="38" pointer-events="stroke"/><path d="M'+x+' 214 L'+(x<100?x-2:x+2)+' '+legEnd+'" stroke-linecap="round" fill="none" stroke="'+STK+'" stroke-width="27"/><path d="M'+x+' 214 L'+(x<100?x-2:x+2)+' '+legEnd+'" stroke-linecap="round" fill="none" stroke="'+skin('pierna')+'" stroke-width="23"/>';
+ const lowerCloth=s.skirt?sh('path','d="M62 198 L138 198 L152 268 Q100 280 48 268Z"',pants('barriga')):s.long?'<path d="M64 200 L136 200 L132 340 L104 340 L100 262 L96 340 L68 340Z" fill="'+pants('pierna')+'" stroke="'+STK+'" stroke-width="2.2" stroke-linejoin="round"/>':sh('path','d="M62 198 L138 198 L142 262 L104 262 L100 236 L96 262 L58 262Z"',pants('barriga'));
+ const legs=s.long?grp(id('pierna'),'<path d="M68 340 L132 340" stroke="none"/>'+'<path d="M64 200 L136 200 L132 340 L104 340 L100 262 L96 340 L68 340Z" fill="'+pants('pierna')+'" stroke="'+STK+'" stroke-width="2.2" stroke-linejoin="round"/>',hl('pierna')):grp(id('pierna'),legPath(82)+legPath(118),hl('pierna'));
+ const trunk=sh('path','d="M62 100 Q100 88 138 100 L146 204 Q100 214 54 204Z"',shirt('barriga'));
+ const barriga=grp('barriga','<ellipse cx="100" cy="170" rx="38" ry="30" fill="'+(line?((F&&F.barriga)||'#f7f5ee'):s.top)+'" stroke="'+(line?STK:'none')+'" stroke-width="2" '+(line?'stroke-dasharray="5 4"':'')+'/>',hl('barriga'));
+ const head=grp('cabeza',hb+sh('ellipse','cx="'+cx+'" cy="'+cy+'" rx="'+rx+'" ry="'+ry+'"',skin('cabeza'))+hf+'<g pointer-events="none"><ellipse cx="'+(cx-rx*.38)+'" cy="'+(cy+ry*.05)+'" rx="3" ry="3.6" fill="#2b1d17"/><ellipse cx="'+(cx+rx*.38)+'" cy="'+(cy+ry*.05)+'" rx="3" ry="3.6" fill="#2b1d17"/><path d="M'+(cx-rx*.32)+' '+(cy+ry*.5)+' Q'+cx+' '+(cy+ry*.8)+' '+(cx+rx*.32)+' '+(cy+ry*.5)+'" fill="none" stroke="#8a3b3b" stroke-width="2.4" stroke-linecap="round"/>'+(s.glasses?'<circle cx="'+(cx-rx*.38)+'" cy="'+(cy+ry*.05)+'" r="9" fill="none" stroke="#5a5a5a" stroke-width="2"/><circle cx="'+(cx+rx*.38)+'" cy="'+(cy+ry*.05)+'" r="9" fill="none" stroke="#5a5a5a" stroke-width="2"/>':'')+'</g>',hl('cabeza'));
+ const manos=grp(id('mano'),sh('circle','cx="43" cy="205" r="12"',skin('mano'))+sh('circle','cx="157" cy="205" r="12"',skin('mano'))+padE(43,205,19,19)+padE(157,205,19,19),hl('mano'));
+ const pies=grp(id('pie'),sh('ellipse','cx="76" cy="'+fy+'" rx="21" ry="11"',shoe('pie'))+sh('ellipse','cx="124" cy="'+fy+'" rx="21" ry="11"',shoe('pie'))+padE(76,fy,23,20)+padE(124,fy,23,20),hl('pie'));
+ const brazos=grp(id('brazo'),armSkin(-1)+armSkin(1),hl('brazo'));
+ const neck='<rect x="91" y="'+(cy+ry-6)+'" width="18" height="16" rx="6" fill="'+skin('cabeza')+'" stroke="'+STK+'" stroke-width="2"/>';
+ const inner=(s.adult?'':'')+legs+(s.skirt||!s.long?lowerCloth:'')+neck+trunk+barriga+brazos+manos+pies+head;
+ return '<svg class="gscene pfig psvg pfull" viewBox="'+(s.adult?'0 0 200 392':'0 74 200 318')+'" role="group" aria-label="'+(o.aria||'Dibujo de una persona')+'"><g transform="translate(100 380) scale('+k+') translate(-100 -380)">'+inner+'</g></svg>'}
+/* cara grande: viewBox 0 0 200 200 */
+function faceFig(s,o){o=o||{};const F=o.fill||null,hl=r=>o.hl===r?' hl':'',cx=100,cy=104,rx=60,ry=72,[hb,hf]=hairParts(s,cx,cy,rx,ry);
+ const ears=grp('orejas',sh('ellipse','cx="'+(cx-rx-6)+'" cy="'+(cy+10)+'" rx="12" ry="19"',s.skin)+sh('ellipse','cx="'+(cx+rx+6)+'" cy="'+(cy+10)+'" rx="12" ry="19"',s.skin),hl('orejas'));
+ const ojo=(x)=>sh('ellipse','cx="'+x+'" cy="'+(cy-4)+'" rx="14" ry="10"','#ffffff')+'<circle cx="'+x+'" cy="'+(cy-4)+'" r="6" fill="#3a2a20"/><circle cx="'+(x+2)+'" cy="'+(cy-6)+'" r="1.8" fill="#fff"/>';
+ const eyes=grp('ojos',ojo(cx-27)+ojo(cx+27)+padE(cx-27,cy-4,22,13)+padE(cx+27,cy-4,22,13),hl('ojos'));
+ const nose=grp('nariz','<path d="M'+cx+' '+(cy+4)+' L'+(cx-11)+' '+(cy+32)+' Q'+cx+' '+(cy+40)+' '+(cx+11)+' '+(cy+32)+'Z" fill="'+(s.skin)+'" stroke="'+STK+'" stroke-width="2.2" stroke-linejoin="round"/><path d="M'+(cx-9)+' '+(cy+34)+' Q'+cx+' '+(cy+40)+' '+(cx+9)+' '+(cy+34)+'" fill="none" stroke="#9a6a50" stroke-width="2"/>'+padE(cx,cy+23,17,15),hl('nariz'));
+ const mouth=grp('boca','<path d="M'+(cx-28)+' '+(cy+48)+' Q'+cx+' '+(cy+74)+' '+(cx+28)+' '+(cy+48)+' Q'+cx+' '+(cy+56)+' '+(cx-28)+' '+(cy+48)+'Z" fill="#c8504f" stroke="'+STK+'" stroke-width="2.2" stroke-linejoin="round"/>'+padE(cx,cy+57,34,15),hl('boca'));
+ const hair=grp('cabello',hf,hl('cabello'));
+ const extra=(s.glasses?'<g pointer-events="none"><circle cx="'+(cx-27)+'" cy="'+(cy-4)+'" r="17" fill="none" stroke="#5a5a5a" stroke-width="2.4"/><circle cx="'+(cx+27)+'" cy="'+(cy-4)+'" r="17" fill="none" stroke="#5a5a5a" stroke-width="2.4"/><path d="M'+(cx-10)+' '+(cy-4)+'h20" stroke="#5a5a5a" stroke-width="2.4"/></g>':'')+(s.who==='el abuelo'?'<path pointer-events="none" d="M'+(cx-24)+' '+(cy+44)+' Q'+cx+' '+(cy+36)+' '+(cx+24)+' '+(cy+44)+'" fill="none" stroke="#e7e7e0" stroke-width="5" stroke-linecap="round"/>':'');
+ return '<svg class="gscene pfig psvg pface" viewBox="0 0 200 200" role="group" aria-label="'+(o.aria||'Dibujo de una cara')+'">'+hb+ears+sh('ellipse','cx="'+cx+'" cy="'+cy+'" rx="'+rx+'" ry="'+ry+'"',s.skin,'pointer-events="none"')+eyes+nose+mouth+hair+extra+'</svg>'}
+const BODY_PARTS=['cabeza','brazo','mano','barriga','pierna','pie'],FACE_PARTS=['cabello','orejas','ojos','nariz','boca'];
+const FIGS={};
+for(const k of Object.keys(IMG)){const f=IMG[k];FIGS[k]=Object.assign({id:k,kind:'carlos',parts_:Object.keys(f.parts)},f);FIGS[k].partList=Object.keys(f.parts)}
+for(const k of Object.keys(SPEC)){const s=SPEC[k];FIGS[k+'-cuerpo']={id:k+'-cuerpo',who:s.who,de:s.de,art:'dibujo',scene:'body',kind:'otra',spec:s,partList:BODY_PARTS.slice(),aria:'Dibujo de '+s.who};
+ FIGS[k+'-cara']={id:k+'-cara',who:s.who,de:s.de,art:'dibujo',scene:'face',kind:'otra',spec:s,partList:FACE_PARTS.slice(),aria:'Dibujo de la cara de '+s.who}}
+P.FIGS=FIGS;
+const shapeSvg=(sp,cls)=>sp.e?'<ellipse cx="'+sp.e[0]+'" cy="'+sp.e[1]+'" rx="'+sp.e[2]+'" ry="'+sp.e[3]+'" class="'+cls+'"/>':'<polygon points="'+sp.p.map(q=>q.join(',')).join(' ')+'" class="'+cls+'"/>';
+/* Dibujo de una figura. opts: hl (parte resaltada, solo para enseñar), ids ('plur' para pintar), fill, line (contorno para colorear) */
+P.svg=(figId,o)=>{o=o||{};const f=typeof figId==='string'?FIGS[figId]:figId;if(!f)throw new Error('figura inexistente '+figId);
+ if(f.art==='dibujo')return f.scene==='face'?faceFig(f.spec,Object.assign({aria:f.aria},o)):bodyFig(f.spec,Object.assign({aria:f.aria},o));
+ const v=f.view||[0,0,f.w,f.h],hl=r=>o.hl===r?' hl':'';
+ /* detrás los hallazgos grandes y encima los pequeños (ojos sobre cabeza…): el orden de ALL define cuál recibe el toque */
+ const order=f.scene==='face'?['cabello','orejas','ojos','nariz','boca']:['barriga','pierna','brazo','cabeza','pie','mano'];
+ return '<svg class="gscene pfig pimg '+(f.scene==='face'?'pface':'pfull')+' '+f.art+'" viewBox="'+v.join(' ')+'" role="group" aria-label="'+f.aria+'"><image href="'+f.src+'" x="0" y="0" width="'+f.w+'" height="'+f.h+'" preserveAspectRatio="xMidYMid meet"/>'+
+  order.filter(r=>f.parts[r]).map(r=>'<g class="rg zona'+hl(r)+'" data-r="'+r+'">'+f.parts[r].map(sp=>shapeSvg(sp,'zshape')).join('')+'</g>').join('')+'</svg>'};
+/* Pintura de partes del cuerpo (regiones en plural, como la actividad «Pinta como se indica») */
+P.paint=fill=>bodyFig(SPEC.nino,{ids:'plur',fill:fill||{},line:true,aria:'Dibujo de una persona para colorear'});
+/* ¿qué figura se usa en cada fase? Aprendo/ejemplos: fotos de Carlos; práctica: su ilustración; refuerzo: mezcla; comprobación: otras personas y fotos distintas. */
+const POOLS={body:{learn:['carlos-campo'],examples:['carlos-campo','carlos-doctor'],practice:['carlos-doctor','carlos-campo'],reinforce:['carlos-doctor','carlos-campo','mama-cuerpo','papa-cuerpo'],
+  check:['mama-cuerpo','papa-cuerpo','nina-cuerpo','abuelo-cuerpo']},
+ face:{learn:['carlos-cara'],examples:['carlos-cara','carlos-doctor-cara'],practice:['carlos-doctor-cara','carlos-cara'],reinforce:['carlos-cara','mama-cara','papa-cara','nina-cara'],
+  check:['mama-cara','papa-cara','nina-cara','abuelo-cara','carlos-cara','carlos-doctor-cara']}};
+P.pool=(scene,phase)=>(POOLS[scene]&&(POOLS[scene][phase]||POOLS[scene].practice)).slice();
+P.pick=(scene,phase,rng,avoid)=>{const pool=P.pool(scene,phase).filter(x=>x!==avoid);const p=pool.length?pool:P.pool(scene,phase);return p[Math.floor(rng()*p.length)]};
+P.parts=figId=>FIGS[figId].partList.slice();
+P.who=figId=>FIGS[figId].who;P.de=figId=>FIGS[figId].de;P.carlos=figId=>FIGS[figId].kind==='carlos';
+if(typeof module!=='undefined'&&module.exports)module.exports=P;root.People=P;
 })(typeof globalThis!=='undefined'?globalThis:this);
 </script><script>/* Dominio de aprendizaje: estados por habilidad, nivel general e insignias.
    Puro y determinista (recibe «ahora»). Principio: el estado se deriva solo de COMPROBACIONES buenas
@@ -1740,7 +1881,7 @@ function faceSvg(hl){const g=(id,inner)=>'<g class="rg'+(hl===id?' hl':'')+'" da
  g('boca','<path d="M40 92Q60 110 80 92Q60 98 40 92Z" fill="#d9605d" stroke="'+STK+'" stroke-width="2" stroke-linejoin="round"/>')+'</svg>'}
 const TAPIDS={cabeza:'cabeza',brazos:'brazo',manos:'mano',piernas:'pierna',pies:'pie',barriga:'barriga'};
 const PAINTSVG={
- body:fill=>bodySvg({cabeza:'cabeza',brazos:'brazos',manos:'manos',piernas:'piernas',pies:'pies',barriga:'barriga'},fill),
+ body:fill=>root.People.paint(fill),
  house:fill=>{const f=r=>(fill&&fill[r])||NEU,g=(id,i)=>'<g class="rg" data-r="'+id+'">'+i+'</g>',s='stroke="'+STK+'" stroke-width="2.5" stroke-linejoin="round"';
   return '<svg class="gscene paintsvg" viewBox="0 0 120 130" role="group" aria-label="Dibujo de una casa">'+g('pared','<rect x="18" y="58" width="84" height="62" fill="'+f('pared')+'" '+s+'/>')+g('techo','<polygon points="8,60 60,16 112,60" fill="'+f('techo')+'" '+s+'/>')+g('puerta','<rect x="30" y="80" width="24" height="40" fill="'+f('puerta')+'" '+s+'/>')+g('ventana','<rect x="68" y="76" width="24" height="24" fill="'+f('ventana')+'" '+s+'/>')+'</svg>'},
  light:fill=>{const f=r=>(fill&&fill[r])||'#d9ddd7',g=(id,y)=>'<g class="rg" data-r="'+id+'"><circle cx="60" cy="'+y+'" r="17" fill="'+f(id)+'" stroke="#fff" stroke-width="3"/></g>';
@@ -1861,7 +2002,7 @@ M.paint=(q,box,ctl)=>{
  return{hint(){const s=q.steps[k];if(!s)return;const r=qa('.rg',box).find(x=>x.dataset.r===s.region);if(r)r.classList.add('ghint');const p=qa('.pal',box).find(x=>x.dataset.c===s.color);if(p)p.classList.add('ghint');ctl.fb('Mira la parte y el color.');K.speak(s.text)}}};
 
 M.tap=(q,box,ctl)=>{
- const svg=q.scene==='body'?bodySvg(TAPIDS,null):faceSvg(null);
+ const svg=root.People.svg(q.fig);   /* sin ninguna parte resaltada: la respuesta nunca se anticipa */
  box.innerHTML='<div class="gpaint solo">'+svg+'</div>';
  const rg=qa('.rg',box);
  rg.forEach(r=>r.onclick=()=>{if(ctl.st.done)return;const id=r.dataset.r;if(id===q.answer){r.classList.add('good');ctl.ok('¡Sí! Esta es '+C.TAP[q.scene][q.answer]+'.')}else{r.classList.add('try');setTimeout(()=>r.classList.remove('try'),600);ctl.err('Esa es '+C.TAP[q.scene][id]+'. Busca '+C.TAP[q.scene][q.answer]+'.')}});
@@ -1912,7 +2053,7 @@ const solved={
  fill:q=>{const f=q.seq.slice(),idx=[];f.forEach((a,i)=>{if(!a)idx.push(i)});const pal=Object.fromEntries(q.palette.map(o=>[o.id,o.art]));idx.forEach((i,j)=>f[i]=pal[q.blanks[j]]);return '<div class="gmodel seq">'+f.map((a,i)=>'<span class="'+(idx.includes(i)?'newfill':'')+'">'+A(a)+'</span>').join('')+'</div>'},
  dots:q=>'<div class="gdots"><svg viewBox="0 0 100 100"><polygon points="'+q.points.map(p=>p.join(',')).join(' ')+'" fill="#f4c345" opacity=".55" stroke="#7260a6" stroke-width="2.4" stroke-linejoin="round"/>'+q.points.map((p,i)=>'<circle cx="'+p[0]+'" cy="'+p[1]+'" r="5.6" fill="#fff" stroke="#7260a6" stroke-width="1.6"/><text x="'+p[0]+'" y="'+(p[1]+.2)+'" font-size="6.6" font-weight="800" text-anchor="middle" dominant-baseline="central" fill="#4a3b78">'+(i+1)+'</text>').join('')+'</svg></div>',
  paint:q=>{const f={};q.steps.forEach(s=>f[s.region]=hue(s.color));return '<div class="gpaint solo">'+PAINTSVG[q.scene](f)+'</div>'},
- tap:q=>'<div class="gpaint solo">'+(q.scene==='body'?bodySvg(TAPIDS,null,q.answer):faceSvg(q.answer))+'</div>',
+ tap:q=>'<div class="gpaint solo">'+root.People.svg(q.fig,{hl:q.answer})+'</div>',
  clap:q=>'<div class="gmodel">'+A(C.h.wordArt(q.word))+'</div><div class="gboxes">'+q.word.parts.map(()=>'<span class="gbox on"></span>').join('')+'</div><p class="center"><span class="gsyl">'+q.word.parts.map(p=>'<b>'+esc(p)+'</b>').join('<i>·</i>')+'</span></p>',
  recall:q=>q.mode==='order'?'<div class="gmodel seq">'+q.items.map(o=>A(o.art)).join('')+'</div><p class="center small">Después se vuelven a poner en el mismo orden.</p>':'<div class="gmodel seq">'+q.items.map(o=>A(o.art)).join('')+'</div><p class="center small">'+(q.mode==='missing'?'Después se esconde uno:':'Después cambia uno:')+'</p><div class="gmodel seq">'+q.shown.map(o=>'<span class="'+(o.id===q.answer?'newfill':'')+'">'+A(o.art)+'</span>').join('')+(q.mode==='missing'?'<span class="gblank"></span>':'')+'</div>',
  simon:q=>'<div class="gmodel seq">'+q.seq.map(i=>'<span class="gsw" style="--c:'+hue(q.pads[i])+'"></span>').join('')+'</div>'};
@@ -1964,8 +2105,9 @@ function leave(){if(run&&run.course&&K.course){K.course.pause();return}if(run&&r
 function showLearn(){
  snap();const L=run.sess.learn;
  L.cards.forEach(c=>{if(c.observe&&!c._o){c._o=1;E.observe(S(),c.observe.area,c.observe.id)}});K.save();
- K.page(frame('<div class="study gl"><span class="eyebrow">Aprendo</span><h2>'+esc(L.title)+'</h2><p>'+esc(L.say)+'</p><div class="gcards">'+L.cards.map((c,i)=>'<button class="gcard" data-c="'+i+'" aria-label="'+esc(c.label)+'"><span class="gcarts">'+c.arts.map(a=>A(a)).join('')+'</span><small>'+esc(c.label)+'</small></button>').join('')+'</div>'+(L.adult?'<details class="gadult"><summary>Para el adulto</summary><p>'+esc(L.adult)+'</p></details>':'')+'</div><div class="row center"><button class="soft" id="ghear">♫ Escuchar</button><button class="primary" id="gnext">Ver ejemplos →</button></div>','Aprendo'),view(run.sk.mod));
+ K.page(frame('<div class="study gl"><span class="eyebrow">Aprendo</span><h2>'+esc(L.title)+'</h2><p>'+esc(L.say)+'</p>'+(L.figs?'<div class="lfigs">'+L.figs.map((f,i)=>'<figure class="lfig" data-f="'+i+'"><div class="gpaint solo">'+root.People.svg(f.fig)+'</div><figcaption>'+esc(f.cap)+'</figcaption></figure>').join('')+'</div>':'')+'<div class="gcards">'+L.cards.map((c,i)=>'<button class="gcard" data-c="'+i+'" aria-label="'+esc(c.label)+'"><span class="gcarts">'+c.arts.map(a=>A(a)).join('')+'</span><small>'+esc(c.label)+'</small></button>').join('')+'</div>'+(L.adult?'<details class="gadult"><summary>Para el adulto</summary><p>'+esc(L.adult)+'</p></details>':'')+'</div><div class="row center"><button class="soft" id="ghear">♫ Escuchar</button><button class="primary" id="gnext">Ver ejemplos →</button></div>','Aprendo'),view(run.sk.mod));
  K.bindBack(leave);qa('.gcard').forEach(b=>b.onclick=()=>{const c=L.cards[+b.dataset.c];b.classList.add('on');K.speak(c.say||c.label)});
+ qa('.lfig').forEach(fg=>{const f=L.figs[+fg.dataset.f],sc=root.People.FIGS[f.fig].scene;qa('.rg',fg).forEach(r=>r.onclick=()=>{qa('.rg.hl',fg).forEach(x=>x.classList.remove('hl'));r.classList.add('hl');sTap();const t='Esta es '+C.TAP[sc][r.dataset.r]+' '+root.People.de(f.fig)+'.',cap=q1('figcaption',fg);if(cap)cap.textContent=t;K.speak(t)})});
  q1('#ghear').onclick=()=>K.speakTap(L.say);q1('#gnext').onclick=()=>{run.phase='examples';run.i=0;showExample()};K.speak(L.say)}
 
 function showExample(){

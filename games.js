@@ -91,7 +91,7 @@ function faceSvg(hl){const g=(id,inner)=>'<g class="rg'+(hl===id?' hl':'')+'" da
  g('boca','<path d="M40 92Q60 110 80 92Q60 98 40 92Z" fill="#d9605d" stroke="'+STK+'" stroke-width="2" stroke-linejoin="round"/>')+'</svg>'}
 const TAPIDS={cabeza:'cabeza',brazos:'brazo',manos:'mano',piernas:'pierna',pies:'pie',barriga:'barriga'};
 const PAINTSVG={
- body:fill=>bodySvg({cabeza:'cabeza',brazos:'brazos',manos:'manos',piernas:'piernas',pies:'pies',barriga:'barriga'},fill),
+ body:fill=>root.People.paint(fill),
  house:fill=>{const f=r=>(fill&&fill[r])||NEU,g=(id,i)=>'<g class="rg" data-r="'+id+'">'+i+'</g>',s='stroke="'+STK+'" stroke-width="2.5" stroke-linejoin="round"';
   return '<svg class="gscene paintsvg" viewBox="0 0 120 130" role="group" aria-label="Dibujo de una casa">'+g('pared','<rect x="18" y="58" width="84" height="62" fill="'+f('pared')+'" '+s+'/>')+g('techo','<polygon points="8,60 60,16 112,60" fill="'+f('techo')+'" '+s+'/>')+g('puerta','<rect x="30" y="80" width="24" height="40" fill="'+f('puerta')+'" '+s+'/>')+g('ventana','<rect x="68" y="76" width="24" height="24" fill="'+f('ventana')+'" '+s+'/>')+'</svg>'},
  light:fill=>{const f=r=>(fill&&fill[r])||'#d9ddd7',g=(id,y)=>'<g class="rg" data-r="'+id+'"><circle cx="60" cy="'+y+'" r="17" fill="'+f(id)+'" stroke="#fff" stroke-width="3"/></g>';
@@ -212,7 +212,7 @@ M.paint=(q,box,ctl)=>{
  return{hint(){const s=q.steps[k];if(!s)return;const r=qa('.rg',box).find(x=>x.dataset.r===s.region);if(r)r.classList.add('ghint');const p=qa('.pal',box).find(x=>x.dataset.c===s.color);if(p)p.classList.add('ghint');ctl.fb('Mira la parte y el color.');K.speak(s.text)}}};
 
 M.tap=(q,box,ctl)=>{
- const svg=q.scene==='body'?bodySvg(TAPIDS,null):faceSvg(null);
+ const svg=root.People.svg(q.fig);   /* sin ninguna parte resaltada: la respuesta nunca se anticipa */
  box.innerHTML='<div class="gpaint solo">'+svg+'</div>';
  const rg=qa('.rg',box);
  rg.forEach(r=>r.onclick=()=>{if(ctl.st.done)return;const id=r.dataset.r;if(id===q.answer){r.classList.add('good');ctl.ok('¡Sí! Esta es '+C.TAP[q.scene][q.answer]+'.')}else{r.classList.add('try');setTimeout(()=>r.classList.remove('try'),600);ctl.err('Esa es '+C.TAP[q.scene][id]+'. Busca '+C.TAP[q.scene][q.answer]+'.')}});
@@ -263,7 +263,7 @@ const solved={
  fill:q=>{const f=q.seq.slice(),idx=[];f.forEach((a,i)=>{if(!a)idx.push(i)});const pal=Object.fromEntries(q.palette.map(o=>[o.id,o.art]));idx.forEach((i,j)=>f[i]=pal[q.blanks[j]]);return '<div class="gmodel seq">'+f.map((a,i)=>'<span class="'+(idx.includes(i)?'newfill':'')+'">'+A(a)+'</span>').join('')+'</div>'},
  dots:q=>'<div class="gdots"><svg viewBox="0 0 100 100"><polygon points="'+q.points.map(p=>p.join(',')).join(' ')+'" fill="#f4c345" opacity=".55" stroke="#7260a6" stroke-width="2.4" stroke-linejoin="round"/>'+q.points.map((p,i)=>'<circle cx="'+p[0]+'" cy="'+p[1]+'" r="5.6" fill="#fff" stroke="#7260a6" stroke-width="1.6"/><text x="'+p[0]+'" y="'+(p[1]+.2)+'" font-size="6.6" font-weight="800" text-anchor="middle" dominant-baseline="central" fill="#4a3b78">'+(i+1)+'</text>').join('')+'</svg></div>',
  paint:q=>{const f={};q.steps.forEach(s=>f[s.region]=hue(s.color));return '<div class="gpaint solo">'+PAINTSVG[q.scene](f)+'</div>'},
- tap:q=>'<div class="gpaint solo">'+(q.scene==='body'?bodySvg(TAPIDS,null,q.answer):faceSvg(q.answer))+'</div>',
+ tap:q=>'<div class="gpaint solo">'+root.People.svg(q.fig,{hl:q.answer})+'</div>',
  clap:q=>'<div class="gmodel">'+A(C.h.wordArt(q.word))+'</div><div class="gboxes">'+q.word.parts.map(()=>'<span class="gbox on"></span>').join('')+'</div><p class="center"><span class="gsyl">'+q.word.parts.map(p=>'<b>'+esc(p)+'</b>').join('<i>·</i>')+'</span></p>',
  recall:q=>q.mode==='order'?'<div class="gmodel seq">'+q.items.map(o=>A(o.art)).join('')+'</div><p class="center small">Después se vuelven a poner en el mismo orden.</p>':'<div class="gmodel seq">'+q.items.map(o=>A(o.art)).join('')+'</div><p class="center small">'+(q.mode==='missing'?'Después se esconde uno:':'Después cambia uno:')+'</p><div class="gmodel seq">'+q.shown.map(o=>'<span class="'+(o.id===q.answer?'newfill':'')+'">'+A(o.art)+'</span>').join('')+(q.mode==='missing'?'<span class="gblank"></span>':'')+'</div>',
  simon:q=>'<div class="gmodel seq">'+q.seq.map(i=>'<span class="gsw" style="--c:'+hue(q.pads[i])+'"></span>').join('')+'</div>'};
@@ -315,8 +315,9 @@ function leave(){if(run&&run.course&&K.course){K.course.pause();return}if(run&&r
 function showLearn(){
  snap();const L=run.sess.learn;
  L.cards.forEach(c=>{if(c.observe&&!c._o){c._o=1;E.observe(S(),c.observe.area,c.observe.id)}});K.save();
- K.page(frame('<div class="study gl"><span class="eyebrow">Aprendo</span><h2>'+esc(L.title)+'</h2><p>'+esc(L.say)+'</p><div class="gcards">'+L.cards.map((c,i)=>'<button class="gcard" data-c="'+i+'" aria-label="'+esc(c.label)+'"><span class="gcarts">'+c.arts.map(a=>A(a)).join('')+'</span><small>'+esc(c.label)+'</small></button>').join('')+'</div>'+(L.adult?'<details class="gadult"><summary>Para el adulto</summary><p>'+esc(L.adult)+'</p></details>':'')+'</div><div class="row center"><button class="soft" id="ghear">♫ Escuchar</button><button class="primary" id="gnext">Ver ejemplos →</button></div>','Aprendo'),view(run.sk.mod));
+ K.page(frame('<div class="study gl"><span class="eyebrow">Aprendo</span><h2>'+esc(L.title)+'</h2><p>'+esc(L.say)+'</p>'+(L.figs?'<div class="lfigs">'+L.figs.map((f,i)=>'<figure class="lfig" data-f="'+i+'"><div class="gpaint solo">'+root.People.svg(f.fig)+'</div><figcaption>'+esc(f.cap)+'</figcaption></figure>').join('')+'</div>':'')+'<div class="gcards">'+L.cards.map((c,i)=>'<button class="gcard" data-c="'+i+'" aria-label="'+esc(c.label)+'"><span class="gcarts">'+c.arts.map(a=>A(a)).join('')+'</span><small>'+esc(c.label)+'</small></button>').join('')+'</div>'+(L.adult?'<details class="gadult"><summary>Para el adulto</summary><p>'+esc(L.adult)+'</p></details>':'')+'</div><div class="row center"><button class="soft" id="ghear">♫ Escuchar</button><button class="primary" id="gnext">Ver ejemplos →</button></div>','Aprendo'),view(run.sk.mod));
  K.bindBack(leave);qa('.gcard').forEach(b=>b.onclick=()=>{const c=L.cards[+b.dataset.c];b.classList.add('on');K.speak(c.say||c.label)});
+ qa('.lfig').forEach(fg=>{const f=L.figs[+fg.dataset.f],sc=root.People.FIGS[f.fig].scene;qa('.rg',fg).forEach(r=>r.onclick=()=>{qa('.rg.hl',fg).forEach(x=>x.classList.remove('hl'));r.classList.add('hl');sTap();const t='Esta es '+C.TAP[sc][r.dataset.r]+' '+root.People.de(f.fig)+'.',cap=q1('figcaption',fg);if(cap)cap.textContent=t;K.speak(t)})});
  q1('#ghear').onclick=()=>K.speakTap(L.say);q1('#gnext').onclick=()=>{run.phase='examples';run.i=0;showExample()};K.speak(L.say)}
 
 function showExample(){

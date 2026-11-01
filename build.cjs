@@ -5,7 +5,7 @@ const fs=require('node:fs'),path=require('node:path'),crypto=require('node:crypt
 const root=__dirname,preview=process.env.PREVIEW==='1',out=path.resolve(root,process.env.OUT||(preview?'dist-preview':'dist'));
 fs.mkdirSync(out,{recursive:true});
 const read=f=>fs.readFileSync(path.join(root,f),'utf8');
-const SRC=[['CSS',['style.css']],['ENGINE',['engine.js']],['ACTIVITIES',['activities.js']],['CONTENT',['content.js','skills-a.js','skills-b.js','skills-c.js']],['PROGRESS',['progress.js','coach.js','curriculum.js']],['AUDIO',['audio.js']],['GAMES',['games.js']],['ADV',['adventures.js']],['COURSE',['course.js']],['SHELL',['shell.js']],['APP',['app.js']]];
+const SRC=[['CSS',['style.css']],['ENGINE',['engine.js']],['ACTIVITIES',['activities.js']],['CONTENT',['content.js','skills-a.js','skills-b.js','skills-c.js']],['PEOPLE',['people.js']],['PROGRESS',['progress.js','coach.js','curriculum.js']],['AUDIO',['audio.js']],['GAMES',['games.js']],['ADV',['adventures.js']],['COURSE',['course.js']],['SHELL',['shell.js']],['APP',['app.js']]];
 const allSrc=['page.html','sw.js','manifest.webmanifest',...SRC.flatMap(x=>x[1])];
 const walk=d=>fs.existsSync(d)?fs.readdirSync(d,{withFileTypes:true}).flatMap(e=>e.isDirectory()?walk(path.join(d,e.name)):[path.join(d,e.name)]):[];
 const ASSET_FILES=walk(path.join(root,'assets')).map(f=>path.relative(root,f).split(path.sep).join('/')).sort();   // todo lo de assets/ se copia y entra en la caché sin conexión

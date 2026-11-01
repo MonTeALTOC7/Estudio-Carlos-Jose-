@@ -233,7 +233,7 @@ C.validate=function(q,ctx){
   case'fill':{const p=ids(q.palette);if(!q.blanks.length)errs.push('sin huecos');if(!q.blanks.every(b=>p.includes(b)))errs.push('respuesta fuera de la paleta');if(!uniq(p))errs.push('paleta repetida');q.seq.forEach((a,k)=>a&&A(a,'serie'+k));q.palette.forEach((o,k)=>A(o.art,'paleta'+k));break}
   case'dots':if(q.points.length!==q.n||q.n>Math.max(...ctx.numbers))errs.push('puntos inválidos o número no presentado');break;
   case'paint':{const sc=C.PAINT[q.scene];if(!sc)errs.push('escena');else{if(!q.steps.length)errs.push('sin pasos');q.steps.forEach(s=>{if(!sc.regions[s.region])errs.push('región '+s.region);if(!q.palette.includes(s.color))errs.push('color fuera de la paleta')});if(!uniq(q.steps.map(s=>s.region)))errs.push('región repetida')}break}
-  case'tap':if(!C.TAP[q.scene]||!C.TAP[q.scene][q.answer])errs.push('región de toque inexistente');break;
+  case'tap':{const PE=globalThis.People;if(!C.TAP[q.scene]||!C.TAP[q.scene][q.answer])errs.push('región de toque inexistente');else if(PE&&(!PE.FIGS[q.fig]||PE.FIGS[q.fig].scene!==q.scene||!PE.parts(q.fig).includes(q.answer)))errs.push('parte no visible en la figura '+q.fig+': '+q.answer);break}
   case'clap':if(!(q.word.syl>=1&&q.word.syl<=5))errs.push('sílabas fuera de rango');break;
   case'recall':{if(q.mode==='order'){if(q.items.length<3||!uniq(ids(q.items)))errs.push('recuerdo de orden inválido');q.items.forEach((o,k)=>A(o.art,'recuerdo'+k));break}const i=ids(q.options);if(!uniq(i)||i.filter(x=>x===q.answer).length!==1)errs.push('recuerdo: opciones inválidas');if(q.shown.length<2)errs.push('pocas imágenes');break}
   case'simon':if(q.seq.length<2||q.pads.length<3||!q.seq.every(x=>x>=0&&x<q.pads.length))errs.push('secuencia inválida');break;

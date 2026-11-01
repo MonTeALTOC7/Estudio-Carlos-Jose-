@@ -229,3 +229,20 @@ input[type=checkbox]{width:28px;height:28px;flex:0 0 auto;margin:0;accent-color:
  .hero5{min-height:250px}
  .cw-steps{grid-template-columns:repeat(2,minmax(0,1fr));max-width:680px;gap:6px;margin:8px auto}.cw-steps li{padding:6px 10px}.clswel .small{margin:4px 0}.clswel .row,.clsclose .row,.clsbridge .row{margin:8px 0}.cc-detail{padding:2px 14px;margin:6px 0}.cc-next{margin:6px 0}
 }
+
+/* ===== Personas (partes del cuerpo): fotos y dibujos con zonas táctiles ===== */
+.pfig{display:block;margin:auto;border-radius:16px;background:#fff}
+.pfig.pfull{width:100%;height:clamp(240px,calc(100svh - 380px),520px)}.pfig.pface{width:100%;height:clamp(220px,calc(100svh - 420px),400px)}
+.gpaint.solo:has(.pfig){max-width:520px;padding:6px}.gpaint:has(.pfig) .gscene{max-height:none}
+.pimg .zshape{fill:#0000;stroke:#0000;stroke-width:14px;stroke-linejoin:round;pointer-events:all;vector-effect:non-scaling-stroke}   /* el trazo transparente agranda 7 px por lado el área de toque, sea cual sea la escala */
+.pimg .rg.hl>*,.pimg .rg.ghint>*{fill:#ffd43b66;stroke:#eeb843;stroke-width:4px}.pimg .rg.good>*{fill:#3ec28066;stroke:#287859;stroke-width:4px}.pimg .rg.try>*{fill:#e7873e55;stroke:#e7873e;stroke-width:4px}
+.psvg .rg{cursor:pointer}.psvg .rg.hl>*{filter:drop-shadow(0 0 5px #eeb843)}
+.lfigs{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:12px;margin:12px 0}.lfig{margin:0}.lfig figcaption{font-size:14px;color:var(--muted);margin-top:6px}
+@media (orientation:landscape) and (max-height:620px){
+ .lfigs{grid-template-columns:repeat(2,1fr)}
+ /* figura a la derecha y enunciado a la izquierda: la figura gana altura útil en la tablet apaisada */
+ .gq:has(.pfig){display:grid;grid-template-columns:minmax(0,.85fr) minmax(0,1.15fr);column-gap:18px;align-items:start;text-align:left}
+ .gq:has(.pfig)>*{grid-column:1}.gq:has(.pfig)>#gbox,.gq:has(.pfig)>.gpaint{grid-column:2;grid-row:1/span 7}
+ .gq:has(.pfig)>.row,.gq:has(.pfig) .row.center{justify-content:flex-start}.gq:has(.pfig) .gprompt{text-align:left}
+ .pfig.pfull{height:clamp(240px,calc(100svh - 150px),440px)}.pfig.pface{height:clamp(220px,calc(100svh - 150px),400px)}
+ .modulebar .chips{display:none}.modulebar{padding-bottom:0}}

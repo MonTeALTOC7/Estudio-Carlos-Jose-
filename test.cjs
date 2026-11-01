@@ -146,7 +146,7 @@ test('Distribución v4: todos los módulos incluidos y sin marcadores pendientes
  const html=fs.readFileSync(__dirname+'/dist/index.html','utf8');
  for(const t of ['/*CONTENT*/','/*GAMES*/']) assert.ok(!html.includes(t),t);
  for(const t of ['GamesUI','C.skill({id:\'contar\'','C.skill({id:\'planta\'','id="chips"','Versión 5.1','M.simon','M.paint']) assert.ok(html.includes(t),t);
- for(const f of ['content.js','skills-a.js','skills-b.js','skills-c.js','progress.js','coach.js','curriculum.js','games.js','adventures.js','course.js','audio.js','shell.js','engine.js','app.js'])assert.ok(html.includes(fs.readFileSync(__dirname+'/'+f,'utf8').slice(0,200)),'falta '+f+' en dist');assert.ok(fs.readFileSync(__dirname+'/sw.js','utf8').includes('v5.1.0'))
+ for(const f of ['content.js','skills-a.js','skills-b.js','skills-c.js','progress.js','coach.js','curriculum.js','people.js','games.js','adventures.js','course.js','audio.js','shell.js','engine.js','app.js'])assert.ok(html.includes(fs.readFileSync(__dirname+'/'+f,'utf8').slice(0,200)),'falta '+f+' en dist');assert.ok(fs.readFileSync(__dirname+'/sw.js','utf8').includes('v5.1.0'))
 });
 test('Carlos José por defecto: ilustración y foto incluidas en dist, idénticas a assets/ y en la caché sin conexión',()=>{
  const crypto=require('node:crypto'),h=f=>crypto.createHash('sha256').update(fs.readFileSync(f)).digest('hex');
@@ -378,3 +378,31 @@ test('Manifiesto y service worker incluyen todos los recursos de imagen publicad
   for(const f of walkD(__dirname+'/'+d+'/assets'))assert.ok(list.includes('./'+f.slice((__dirname+'/'+d+'/').length)),'sin conexión falta '+f);
   for(const f of ['./apple-touch-icon.png','./favicon-48.png','./logo-128.png','./index.html'])assert.ok(list.includes(f),f);
   for(const f of list)assert.ok(fs.existsSync(__dirname+'/'+d+'/'+f.slice(2)||__dirname+'/'+d+'/index.html'),'lista de caché con archivo inexistente '+f)}});
+
+/* ===== Personas para «Partes de mi cuerpo» (people.js) ===== */
+const PE=require('./people.js');
+test('Personas: cada figura declara solo partes que se ven y las zonas de las imágenes reales son válidas y coherentes',()=>{
+ const ids=Object.keys(PE.FIGS);assert.ok(ids.length>=12);
+ for(const id of ids){const f=PE.FIGS[id],parts=PE.parts(id);assert.ok(parts.length>=5,id);
+  for(const part of parts)assert.ok(Content.TAP[f.scene][part],id+': parte desconocida '+part);
+  if(f.art!=='dibujo'){assert.ok(fs.existsSync(__dirname+'/'+f.src),'falta imagen '+f.src);assert.ok(f.w>0&&f.h>0);
+   const cen={};for(const [part,shapes] of Object.entries(f.parts)){assert.ok(shapes.length>=1);let sx=0,sy=0,n=0;
+    for(const sp of shapes){const pts=sp.e?[[sp.e[0]-sp.e[2],sp.e[1]-sp.e[3]],[sp.e[0]+sp.e[2],sp.e[1]+sp.e[3]]]:sp.p;if(sp.p){assert.ok(sp.p.length>=3);let a=0;for(let i=0;i<sp.p.length;i++){const [x1,y1]=sp.p[i],[x2,y2]=sp.p[(i+1)%sp.p.length];a+=x1*y2-x2*y1}assert.ok(Math.abs(a/2)>200,id+':'+part+' polígono degenerado')}
+     for(const [x,y] of pts){assert.ok(x>=-1&&x<=f.w+1&&y>=-1&&y<=f.h+1,id+':'+part+' fuera de la imagen ('+x+','+y+')')}
+     const c=sp.e?[sp.e[0],sp.e[1]]:[sp.p.reduce((a,q)=>a+q[0],0)/sp.p.length,sp.p.reduce((a,q)=>a+q[1],0)/sp.p.length];sx+=c[0];sy+=c[1];n++}
+    cen[part]=[sx/n/f.w,sy/n/f.h]}
+   const above=(a,b)=>assert.ok(cen[a][1]<cen[b][1],id+': '+a+' debe estar más arriba que '+b);
+   if(f.scene==='body'){above('cabeza','barriga');above('barriga','pierna');above('pierna','pie');above('cabeza','pie');above('cabeza','mano')}
+   else{above('cabello','ojos');above('ojos','nariz');above('nariz','boca');assert.ok(cen.orejas[0]!==cen.nariz[0])}}}});
+test('Personas: la figura de cada fase respeta la pedagogía (Aprendo/ejemplos con Carlos José; comprobación con otras personas) y nunca pregunta por partes ocultas',()=>{
+ const rng=Content.mulberry(7);const seen={};
+ for(let i=0;i<400;i++){const se=Content.session(Content.byId.partes,ALLCTX()[0]||Content.ctxFrom(Learning,Learning.fresh(),new Date()),rng);
+  for(const ph of ['examples','practice','reinforce','check'])for(const q of se[ph])if(q.type==='tap'){(seen[ph]=seen[ph]||new Set()).add(q.fig);assert.ok(PE.parts(q.fig).includes(q.answer),'parte oculta '+q.fig+':'+q.answer);assert.equal(PE.FIGS[q.fig].scene,q.scene);assert.match(q.prompt,/ de | del /)}
+  const chk=se.check.filter(q=>q.type==='tap'&&q.scene==='body');assert.ok(chk.length&&chk.every(q=>!PE.carlos(q.fig)),'la comprobación del cuerpo debe usar otras personas')}
+ for(const f of seen.examples)assert.ok(PE.carlos(f));for(const f of seen.practice)assert.ok(PE.carlos(f));
+ assert.ok([...seen.check].some(f=>!PE.carlos(f)));assert.ok([...seen.check].some(f=>PE.carlos(f)),'la comprobación de la cara también incluye a Carlos José');
+ for(const k of ['mama','papa','nina','abuelo'])assert.ok([...seen.check].some(f=>f.startsWith(k)),'falta '+k+' en la comprobación')});
+test('Personas: el dibujo para colorear usa regiones en plural y no resalta nada; el dibujo de enseñanza resalta solo la parte pedida',()=>{
+ const svg=PE.paint({});for(const r of ['cabeza','brazos','manos','piernas','pies','barriga'])assert.ok(svg.includes('data-r="'+r+'"'),r);assert.ok(!/ hl"/.test(svg));
+ const ex=PE.svg('carlos-doctor',{hl:'mano'});assert.equal((ex.match(/ hl"/g)||[]).length,1);assert.ok(ex.includes('class="rg zona hl" data-r="mano"'));
+ const plain=PE.svg('mama-cuerpo');assert.ok(!/ hl"/.test(plain));assert.ok(/aria-label="Dibujo de mamá"/.test(plain))});

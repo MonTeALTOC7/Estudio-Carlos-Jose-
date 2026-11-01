@@ -1,5 +1,5 @@
-const BUILD='da3da097';const PREFIX='mis-pasos-';const CACHE=PREFIX+'v5.1.0-'+BUILD;
-const ASSETS=["./","./index.html","./manifest.webmanifest","./icon-192.png","./icon-512.png","./icon-maskable-192.png","./icon-maskable-512.png","./apple-touch-icon.png","./favicon-32.png","./favicon-48.png","./logo-128.png","./assets/avatar.webp","./assets/hero.webp"];/*lo completa build.cjs*/
+const BUILD='cc8be438';const PREFIX='mis-pasos-';const CACHE=PREFIX+'v5.1.0-'+BUILD;
+const ASSETS=["./","./index.html","./manifest.webmanifest","./icon-192.png","./icon-512.png","./icon-maskable-192.png","./icon-maskable-512.png","./apple-touch-icon.png","./favicon-32.png","./favicon-48.png","./logo-128.png","./assets/avatar.webp","./assets/hero.webp","./assets/people/carlos-campo.webp"];/*lo completa build.cjs*/
 self.addEventListener('install',e=>e.waitUntil(caches.open(CACHE).then(c=>c.addAll(ASSETS)).then(()=>self.skipWaiting())));
 /* Solo se borran cachés propias de este canal (prefijo): la prueba no toca las de producción. */
 self.addEventListener('activate',e=>e.waitUntil(caches.keys().then(keys=>Promise.all(keys.filter(k=>k.startsWith(PREFIX)&&k!==CACHE).map(k=>caches.delete(k)))).then(()=>self.clients.claim())));

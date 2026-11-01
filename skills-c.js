@@ -101,12 +101,14 @@ C.skill({id:'dias-semana',mod:'espacio',icon:'🐛',title:'Los días de la seman
 
 /* ===================== MI CUERPO Y YO ===================== */
 const TB=Object.keys(C.TAP.body),TF=Object.keys(C.TAP.face);
-const tapGen=sc=>(ctx,rng)=>{const a=pick(Object.keys(C.TAP[sc]),rng);return Q.raw('tap',{key:'tp:'+sc+a,scene:sc,answer:a,prompt:'Toca '+C.TAP[sc][a]+'.',explain:'Esta es '+C.TAP[sc][a]+'.'})};
+/* Las partes se enseñan en personas reales o ilustradas (people.js): fotos de Carlos José, su ilustración y otras personas. Solo se pregunta por partes que se ven en la figura. */
+const tapGen=sc=>(ctx,rng,i,phase)=>{const PE=root.People||require('./people.js'),fig=PE.pick(sc,phase,rng),a=pick(PE.parts(fig),rng),nm=C.TAP[sc][a];return Q.raw('tap',{key:'tp:'+sc+fig+a,scene:sc,fig,answer:a,prompt:'Toca '+nm+' '+PE.de(fig)+'.',explain:'Esta es '+nm+' '+PE.de(fig)+'.'})};
 const USE=[['¿Con qué parte del cuerpo vemos?','ojos','👁️','Con los ojos vemos.'],['¿Con qué parte del cuerpo oímos?','orejas','👂','Con las orejas oímos.'],['¿Con qué parte del cuerpo olemos?','nariz','👃','Con la nariz olemos.'],['¿Con qué parte del cuerpo comemos y hablamos?','boca','👄','Con la boca comemos y hablamos.'],['¿Con qué parte del cuerpo agarramos las cosas?','manos','✋','Con las manos agarramos las cosas.'],['¿Con qué parte del cuerpo caminamos?','pies','🦶','Con los pies caminamos.']];
 C.skill({id:'partes',mod:'cuerpo',icon:'🧍',title:'Partes de mi cuerpo',blurb:'Cabeza, brazos, cara y para qué sirven',
  learn:ctx=>({title:'Mi cuerpo tiene muchas partes',say:'Tengo cabeza, brazos, manos, piernas y pies. En la cara tengo ojos, nariz, boca y orejas. Cada parte sirve para algo.',
   cards:[['ojos','👁️','Estos son los ojos. Con ellos vemos.'],['orejas','👂','Estas son las orejas. Con ellas oímos.'],['nariz','👃','Esta es la nariz. Con ella olemos.'],['boca','👄','Esta es la boca. Con ella comemos y hablamos.'],['manos','✋','Estas son las manos. Con ellas agarramos.'],['pies','🦶','Estos son los pies. Con ellos caminamos.'],['corazón','❤️','El corazón late. Pon tu mano en el pecho y lo sientes.'],['cerebro','🧠','El cerebro está dentro de la cabeza y nos ayuda a pensar.']].map(([n,e,say])=>({arts:[em(e,n)],label:n,say})),
-  adult:'Nombren partes del cuerpo mientras lo bañan o lo visten. Para «por dentro» (corazón, cerebro) basta con que sienta su latido (Cuadernillo MINED, pp. 6 y 16).'}),
+  figs:[{fig:'carlos-campo',cap:'Mira a Carlos José: toca una parte para escuchar su nombre.'},{fig:'carlos-cara',cap:'Y su cara: ojos, nariz, boca, orejas y cabello.'}],
+  adult:'Nombren partes del cuerpo mientras lo bañan o lo visten. Para «por dentro» (corazón, cerebro) basta con que sienta su latido (Cuadernillo MINED, pp. 6 y 16). Después de la pantalla: pídanle que señale su propia cabeza, manos, pies y brazos, y también los de mamá o papá.'}),
  gens:{a:tapGen('body'),b:(ctx,rng)=>{const u=pick(USE,rng),ds=sample(USE.filter(x=>x!==u),2,rng);return Q.choose(rng,{key:'us:'+u[1],prompt:u[0],options:[u,...ds].map(x=>({id:x[1],art:em(x[2],x[1])})),answer:u[1],listen:[u,...ds].map(x=>x[1]),explain:u[3]})},c:PG.a,d:tapGen('face')},
  plan:{examples:['a','b'],practice:['a','d','b'],reinforce:['b','c'],check:['a','d','b']},
  home:'Canten «cabeza, hombros, rodillas y pies» tocando cada parte.'});

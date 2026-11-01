@@ -6,7 +6,7 @@ async function layout(p,tag){
  if(bad.length)throw new Error(tag+': '+bad.join('; '))}
 
 async function solve(p,q,wrongFirst){
- const clickRegion=async sel=>{await p.locator(sel).first().evaluate(e=>e.scrollIntoView({block:'center'}));const b=await p.locator(sel+' > *').first().boundingBox();await p.mouse.click(b.x+b.width/2,b.y+b.height/2)};
+ const clickRegion=async sel=>{await p.locator(sel).first().evaluate(e=>e.scrollIntoView({block:'center'}));await sleep(60);const pt=await p.evaluate(sel=>{const g=document.querySelector(sel),r0=g.dataset.r,rs=[...g.children].map(c=>c.getBoundingClientRect()).filter(r=>r.width>0);let best=null,bd=1e9;for(const r of rs){const cx=r.left+r.width/2,cy=r.top+r.height/2,pd=16;for(let y=r.top-pd;y<r.bottom+pd;y+=Math.max(2,r.height/40))for(let x=r.left-pd;x<r.right+pd;x+=Math.max(2,r.width/40)){const e=document.elementFromPoint(x,y),h=e&&e.closest&&e.closest('.rg');if(h&&h.dataset.r===r0&&h.parentNode===g.parentNode){const d=(x-cx)**2+(y-cy)**2;if(d<bd){bd=d;best={x,y}}}}}return best},sel);if(!pt)throw new Error('sin punto táctil en '+sel);await p.mouse.click(pt.x,pt.y)};
  const t=q.type;
  if(t==='choose'||t==='recall'){
   if(t==='recall'){await p.click('#gseen');if(q.mode==='order'){for(const it of q.items)await p.click('.gitem:not(.used)[data-id="'+it.id.replace(/"/g,'\\"')+'"]');return}}
