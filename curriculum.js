@@ -43,8 +43,8 @@ const R=(id,unit,skills,kid,goal,pool)=>({id,unit,kind:'review',skills,pool:pool
 CUR.lessons=[
  /* U1 */
  S('partes','u1','Mi cuerpo','conocer las partes de mi cuerpo','Nombrar y señalar cabeza, brazos, manos, piernas y pies, y decir para qué sirven.',[],{adv:'consultorio',ch:0}),
- Y('colores-a','u1','colors',4,'Mis primeros colores','reconocer los primeros colores','Reconocer y nombrar los primeros cuatro colores entre varios.'),
- Y('numeros-a','u1','numbers',4,'Los números 1, 2 y 3','conocer los primeros números','Reconocer los números 1, 2 y 3 y relacionarlos con cantidades pequeñas.'),
+ Y('colores-a','u1','colors',4,'Mis primeros colores','reconocer los primeros colores','Reconocer y nombrar los primeros cuatro colores: rojo, azul, amarillo y verde.'),
+ Y('numeros-a','u1','numbers',4,'Los números del 1 al 4','conocer los primeros números','Reconocer los números 1, 2, 3 y 4 y relacionarlos con cantidades pequeñas.'),
  S('tamano','u1','Grande y pequeño','comparar tamaños','Comparar objetos: grande/pequeño, largo/corto, alto/bajo.'),
  S('posiciones','u1','Arriba, abajo, dentro y fuera','ubicar cosas en el espacio','Ubicar un objeto con encima, debajo, dentro y fuera.'),
  R('rev-u1','u1',['partes','tamano','posiciones'],'Repaso: Empecemos','Recordar sin pistas lo visto en la unidad 1.'),
@@ -56,7 +56,7 @@ CUR.lessons=[
  S('sentidos','u2','Mis cinco sentidos','descubrir cómo conozco el mundo','Relacionar cada sentido (ver, oír, oler, probar, tocar) con su parte del cuerpo.'),
  R('rev-u2','u2',['contar','igual-diferente','clasif-color'],'Repaso: Cuento y comparo','Recordar sin pistas contar, comparar y clasificar por color.'),
  /* U3 */
- Y('figuras-a','u3','shapes',4,'Mis primeras figuras','reconocer círculo, cuadrado y triángulo','Reconocer círculo, cuadrado y triángulo entre otras figuras.'),
+ Y('figuras-a','u3','shapes',4,'Mis primeras figuras','reconocer círculo, X, cuadrado y triángulo','Reconocer el círculo, la X, el cuadrado y el triángulo entre otras figuras.'),
  S('figuras','u3','Figuras geométricas','encontrar figuras por todas partes','Nombrar y reconocer figuras en dibujos y objetos.',['figuras-a'],{adv:'laboratorio',ch:1}),
  S('series','u3','Series y patrones','descubrir qué sigue','Continuar una serie sencilla de objetos o colores que se repite.'),
  S('cuantos','u3','Mucho, poco y ninguno','comparar cantidades','Decir dónde hay más, menos o ninguno sin necesidad de contar todo.',['numeros-a']),
@@ -68,7 +68,7 @@ CUR.lessons=[
  S('rimas','u4','Palabras que suenan igual','encontrar palabras que riman','Reconocer palabras con finales que suenan parecido.'),
  S('categorias','u4','Grupos y categorías','poner cada cosa en su grupo','Agrupar objetos en categorías: animales, frutas, ropa y más.'),
  S('orden-eventos','u4','Primero, después y al final','ordenar lo que pasa','Ordenar 3 sucesos cotidianos con primero, después y al final.'),
- Y('numeros-b','u4','numbers',6,'Más números','conocer más números','Reconocer hasta el número 5 y compararlo con su cantidad.',['numeros-a']),
+ Y('numeros-b','u4','numbers',6,'Más números','conocer más números','Reconocer hasta el número 6 y relacionarlo con su cantidad.',['numeros-a']),
  R('rev-u4','u4',['vocal-inicial','rimas','categorias'],'Repaso: Palabras y sonidos','Recordar sin pistas sonidos iniciales, rimas y categorías.'),
  /* U5 */
  S('alimentos','u5','Alimentos que me ayudan a crecer','elegir alimentos para crecer fuerte','Distinguir alimentos de todos los días y de vez en cuando.'),
@@ -92,7 +92,7 @@ CUR.lessons=[
  S('simon','u7','Repite los colores','recordar una secuencia','Repetir una secuencia corta de colores y sonidos.'),
  S('parejas-func','u7','Cosas que van juntas','encontrar parejas que van juntas','Relacionar animal y comida, objeto y uso, animal y hogar.'),
  S('dias-semana','u7','Ayer, hoy y mañana','hablar de ayer, hoy y mañana','Usar ayer, hoy y mañana; los días se leen con ayuda.',['orden-eventos']),
- Y('numeros-c','u7','numbers',8,'Números más grandes','conocer números más grandes','Reconocer hasta el 7 y relacionarlos con cantidades.',['numeros-b']),
+ Y('numeros-c','u7','numbers',8,'Números más grandes','conocer números más grandes','Reconocer hasta el 8 y relacionarlos con cantidades.',['numeros-b']),
  R('rev-u7','u7',['vocal-final','simon','parejas-func'],'Repaso: Más palabras','Recordar sin pistas sonidos finales, secuencias y parejas.'),
  /* U8 */
  S('lugares','u8','Lugares de mi comunidad','conocer lugares de mi comunidad','Reconocer lugares (escuela, parque, hospital…) y para qué sirven.'),
