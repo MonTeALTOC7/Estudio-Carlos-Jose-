@@ -186,7 +186,32 @@ body:has(#app[data-mode="hub"]) #updbar{bottom:calc(86px + env(safe-area-inset-b
 .dgchecks{display:grid;gap:8px;margin:12px 0}.dgchecks label{display:flex;gap:10px;align-items:flex-start;font-size:15px}.dgchecks input{width:22px;height:22px;margin:2px 0 0;flex:0 0 auto}.dgrep{width:100%;min-height:130px;font-size:12px;border:2px solid var(--line);border-radius:12px;padding:8px}
 
 .pslot,.pslot *{pointer-events:all}
-</style></head><body><div class="app" id="app" data-mode="hub"><header class="topbar"><button class="brand" id="home" aria-label="Ir a Hoy"><span class="brandmark" id="logo" aria-hidden="true"></span><span class="brandtxt"><small>Centro de Estudios</small><b>Carlos José</b></span></button><div class="header-actions"><button id="install" hidden>Instalar</button><button id="sound" class="icon" aria-label="Sonido">♫</button><button id="parents" class="icon" aria-label="Zona de adultos">⚙</button></div></header><nav class="modulebar" aria-label="Navegación de juegos"><div class="modrow"><button id="directHome" class="soft">⌂ Inicio</button><button id="modules" class="primary" aria-haspopup="dialog">▦ <span class="lg">Cambiar módulo</span><span class="sm">Módulos</span></button></div><div class="chips" id="chips" aria-label="Ir directo a un módulo"></div></nav><main id="main"></main><footer><span>Aprendo, juego y descubro · <b>By Carlos Tijerino</b></span><span>Versión 5.0</span></footer></div><nav class="tabbar" id="tabbar" aria-label="Secciones"><button data-tab="hoy"><svg viewBox="0 0 32 32" aria-hidden="true"><circle cx="16" cy="16" r="6"/><path d="M16 3v4M16 25v4M3 16h4M25 16h4M7 7l3 3M22 22l3 3M25 7l-3 3M10 22l-3 3"/></svg><span>Hoy</span></button><button data-tab="aprender"><svg viewBox="0 0 32 32" aria-hidden="true"><path d="M4 7q6-2 12 2 6-4 12-2v18q-6-2-12 2-6-4-12-2z"/><path d="M16 9v18"/></svg><span>Aprender</span></button><button data-tab="jugar"><svg viewBox="0 0 32 32" aria-hidden="true"><path d="M16 3l3.4 8.4 9 .7-6.9 5.8 2.2 8.8L16 21.9l-7.7 4.8 2.2-8.8-6.9-5.8 9-.7z"/></svg><span>Jugar</span></button><button data-tab="logros"><svg viewBox="0 0 32 32" aria-hidden="true"><circle cx="16" cy="13" r="8"/><path d="M11 20l-3 9 8-4 8 4-3-9"/></svg><span>Logros</span></button></nav><div id="updbar" role="status" aria-live="polite" hidden><span>Hay una versión nueva de la aplicación.</span><button class="primary" id="updgo">Actualizar</button><button class="soft" id="updlater">Después</button></div><div id="cheer" role="status" aria-live="polite"></div><div id="celebrate" aria-live="polite"></div><canvas id="confetti" aria-hidden="true"></canvas><dialog id="dialog"><div id="dialogContent"></div><button id="closeDialog" class="soft">Cerrar</button></dialog><dialog id="moduleDialog" aria-labelledby="moduleTitle"><h2 id="moduleTitle">¿A qué jugamos?</h2><p>Elige directamente. Tu progreso se conserva.</p><div id="moduleChoices" class="module-grid"></div><button id="closeModules" class="soft">Seguir jugando</button></dialog><div id="notice" role="status"></div><script>window.APP={"channel":"producción","key":"primerosPasos3","version":"5.0.0","build":"1949bf64","commit":""};window.CJ_ASSETS=window.CJ_ASSETS||{hero:'assets/hero.webp',face:'assets/avatar.webp'};</script><script>(function(root){
+
+/* ===== Mi camino de aprendizaje (clases guiadas) ===== */
+.path{display:flex;align-items:center;gap:10px;flex-wrap:wrap;margin:8px 0 2px;color:#fff;font-size:13px;font-weight:800}
+.path-t{text-shadow:0 1px 4px #0004}.path-d{display:inline-flex;gap:5px;align-items:center}
+.path-d i{width:11px;height:11px;border-radius:50%;background:#ffffff40;border:2px solid #ffffff90;display:block}
+.path-d i.d{background:#ffe29a;border-color:#ffe29a}.path-d i.c{background:#fff;border-color:#fff;box-shadow:0 0 0 3px #ffffff55}.path-d i.r{background:#ffb08a;border-color:#ffb08a}
+.freeres{display:flex;align-items:center;gap:12px;background:#fff;border:2px dashed var(--line);border-radius:20px;padding:10px 14px;margin:14px 0 0}
+.fr-i{font-size:28px}.fr-t{flex:1;min-width:0}.fr-t small{display:block;color:var(--muted);font-size:12px}.fr-t b{display:block;overflow-wrap:anywhere}
+.clswel,.clsbridge,.clsclose{max-width:640px;margin:0 auto;text-align:center;padding:8px 0 24px}
+.clswel .chip{display:inline-block;background:#edf4e8;border-radius:999px;padding:6px 14px;font-weight:800;font-size:13px;color:var(--green)}
+.cw-char{margin:12px auto 4px;display:flex;justify-content:center}.cw-char .avimg.cwface,.cw-char .avsvg.cwface{width:104px;height:104px;border-radius:50%;border:4px solid #fff;box-shadow:0 6px 18px #0002;object-fit:cover}
+.cw-steps{list-style:none;padding:0;margin:14px auto;display:grid;gap:8px;max-width:420px;text-align:left}.cw-steps li{display:flex;align-items:center;gap:12px;background:#fff;border:1px solid var(--line);border-radius:16px;padding:10px 14px;font-weight:750}.cw-steps i{font-style:normal;font-size:24px}
+.cb-i{font-size:84px;line-height:1.1;margin-top:10px}
+.cc-detail{background:#fff;border:1px solid var(--line);border-radius:20px;padding:6px 18px;margin:12px 0;text-align:left}.cc-detail p{margin:8px 0}
+.cc-next{background:linear-gradient(135deg,#fff3d6,#ffe0b8);border-radius:22px;padding:12px 18px;margin:12px 0;text-align:left}.cc-next b{display:block;font-size:20px;color:var(--navy)}.cc-next small{color:var(--muted)}
+.camino{padding-bottom:20px}.pathcta{display:grid;gap:10px;margin:14px 0 18px}.pathcta .primary{width:100%;text-align:left;display:flex;flex-direction:column;gap:2px}.pathcta .primary small{font-weight:600;opacity:.95}
+.unit{background:#fff;border:1px solid var(--line);border-radius:22px;margin:10px 0;overflow:hidden}.unit.lk{opacity:.7}
+.unit>summary{list-style:none;display:flex;align-items:center;gap:12px;padding:12px 14px;cursor:pointer;min-height:64px}.unit>summary::-webkit-details-marker{display:none}
+.u-i{font-size:30px}.u-t{flex:1;min-width:0}.u-t strong{display:block}.u-t small{display:block;color:var(--muted);font-size:12px}.u-c{font-weight:850;color:var(--green);white-space:nowrap}
+.lessons{list-style:none;margin:0;padding:0 10px 10px;display:grid;gap:6px}
+.lrow{display:flex;align-items:center;gap:10px;width:100%;min-height:56px;text-align:left;background:#faf6ea;border-radius:16px;padding:8px 12px;border:2px solid transparent}.lrow.ok{background:#e8f4e8}.lrow.cur{border-color:var(--gold);background:#fff4d8}.lrow:disabled{opacity:.6}
+.lr-i{font-size:22px;width:30px;text-align:center}.lr-t{flex:1;min-width:0}.lr-t strong{display:block;overflow-wrap:anywhere}.lr-t small{display:block;color:var(--muted);font-size:12px}
+#app[data-cls="1"] .modulebar{display:none}
+.atable{border-collapse:collapse;width:100%;font-size:14px}.atable th,.atable td{border-bottom:1px solid var(--line);padding:6px 8px;text-align:left}.aul{padding-left:20px;margin:6px 0}.aul li{margin:4px 0;line-height:1.45}.chk{display:flex;gap:10px;align-items:center;margin:8px 0}.chk input{width:auto;margin:0}
+@media(max-width:380px){.tabbar button{font-size:11.5px;min-width:0}.tabbar button span{overflow:hidden;text-overflow:ellipsis;max-width:100%}}
+</style></head><body><div class="app" id="app" data-mode="hub"><header class="topbar"><button class="brand" id="home" aria-label="Ir a Hoy"><span class="brandmark" id="logo" aria-hidden="true"></span><span class="brandtxt"><small>Centro de Estudios</small><b>Carlos José</b></span></button><div class="header-actions"><button id="install" hidden>Instalar</button><button id="parents" class="icon" aria-label="Zona de adultos">⚙</button></div></header><nav class="modulebar" aria-label="Navegación de juegos"><div class="modrow"><button id="directHome" class="soft">⌂ Inicio</button><button id="modules" class="primary" aria-haspopup="dialog">▦ <span class="lg">Cambiar módulo</span><span class="sm">Módulos</span></button></div><div class="chips" id="chips" aria-label="Ir directo a un módulo"></div></nav><main id="main"></main><footer><span>Aprendo, juego y descubro · <b>By Carlos Tijerino</b></span><span>Versión 5.1</span></footer></div><nav class="tabbar" id="tabbar" aria-label="Secciones"><button data-tab="hoy"><svg viewBox="0 0 32 32" aria-hidden="true"><circle cx="16" cy="16" r="6"/><path d="M16 3v4M16 25v4M3 16h4M25 16h4M7 7l3 3M22 22l3 3M25 7l-3 3M10 22l-3 3"/></svg><span>Hoy</span></button><button data-tab="camino"><svg viewBox="0 0 32 32" aria-hidden="true"><path d="M7 28c0-6 18-6 18-12S7 12 7 6"/><circle cx="7" cy="5" r="2.6"/><circle cx="25" cy="27" r="2.6"/></svg><span>Camino</span></button><button data-tab="aprender"><svg viewBox="0 0 32 32" aria-hidden="true"><path d="M4 7q6-2 12 2 6-4 12-2v18q-6-2-12 2-6-4-12-2z"/><path d="M16 9v18"/></svg><span>Aprender</span></button><button data-tab="jugar"><svg viewBox="0 0 32 32" aria-hidden="true"><path d="M16 3l3.4 8.4 9 .7-6.9 5.8 2.2 8.8L16 21.9l-7.7 4.8 2.2-8.8-6.9-5.8 9-.7z"/></svg><span>Jugar</span></button><button data-tab="logros"><svg viewBox="0 0 32 32" aria-hidden="true"><circle cx="16" cy="13" r="8"/><path d="M11 20l-3 9 8-4 8 4-3-9"/></svg><span>Logros</span></button></nav><div id="updbar" role="status" aria-live="polite" hidden><span>Hay una versión nueva de la aplicación.</span><button class="primary" id="updgo">Actualizar</button><button class="soft" id="updlater">Después</button></div><div id="cheer" role="status" aria-live="polite"></div><div id="celebrate" aria-live="polite"></div><canvas id="confetti" aria-hidden="true"></canvas><dialog id="dialog"><div id="dialogContent"></div><button id="closeDialog" class="soft">Cerrar</button></dialog><dialog id="moduleDialog" aria-labelledby="moduleTitle"><h2 id="moduleTitle">¿A qué jugamos?</h2><p>Elige directamente. Tu progreso se conserva.</p><div id="moduleChoices" class="module-grid"></div><button id="closeModules" class="soft">Seguir jugando</button></dialog><div id="notice" role="status"></div><script>window.APP={"channel":"producción","key":"primerosPasos3","version":"5.1.0","build":"acbc6fa8","commit":""};window.CJ_ASSETS=window.CJ_ASSETS||{hero:'assets/hero.webp',face:'assets/avatar.webp'};</script><script>(function(root){
  'use strict';
  const groups={numbers:['1','2','3','4','5','6','7','8','9','10'],vowels:['a','e','i','o','u'],colors:['rojo','azul','amarillo','verde','naranja','morado','rosado','café'],shapes:['círculo','X','cuadrado','triángulo','rectángulo','óvalo','rombo']};
  function fresh(){return{version:3,name:'',sound:true,voice:'',rate:.85,unlocked:{},records:{},sessions:0,drawings:0}}
@@ -1310,6 +1335,301 @@ K.plan=ctx=>{
 K.next=ctx=>K.plan(Object.assign({},ctx,{max:1}))[0]||null;
 if(typeof module!=='undefined'&&module.exports)module.exports=K;root.Coach=K;
 })(typeof globalThis!=='undefined'?globalThis:this);
+
+/* Mi camino de aprendizaje: currículo en espiral y planificador de clases.
+   Datos y reglas PUROS (sin pantalla): no duplican el motor de contenido; solo ordenan lo que ya existe
+   (40 habilidades, rondas de símbolos, retos de aventura) en unidades y lecciones.
+   Qué viene del Cuadernillo MINED y qué es decisión propia: ver docs/CURSO_GUIADO.md.
+   Tres conceptos que NO se mezclan:
+     · progreso curricular  → state.course  (este archivo: unidad, lección, hecha/refuerzo, repasos programados)
+     · dominio por habilidad → progress.js  (estados descubrir…consolidación; evidencias de clase y de juego libre)
+     · nivel de aventura     → insignias y niveles de shell.js */
+(function(root){
+'use strict';
+const CUR={VERSION:1};
+const pad=n=>String(n).padStart(2,'0');
+const day=ts=>{const d=new Date(ts);return d.getFullYear()+'-'+pad(d.getMonth()+1)+'-'+pad(d.getDate())};
+const dnum=d=>{const [y,m,x]=d.split('-').map(Number);return Math.round(Date.UTC(y,m-1,x)/86400000)};
+const addDays=(d,n)=>{const [y,m,x]=d.split('-').map(Number),t=new Date(Date.UTC(y,m-1,x+n));return t.getUTCFullYear()+'-'+pad(t.getUTCMonth()+1)+'-'+pad(t.getUTCDate())};
+CUR.day=day;CUR.addDays=addDays;
+
+/* Repaso espaciado: intervalos que se alargan (días) cuando el recuerdo sale bien; si sale mal se vuelve al primero. Decisión propia. */
+CUR.INTERVALS=[1,3,7,14,30];
+CUR.MAX_ATTEMPTS=2;       // intentos de una lección con comprobación floja antes de seguir «con apoyo» (sin frustrar)
+CUR.DEFAULT_PREFS={min:10,perDay:2,game:true};
+
+/* ---------------- unidades (progresión en espiral: cada unidad mezcla varias rutas) ---------------- */
+CUR.units=[
+ {id:'u1',icon:'🌅',title:'¡Empecemos!',kid:'Me conozco, miro colores y cuento un poco.'},
+ {id:'u2',icon:'🍎',title:'Cuento y comparo',kid:'Cuento cosas, comparo y descubro vocales.'},
+ {id:'u3',icon:'🔷',title:'Formas y patrones',kid:'Figuras, patrones y cómo me siento.'},
+ {id:'u4',icon:'🔤',title:'Palabras y sonidos',kid:'Escucho los sonidos de las palabras.'},
+ {id:'u5',icon:'🌞',title:'Mi día y mi cuidado',kid:'Mi día, lo que como y cómo me cuido.'},
+ {id:'u6',icon:'🧩',title:'Pienso, busco y recuerdo',kid:'Miro con atención y sigo instrucciones.'},
+ {id:'u7',icon:'📚',title:'Más palabras, más días',kid:'Mi nombre, secuencias y los días.'},
+ {id:'u8',icon:'🌎',title:'Mi comunidad y mi mundo',kid:'Lugares, señales, animales y plantas.'},
+ {id:'u9',icon:'🔭',title:'Descubro más',kid:'Más figuras, más números y un gran repaso.'}];
+
+/* ---------------- lecciones ----------------
+   kind 'skill'   : una habilidad con sus cinco fases (Aprendo, Ejemplos, Practico, Refuerzo, Compruebo)
+   kind 'symbols' : ronda de símbolos del módulo original (desbloquea números, vocales, colores y figuras)
+   kind 'review'  : repaso de unidad: 2 preguntas de cada una de 3 habilidades ya vistas
+   needs: lecciones que deben estar hechas (prerrequisitos razonables); game: reto de aventura relacionado (adv + posición)  */
+const S=(id,unit,kid,hook,goal,needs,game)=>({id,unit,kind:'skill',skill:id,kid,hook,goal,needs:needs||[],game:game||null,min:game?11:9});
+const Y=(id,unit,area,reach,kid,hook,goal,needs)=>({id,unit,kind:'symbols',area,reach,kid,hook,goal,needs:needs||[],game:null,min:5});
+const R=(id,unit,skills,kid,goal,pool)=>({id,unit,kind:'review',skills,pool:pool||null,kid,hook:'recordar y jugar con lo que ya aprendimos',goal,needs:[],game:null,min:6});
+CUR.lessons=[
+ /* U1 */
+ S('partes','u1','Mi cuerpo','conocer las partes de mi cuerpo','Nombrar y señalar cabeza, brazos, manos, piernas y pies, y decir para qué sirven.',[],{adv:'consultorio',ch:0}),
+ Y('colores-a','u1','colors',4,'Mis primeros colores','reconocer los primeros colores','Reconocer y nombrar los primeros cuatro colores entre varios.'),
+ Y('numeros-a','u1','numbers',4,'Los números 1, 2 y 3','conocer los primeros números','Reconocer los números 1, 2 y 3 y relacionarlos con cantidades pequeñas.'),
+ S('tamano','u1','Grande y pequeño','comparar tamaños','Comparar objetos: grande/pequeño, largo/corto, alto/bajo.'),
+ S('posiciones','u1','Arriba, abajo, dentro y fuera','ubicar cosas en el espacio','Ubicar un objeto con encima, debajo, dentro y fuera.'),
+ R('rev-u1','u1',['partes','tamano','posiciones'],'Repaso: Empecemos','Recordar sin pistas lo visto en la unidad 1.'),
+ /* U2 */
+ S('contar','u2','Contar objetos','contar objetos','Contar con un número por cada cosa; el último número dice cuántos hay.',['numeros-a'],{adv:'mercado',ch:0}),
+ S('igual-diferente','u2','Igual y diferente','mirar con mucha atención','Encontrar qué es igual y qué es diferente fijándose en detalles.',[],{adv:'safari',ch:0}),
+ Y('vocales-a','u2','vowels',3,'Mis primeras vocales','conocer las primeras vocales','Reconocer las primeras vocales (a, e, i) por su forma y su sonido.'),
+ S('clasif-color','u2','Agrupar por color','poner juntas las cosas del mismo color','Clasificar objetos por un criterio: el color.',['colores-a']),
+ S('sentidos','u2','Mis cinco sentidos','descubrir cómo conozco el mundo','Relacionar cada sentido (ver, oír, oler, probar, tocar) con su parte del cuerpo.'),
+ R('rev-u2','u2',['contar','igual-diferente','clasif-color'],'Repaso: Cuento y comparo','Recordar sin pistas contar, comparar y clasificar por color.'),
+ /* U3 */
+ Y('figuras-a','u3','shapes',4,'Mis primeras figuras','reconocer círculo, cuadrado y triángulo','Reconocer círculo, cuadrado y triángulo entre otras figuras.'),
+ S('figuras','u3','Figuras geométricas','encontrar figuras por todas partes','Nombrar y reconocer figuras en dibujos y objetos.',['figuras-a'],{adv:'laboratorio',ch:1}),
+ S('series','u3','Series y patrones','descubrir qué sigue','Continuar una serie sencilla de objetos o colores que se repite.'),
+ S('cuantos','u3','Mucho, poco y ninguno','comparar cantidades','Decir dónde hay más, menos o ninguno sin necesidad de contar todo.',['numeros-a']),
+ S('emociones','u3','Cómo me siento','hablar de lo que siento','Reconocer caras y emociones básicas y decir cuándo las sentimos.'),
+ R('rev-u3','u3',['figuras','series','cuantos'],'Repaso: Formas y patrones','Recordar sin pistas figuras, patrones y comparar cantidades.'),
+ /* U4 */
+ S('vocal-inicial','u4','El primer sonido','escuchar con qué vocal empieza una palabra','Identificar con qué vocal empieza una palabra conocida.',['vocales-a']),
+ S('silabas','u4','Palmadas de las palabras','partir las palabras en golpecitos','Separar palabras en sílabas con palmadas.'),
+ S('rimas','u4','Palabras que suenan igual','encontrar palabras que riman','Reconocer palabras con finales que suenan parecido.'),
+ S('categorias','u4','Grupos y categorías','poner cada cosa en su grupo','Agrupar objetos en categorías: animales, frutas, ropa y más.'),
+ S('orden-eventos','u4','Primero, después y al final','ordenar lo que pasa','Ordenar 3 sucesos cotidianos con primero, después y al final.'),
+ Y('numeros-b','u4','numbers',6,'Más números','conocer más números','Reconocer hasta el número 5 y compararlo con su cantidad.',['numeros-a']),
+ R('rev-u4','u4',['vocal-inicial','rimas','categorias'],'Repaso: Palabras y sonidos','Recordar sin pistas sonidos iniciales, rimas y categorías.'),
+ /* U5 */
+ S('alimentos','u5','Alimentos que me ayudan a crecer','elegir alimentos para crecer fuerte','Distinguir alimentos de todos los días y de vez en cuando.'),
+ S('dia-noche','u5','Mañana, tarde y noche','conocer las partes del día','Relacionar actividades con la mañana, la tarde y la noche.'),
+ S('seguridad','u5','Me cuido y me cuidan','cuidarme con los adultos','Reconocer el semáforo y qué hacer con un adulto para cuidarse.'),
+ S('antes-despues','u5','Antes y después','saber qué número va antes y después','Decir qué número va antes y cuál después.',['contar','numeros-b']),
+ S('izq-der','u5','Izquierda y derecha','conocer mi izquierda y mi derecha','Distinguir mi lado izquierdo y mi lado derecho.',['posiciones'],{adv:'colegio',ch:0}),
+ R('rev-u5','u5',['alimentos','dia-noche','izq-der'],'Repaso: Mi día y mi cuidado','Recordar sin pistas alimentos, partes del día y lados.'),
+ /* U6 */
+ S('que-falta','u6','¿Qué falta?','mirar y recordar','Recordar lo que se vio y notar qué cambió o qué falta.',[],{adv:'safari',ch:1}),
+ S('clasif-forma','u6','Agrupar por forma','poner juntas las figuras iguales','Clasificar por forma, un criterio nuevo tras el color.',['figuras-a']),
+ S('juntar','u6','Juntar y quitar','juntar y quitar cosas','Resolver situaciones sencillas: llegan más y se van algunas.',['contar']),
+ S('instrucciones','u6','Escucha y haz','escuchar y hacer lo que se pide','Seguir instrucciones de uno y de dos pasos.'),
+ S('colores-uso','u6','Usar los colores','usar los colores para buscar y responder','Buscar y responder por color en situaciones nuevas.',['colores-a'],{adv:'laboratorio',ch:0}),
+ Y('colores-b','u6','colors',8,'Todos los colores','conocer todos los colores','Reconocer los ocho colores del cuadernillo.',['colores-a']),
+ R('rev-u6','u6',['que-falta','clasif-forma','juntar'],'Repaso: Pienso y recuerdo','Recordar sin pistas memoria visual, forma y cantidades.'),
+ /* U7 */
+ S('vocal-final','u7','El último sonido','escuchar con qué vocal termina una palabra','Identificar con qué vocal termina una palabra.',['vocal-inicial']),
+ Y('vocales-b','u7','vowels',5,'Todas las vocales','conocer las cinco vocales','Reconocer las cinco vocales.',['vocales-a']),
+ S('mi-nombre','u7','Mi nombre','reconocer y armar mi nombre','Reconocer y armar su propio nombre con letras.',['vocales-a']),
+ S('simon','u7','Repite los colores','recordar una secuencia','Repetir una secuencia corta de colores y sonidos.'),
+ S('parejas-func','u7','Cosas que van juntas','encontrar parejas que van juntas','Relacionar animal y comida, objeto y uso, animal y hogar.'),
+ S('dias-semana','u7','Ayer, hoy y mañana','hablar de ayer, hoy y mañana','Usar ayer, hoy y mañana; los días se leen con ayuda.',['orden-eventos']),
+ Y('numeros-c','u7','numbers',8,'Números más grandes','conocer números más grandes','Reconocer hasta el 7 y relacionarlos con cantidades.',['numeros-b']),
+ R('rev-u7','u7',['vocal-final','simon','parejas-func'],'Repaso: Más palabras','Recordar sin pistas sonidos finales, secuencias y parejas.'),
+ /* U8 */
+ S('lugares','u8','Lugares de mi comunidad','conocer lugares de mi comunidad','Reconocer lugares (escuela, parque, hospital…) y para qué sirven.'),
+ S('senales','u8','Señales que nos cuidan','entender las señales','Reconocer alto, semáforo y cuidado, y qué hacer.',['seguridad'],{adv:'colegio',ch:1}),
+ S('transporte','u8','Medios de transporte','conocer cómo viajamos','Clasificar transportes por aire, agua y tierra.'),
+ S('donde-viven','u8','Cómo se mueven los animales','saber cómo se mueven los animales','Clasificar animales: caminan, nadan o vuelan.'),
+ S('planta','u8','Cómo crece una planta','ver cómo crece una planta','Ordenar el crecimiento de una planta y saber qué necesita.'),
+ S('adivinanzas','u8','Adivinanzas y sonidos','escuchar y adivinar','Escuchar pistas y adivinar de quién o de qué se trata.'),
+ R('rev-u8','u8',['lugares','senales','donde-viven'],'Repaso: Mi mundo','Recordar sin pistas lugares, señales y animales.'),
+ /* U9 */
+ S('posiciones2','u9','Cerca, lejos, al lado','ubicar mejor las cosas','Usar cerca/lejos, al lado, delante, detrás y entre.',['posiciones']),
+ S('une-puntos','u9','Une los puntos','seguir los números con el dedo','Seguir el orden de los números y descubrir el dibujo.',['numeros-b']),
+ S('pintar','u9','Pinta como se indica','pintar siguiendo una instrucción','Colorear partes de un dibujo según lo que se pide.',['colores-uso']),
+ Y('figuras-b','u9','shapes',7,'Todas las figuras','conocer todas las figuras','Reconocer rectángulo, óvalo y rombo además de las anteriores.',['figuras-a']),
+ Y('numeros-d','u9','numbers',10,'Hasta el diez','llegar hasta el diez','Reconocer hasta el 10 y relacionarlos con cantidades.',['numeros-c']),
+ R('rev-u9','u9',[],'Gran repaso','Recordar sin pistas habilidades de todo el camino, elegidas entre las que más conviene repasar.','all')];
+
+CUR.byId={};CUR.lessons.forEach((l,i)=>{l.n=i;CUR.byId[l.id]=l});
+CUR.unitLessons=u=>CUR.lessons.filter(l=>l.unit===u);
+CUR.unitIndex=u=>CUR.units.findIndex(x=>x.id===u);
+CUR.reviewOf=u=>CUR.lessons.find(l=>l.unit===u&&l.kind==='review');
+/* Dentro de una unidad la repaso exige todas sus otras lecciones. */
+CUR.lessons.forEach(l=>{if(l.kind==='review')l.needs=CUR.lessons.filter(x=>x.unit===l.unit&&x.kind!=='review').map(x=>x.id)});
+
+/* ---------------- diagnóstico informal: «La mochila misteriosa» ----------------
+   Una pregunta por habilidad básica, sin nota. Solo guarda «ya lo sabe» / «lo vemos con calma».
+   No se escribe en el historial de las habilidades (una sola pregunta no es evidencia de dominio). */
+CUR.PROBES=['partes','tamano','posiciones','contar','igual-diferente','clasif-color','sentidos','figuras','series','cuantos','emociones','vocal-inicial'];
+
+/* ---------------- estado del curso (migración no destructiva) ---------------- */
+CUR.fresh=()=>({v:CUR.VERSION,started:0,diag:{done:0,skipped:0,ts:0,res:{}},cur:null,done:{},sr:{},log:[],days:{},prefs:Object.assign({},CUR.DEFAULT_PREFS)});
+CUR.ensure=s=>{const c=s.course&&typeof s.course==='object'?s.course:(s.course=CUR.fresh()),f=CUR.fresh();
+ for(const k of Object.keys(f))if(c[k]===undefined)c[k]=f[k];
+ c.diag=Object.assign({},f.diag,c.diag||{});c.prefs=Object.assign({},CUR.DEFAULT_PREFS,c.prefs||{});return c};
+
+/* ---------------- estado de una lección ---------------- */
+CUR.rec=(c,id)=>c.done[id]||null;
+CUR.status=(c,id)=>{const d=c.done[id];if(!d)return'nueva';if(d.ok)return'hecha';return d.n>=CUR.MAX_ATTEMPTS?'apoyo':'refuerzo'};
+CUR.isDone=(c,id)=>{const s=CUR.status(c,id);return s==='hecha'||s==='apoyo'};
+CUR.unitOpen=(c,unitId)=>{const i=CUR.unitIndex(unitId);if(i<=0)return true;const prev=CUR.reviewOf(CUR.units[i-1].id);return !prev||CUR.isDone(c,prev.id)};
+CUR.available=(c,l)=>{if(!CUR.unitOpen(c,l.unit))return{ok:false,why:'unidad'};const miss=l.needs.filter(n=>!CUR.isDone(c,n));return miss.length?{ok:false,why:'antes',miss}:{ok:true}};
+CUR.unitProgress=(c,unitId)=>{const ls=CUR.unitLessons(unitId);return{done:ls.filter(l=>CUR.isDone(c,l.id)).length,total:ls.length}};
+CUR.currentUnit=c=>{for(const u of CUR.units){const p=CUR.unitProgress(c,u.id);if(p.done<p.total)return u}return CUR.units[CUR.units.length-1]};
+CUR.totals=c=>({done:CUR.lessons.filter(l=>CUR.isDone(c,l.id)).length,total:CUR.lessons.length});
+CUR.classesToday=(c,now)=>c.days[day(now)]||0;
+
+/* Modo de una lección: «refuerzo» tras una comprobación floja; «confirmar» si ya lo sabe (juego de exploración inicial o práctica libre) y solo se comprueba. */
+CUR.modeFor=(c,l,env)=>{const st=CUR.status(c,l.id);if(st==='refuerzo')return'refuerzo';if(st!=='nueva')return'repaso';
+ if(l.kind==='skill'){if(c.diag.res[l.skill]===1)return'confirmar';const g=env&&env.states&&env.states[l.skill];if(g&&(g.state==='comprobada'||g.state==='consolidacion'))return'confirmar'}
+ return'nueva'};
+
+/* Siguiente clase recomendada: 1) la que quedó a medias; 2) un refuerzo de un día anterior; 3) la primera nueva que esté disponible (orden del camino);
+   4) un refuerzo del mismo día; 5) nada: curso completo. Siempre con el motivo, para el adulto. */
+CUR.next=(c,env,now)=>{now=now||Date.now();const today=day(now);
+ if(c.cur&&CUR.byId[c.cur.l])return{lesson:CUR.byId[c.cur.l],kind:'continuar',mode:c.cur.mode,reason:'Quedó a medias; se reanuda exactamente donde estaba.'};
+ const avail=CUR.lessons.filter(l=>CUR.available(c,l).ok);
+ const ref=avail.filter(l=>CUR.status(c,l.id)==='refuerzo'),old=ref.filter(l=>(c.done[l.id].d||'')<today)[0];
+ if(old)return{lesson:old,kind:'siguiente',mode:'refuerzo',reason:'Ayer costó un poco; hoy se vuelve a mirar con calma antes de avanzar.'};
+ const nu=avail.filter(l=>CUR.status(c,l.id)==='nueva')[0];
+ if(nu){const m=CUR.modeFor(c,nu,env);return{lesson:nu,kind:c.started?'siguiente':'primera',mode:m,reason:m==='confirmar'?'Parece que ya lo conoce; hoy solo se comprueba.':'Es la siguiente del camino y sus requisitos están hechos.'}}
+ if(ref[0])return{lesson:ref[0],kind:'siguiente',mode:'refuerzo',reason:'Falta afianzar esta clase antes de seguir.'};
+ return{lesson:null,kind:'completo',mode:null,reason:'Recorrió todo el camino. Puede repasar o jugar libremente.'}};
+
+/* ---------------- repasos espaciados ---------------- */
+CUR.schedule=(c,skill,good,now)=>{const today=day(now),o=c.sr[skill]||{b:-1,n:0};
+ if(good){o.b=Math.min(CUR.INTERVALS.length-1,o.b+1)}else{o.b=0}
+ o.n=(o.n||0)+1;o.last=today;o.due=addDays(today,CUR.INTERVALS[Math.max(0,o.b)]);o.ok=good?1:0;c.sr[skill]=o;return o};
+CUR.dueReviews=(c,now,exclude)=>{const today=day(now);return Object.entries(c.sr).filter(([k,o])=>o.due<=today&&!(exclude||[]).includes(k)).sort((a,b)=>a[1].due<b[1].due?-1:a[1].due>b[1].due?1:0).map(([k,o])=>({skill:k,due:o.due,box:o.b}))};
+/* Calentamiento «Recordamos»: primero lo que toca repasar; si no hay, lo último que se terminó. */
+CUR.pickRecall=(c,l,now)=>{const ex=l.kind==='skill'?[l.skill]:[];const due=CUR.dueReviews(c,now,ex)[0];if(due)return{skill:due.skill,why:'repaso'};
+ const last=c.log.filter(e=>e.k==='clase'&&e.sk&&e.sk!==l.skill).slice(-1)[0];if(last)return{skill:last.sk,why:'reciente'};return null};
+/* Repaso de unidad: tres habilidades; el «gran repaso» elige entre todas las vistas las que más conviene repasar. */
+CUR.reviewSkills=(c,l,now)=>{if(l.pool!=='all')return l.skills.slice();
+ const seen=Object.keys(c.sr);const ranked=seen.map(k=>({k,s:c.sr[k]})).sort((a,b)=>(a.s.ok-b.s.ok)||(a.s.b-b.s.b)||(a.s.due<b.s.due?-1:1)).map(x=>x.k);return ranked.slice(0,3)};
+
+/* ---------------- registro de una clase terminada ---------------- */
+CUR.recordLesson=(c,l,res,now)=>{const today=day(now),prev=c.done[l.id]||{n:0,ok:0,fails:0},good=!!res.ok;
+ const d={n:prev.n+1,ok:good||prev.ok?1:0,ts:now,d:today,ck:res.ck||null,mode:res.mode||'nueva',er:res.er||0,hn:res.hn||0,fails:prev.fails+(good?0:1),first:prev.first||today};
+ c.done[l.id]=d;c.started=c.started||now;c.days[today]=(c.days[today]||0)+1;
+ if(l.kind==='skill')CUR.schedule(c,l.skill,good,now);
+ if(l.kind==='review')for(const r of res.items||[])CUR.schedule(c,r.skill,!!r.good,now);
+ if(res.recall&&res.recall.skill)CUR.schedule(c,res.recall.skill,!!res.recall.good,now);
+ c.log.push({d:today,ts:now,k:l.kind==='review'?'repaso':'clase',l:l.id,sk:l.kind==='skill'?l.skill:null,ok:good?1:0,ck:res.ck||null,m:d.mode,er:d.er,hn:d.hn});
+ if(c.log.length>300)c.log.splice(0,c.log.length-300);
+ c.cur=null;return d};
+
+/* Resultado del juego de exploración inicial. */
+CUR.applyDiag=(c,results,now,skipped)=>{c.diag={done:skipped?0:1,skipped:skipped?1:0,ts:now,res:Object.assign({},results)};c.log.push({d:day(now),ts:now,k:'diag',ok:Object.values(results).filter(v=>v===1).length,ck:[Object.values(results).filter(v=>v===1).length,Object.keys(results).length]});return c.diag};
+CUR.diagSummary=c=>{const r=c.diag.res||{},keys=Object.keys(r);return{known:keys.filter(k=>r[k]===1),later:keys.filter(k=>r[k]===0),total:keys.length}};
+
+/* Dificultades: lecciones con comprobación floja y repasos que salieron mal. */
+CUR.difficulties=c=>{const a=CUR.lessons.filter(l=>{const d=c.done[l.id];return d&&!d.ok}).map(l=>({l,tipo:CUR.status(c,l.id)==='apoyo'?'sigue con apoyo':'pendiente de refuerzo',n:c.done[l.id].n}));
+ const b=Object.entries(c.sr).filter(([k,o])=>o.ok===0).map(([k,o])=>({skill:k,tipo:'el repaso salió flojo',due:o.due}));return{lecciones:a,repasos:b}};
+
+/* ---------------- validación del currículo (usada por las pruebas) ---------------- */
+CUR.validate=(C,advIds)=>{const errs=[],ids=new Set();
+ for(const l of CUR.lessons){if(ids.has(l.id))errs.push('lección repetida '+l.id);ids.add(l.id);
+  if(!CUR.units.some(u=>u.id===l.unit))errs.push(l.id+': unidad inexistente');
+  if(!l.kid||!l.hook||!l.goal)errs.push(l.id+': faltan textos');
+  if(l.kind==='skill'&&!C.byId[l.skill])errs.push(l.id+': habilidad inexistente');
+  if(l.kind==='symbols'&&!['numbers','vowels','colors','shapes'].includes(l.area))errs.push(l.id+': área inexistente');
+  if(l.kind==='review'&&l.pool!=='all')for(const s of l.skills)if(!C.byId[s])errs.push(l.id+': habilidad inexistente '+s);
+  if(l.game&&advIds&&!advIds.includes(l.game.adv))errs.push(l.id+': aventura inexistente');
+  for(const n of l.needs){const t=CUR.byId[n];if(!t)errs.push(l.id+': requisito inexistente '+n);else if(t.n>=l.n)errs.push(l.id+': el requisito '+n+' no está antes')}}
+ const covered=new Set(CUR.lessons.filter(l=>l.kind==='skill').map(l=>l.skill));for(const s of C.skills)if(!covered.has(s.id))errs.push('habilidad sin lección: '+s.id);
+ for(const u of CUR.units){const ls=CUR.unitLessons(u.id),routes=new Set(ls.filter(l=>l.kind==='skill').map(l=>C.byId[l.skill]&&C.byId[l.skill].mod));
+  if(ls.length<5||ls.length>8)errs.push(u.id+': tamaño de unidad inesperado '+ls.length);if(routes.size<3)errs.push(u.id+': la unidad (espiral) debe combinar al menos 3 rutas, tiene '+routes.size);
+  if(!CUR.reviewOf(u.id))errs.push(u.id+': sin repaso de unidad')}
+ /* un repaso solo puede repasar habilidades vistas en su unidad o antes */
+ for(const l of CUR.lessons.filter(x=>x.kind==='review'&&x.pool!=='all'))for(const s of l.skills){const t=CUR.lessons.find(x=>x.skill===s);if(t&&t.n>l.n)errs.push(l.id+': repasa algo que aún no se enseñó '+s)}
+ for(const p of CUR.PROBES)if(!C.byId[p])errs.push('sondeo inexistente '+p);
+ return errs};
+
+if(typeof module!=='undefined'&&module.exports)module.exports=CUR;root.Curriculum=CUR;
+})(typeof globalThis!=='undefined'?globalThis:this);
+</script><script>/* Audio de la aplicación: tres canales independientes y persistentes (voz, música ambiental, efectos).
+   · Voz de instrucciones: automática | solo al tocar «Escuchar» | desactivada. Los botones «Escuchar» siempre funcionan salvo que el adulto desactive la voz.
+   · Música ambiental: composición ORIGINAL generada por esta misma aplicación (escala pentatónica y acordes suaves con sonido tipo piano/pad,
+     semilla fija). No usa archivos de audio, servicios externos ni material con licencia de terceros, y funciona sin conexión.
+     No se presenta como método para aumentar la inteligencia: solo busca un ambiente agradable.
+   · Efectos: tonos breves de acierto/error/toque.
+   Reglas de la música: opcional, volumen bajo y ajustable, empieza solo tras un toque del usuario (política de los navegadores), baja mientras se habla,
+   se calla en comprobaciones, memoria y secuencias (atención), se pausa al salir de la aplicación y nunca suenan dos pistas a la vez. */
+(function(root){
+'use strict';
+root.AudioUI=function(K){
+ const DEF={voice:{mode:'auto'},music:{mode:'clases',vol:18},fx:{on:true,vol:60}};
+ const S=()=>K.state();
+ function cfg(){const s=S();let a=s.audio;if(!a||typeof a!=='object'){a=s.audio=JSON.parse(JSON.stringify(DEF));if(s.sound===false){a.voice.mode='off';a.fx.on=false}}
+  a.voice=Object.assign({},DEF.voice,a.voice);a.music=Object.assign({},DEF.music,a.music);a.fx=Object.assign({},DEF.fx,a.fx);return a}
+ const MUSIC_MAX=1.6;                      // ganancia a volumen 100 (pico ≈ -10 dBFS); el valor por defecto (18) queda en torno a -38 dBFS RMS: suave, por debajo de la voz
+ let ctx=null,bus=null,lp=null,mg=null,timer=null,unlocked=false,att=false,speaking=false,duckT=0,force=0,fxCount=0,notes=0,beat=0,nextT=0,idx=3,seed=20261101;
+ const rnd=()=>{seed=(seed+0x6D2B79F5)|0;let t=Math.imul(seed^(seed>>>15),1|seed);t=(t+Math.imul(t^(t>>>7),61|t))^t;return((t^(t>>>14))>>>0)/4294967296};
+ function ac(){if(!ctx){const A=root.AudioContext||root.webkitAudioContext;if(!A)return null;try{ctx=new A()}catch(e){return null}}return ctx}
+ function wake(){const c=ac();if(c&&c.state==='suspended'&&unlocked)c.resume().catch(()=>{});return c}
+
+ /* ---------- efectos ---------- */
+ function tone(f,d,type,vol){const a=cfg();if(!a.fx.on)return;const c=wake();if(!c||!unlocked)return;
+  try{const o=c.createOscillator(),g=c.createGain(),t=c.currentTime,v=(vol||.06)*(a.fx.vol/60);o.type=type||'sine';o.frequency.value=f;g.gain.setValueAtTime(.0001,t);g.gain.exponentialRampToValueAtTime(Math.max(.0002,v),t+.02);g.gain.exponentialRampToValueAtTime(.0001,t+d);o.connect(g);g.connect(c.destination);o.start(t);o.stop(t+d+.05);fxCount++}catch(e){}}
+
+ /* ---------- voz ---------- */
+ const voiceMode=()=>cfg().voice.mode;
+ const canSpeak=tap=>{const m=voiceMode();return m==='off'?false:m==='tap'?!!tap:true};
+ function duck(on){speaking=!!on;duckT=Date.now();sync()}
+
+ /* ---------- música generativa ---------- */
+ const CHORDS=[[130.81,196,261.63],[110,164.81,220],[87.31,130.81,174.61],[98,146.83,196]];  // C, Am, F, G (graves, suaves)
+ const SCALE=[261.63,293.66,329.63,392,440,523.25,587.33,659.25];                              // pentatónica de do
+ function makeGraph(c){const g={c};g.mg=c.createGain();g.mg.gain.value=0;g.lp=c.createBiquadFilter();g.lp.type='lowpass';g.lp.frequency.value=1700;g.bus=c.createGain();g.bus.gain.value=1;
+  const d=c.createDelay(1);d.delayTime.value=.42;const fb=c.createGain();fb.gain.value=.3;g.bus.connect(g.lp);g.bus.connect(d);d.connect(fb);fb.connect(d);d.connect(g.lp);g.lp.connect(g.mg);g.mg.connect(c.destination);return g}
+ let G=null;
+ function graph(){const c=ac();if(!c||G)return c;G=makeGraph(c);mg=G.mg;return c}
+ function note(g,f,t,dur,gain,type,att){const c=g.c,o=c.createOscillator(),n=c.createGain();o.type=type;o.frequency.value=f;const a=att||.012;
+  n.gain.setValueAtTime(.0001,t);n.gain.linearRampToValueAtTime(gain,t+a);n.gain.exponentialRampToValueAtTime(.0001,t+dur);o.connect(n);n.connect(g.bus);o.start(t);o.stop(t+dur+.1);notes++}
+ /* Programa las notas hasta «until» (segundos del contexto). Es la composición: acordes de pad por compás y una melodía pentatónica dispersa. */
+ function schedule(g,until){const BEAT=1;while(nextT<until){const bar=Math.floor(beat/4)%CHORDS.length,b=beat%4;
+   if(b===0)for(const f of CHORDS[bar])note(g,f,nextT,4.2,.05,'triangle',1.1);
+   if(b===0||rnd()<.5){idx=Math.max(0,Math.min(SCALE.length-1,idx+Math.round((rnd()-.5)*3)));const f=SCALE[idx];note(g,f,nextT,2,.07,'sine',.015);note(g,f*2,nextT,.9,.012,'sine',.01)}
+   beat++;nextT+=BEAT}}
+ function tick(){if(!ctx||!G)return;schedule(G,ctx.currentTime+1.4)}
+ /* Renderiza N segundos sin altavoz (para pruebas objetivas de la composición). No toca la reproducción en curso. */
+ function renderOffline(sec,vol){const O=root.OfflineAudioContext||root.webkitOfflineAudioContext;if(!O)return Promise.resolve(null);
+  const keep={beat,idx,nextT,seed,notes};beat=0;idx=3;nextT=0;seed=20261101;const off=new O(1,Math.round(44100*sec),44100),g=makeGraph(off);g.mg.gain.value=(vol==null?cfg().music.vol:vol)/100*MUSIC_MAX;schedule(g,sec);
+  Object.assign({},keep);beat=keep.beat;idx=keep.idx;nextT=keep.nextT;seed=keep.seed;notes=keep.notes;return off.startRendering().then(b=>b.getChannelData(0))}
+ function start(){if(timer)return;const c=graph();if(!c)return;wake();nextT=c.currentTime+.15;tick();timer=setInterval(tick,300)}
+ function stopSched(){if(timer){clearInterval(timer);timer=null}}
+ const wantMusic=()=>{const a=cfg().music;if(force&&Date.now()<force)return true;if(!unlocked||document.hidden||a.mode==='off')return false;return a.mode==='siempre'||(a.mode==='clases'&&!!(K.course&&K.course.active()))};
+ const factor=()=>(att?0:1)*(speaking&&Date.now()-duckT<15000?.25:1);
+ let stopTimer=null;
+ function sync(){const want=wantMusic();
+  if(want){clearTimeout(stopTimer);stopTimer=null;start();if(mg){const c=ctx,g=cfg().music.vol/100*MUSIC_MAX*factor();mg.gain.cancelScheduledValues(c.currentTime);mg.gain.setTargetAtTime(g,c.currentTime,.5)}}
+  else if(mg&&timer){mg.gain.cancelScheduledValues(ctx.currentTime);mg.gain.setTargetAtTime(0,ctx.currentTime,.35);if(!stopTimer)stopTimer=setTimeout(()=>{stopTimer=null;if(!wantMusic())stopSched()},1800)}}
+ function attention(on){on=!!on;if(att===on)return;att=on;sync()}
+ function unlock(){if(unlocked)return;unlocked=true;wake();sync()}
+ /* Pausar al salir: la pestaña oculta o la app en segundo plano detienen la música; al volver se retoma solo si corresponde. */
+ root.document.addEventListener('visibilitychange',()=>{if(document.hidden){if(mg&&ctx){mg.gain.cancelScheduledValues(ctx.currentTime);mg.gain.value=0}stopSched();if(ctx&&ctx.state==='running')ctx.suspend().catch(()=>{})}else{if(ctx&&unlocked)ctx.resume().catch(()=>{});sync()}});
+ root.addEventListener('pagehide',()=>{stopSched();if(ctx&&ctx.state==='running')ctx.suspend().catch(()=>{})});
+ ['pointerdown','keydown','touchstart'].forEach(ev=>root.addEventListener(ev,unlock,{passive:true,once:false}));
+
+ function testMusic(){unlock();force=Date.now()+9000;attention(false);sync();setTimeout(sync,9200)}
+ function testFx(){tone(660,.12);setTimeout(()=>tone(880,.16),110)}
+ function status(){return{unlocked,playing:!!timer,gain:mg?+mg.gain.value.toFixed(4):0,target:+(cfg().music.vol/100*MUSIC_MAX*factor()).toFixed(4),attention:att,speaking,ctx:ctx?ctx.state:'none',notes,fxCount,cfg:JSON.parse(JSON.stringify(cfg()))}}
+
+ /* ---------- panel de adultos ---------- */
+ const opt=(v,cur,l)=>'<option value="'+v+'"'+(v===cur?' selected':'')+'>'+l+'</option>';
+ function panelHTML(){const a=cfg();return '<h3 style="margin-top:22px">Sonido</h3><p class="small">Tres controles independientes. Ya no hay botón de sonido en la pantalla del niño. Los botones «Escuchar» de las clases siguen disponibles.</p>'+
+  '<div class="audiobox"><label for="auVoice">Voz de instrucciones</label><select id="auVoice">'+opt('auto',a.voice.mode,'Automática (lee cada pantalla)')+opt('tap',a.voice.mode,'Solo al tocar «Escuchar»')+opt('off',a.voice.mode,'Desactivada')+'</select><div class="row"><button class="soft" id="auVoiceTest">Probar voz</button></div>'+
+  '<label for="auMusic">Música ambiental</label><select id="auMusic">'+opt('clases',a.music.mode,'Solo durante las clases')+opt('siempre',a.music.mode,'Siempre')+opt('off',a.music.mode,'Desactivada')+'</select><label for="auMusicVol">Volumen de la música (bajo recomendado)</label><input type="range" id="auMusicVol" min="0" max="60" step="2" value="'+a.music.vol+'"><div class="row"><button class="soft" id="auMusicTest">Probar música (9 s)</button></div>'+
+  '<label class="chk"><input type="checkbox" id="auFx"'+(a.fx.on?' checked':'')+'> Efectos de sonido (aciertos, toques)</label><label for="auFxVol">Volumen de los efectos</label><input type="range" id="auFxVol" min="10" max="100" step="5" value="'+a.fx.vol+'"><div class="row"><button class="soft" id="auFxTest">Probar efecto</button></div>'+
+  '<p class="small">La música es una composición original generada por la propia aplicación: no usa archivos, servicios externos ni material con licencia de terceros, y funciona sin conexión. Baja sola cuando se habla y se calla en las comprobaciones, memoria y secuencias. Es solo ambiente agradable; no se presenta como método para aumentar la inteligencia. En algunos teléfonos la voz depende de las voces en español instaladas.</p></div>'}
+ function bindPanel(){const a=cfg(),$=id=>document.getElementById(id),save=()=>K.save();
+  const v=$('auVoice');if(v)v.onchange=()=>{a.voice.mode=v.value;K.state().sound=a.voice.mode!=='off';save()};
+  const m=$('auMusic');if(m)m.onchange=()=>{a.music.mode=m.value;save();sync()};
+  const mv=$('auMusicVol');if(mv)mv.oninput=()=>{a.music.vol=+mv.value;save();sync()};
+  const f=$('auFx');if(f)f.onchange=()=>{a.fx.on=f.checked;save()};const fv=$('auFxVol');if(fv)fv.oninput=()=>{a.fx.vol=+fv.value;save()};
+  const vt=$('auVoiceTest');if(vt)vt.onclick=()=>K.speakTap('Hola, soy la voz de las instrucciones.');const mt=$('auMusicTest');if(mt)mt.onclick=testMusic;const ft=$('auFxTest');if(ft)ft.onclick=testFx}
+ const api={renderOffline,cfg,tone,voiceMode,canSpeak,duck,attention,unlock,sync,status,testMusic,testFx,panelHTML,bindPanel,DEF};
+ root.__cjAudio=api;return api};
+})(typeof globalThis!=='undefined'?globalThis:this);
 </script><script>/* Interfaz de las rutas de aprendizaje. Recibe un "kit" de app.js (pantallas, voz, progreso).
    Cada actividad sigue: Aprender → Ver ejemplos → Practicar → Reforzar → Comprobar. */
 (function(root){
@@ -1327,7 +1647,7 @@ const shuffle=(a)=>C.h.shuffle(a);
 
 /* ---------- sonidos suaves (WebAudio, sin archivos) ---------- */
 let ac=null;
-function tone(f,d,type,vol){if(!S().sound)return;try{ac=ac||new (root.AudioContext||root.webkitAudioContext)();if(ac.state==='suspended')ac.resume();const o=ac.createOscillator(),g=ac.createGain(),t=ac.currentTime,v=vol||.06;o.type=type||'sine';o.frequency.value=f;o.connect(g);g.connect(ac.destination);g.gain.setValueAtTime(v,t);g.gain.exponentialRampToValueAtTime(.0001,t+(d||.14));o.start(t);o.stop(t+(d||.14)+.03)}catch(e){}}
+function tone(f,d,type,vol){if(K.audio)K.audio.tone(f,d,type,vol)}
 const sGood=()=>{tone(660,.12);setTimeout(()=>tone(880,.16),110)},sBad=()=>tone(220,.2,'triangle'),sTap=()=>tone(520,.05,'sine',.04);
 
 /* ---------- dibujo de arte ---------- */
@@ -1429,7 +1749,7 @@ M.choose=(q,box,ctl)=>{
  box.innerHTML=model+'<div class="gopts '+cls+'">'+q.options.map(o=>'<button class="gopt'+(o.art.k==='t'?' txt':'')+'" data-id="'+esc(o.id)+'" aria-label="'+esc(o.art.label)+'">'+A(o.art)+'</button>').join('')+'</div>'+(q.listen?'<div class="row center"><button class="soft" id="glisten">♫ Escuchar las opciones</button></div>':'');
  const btns=qa('.gopt',box);
  qa('.tapc',box).forEach(b=>b.onclick=()=>{if(b.classList.contains('counted'))return;b.classList.add('counted');counted++;sTap();K.speak(NW[Math.min(counted,10)])});
- const gl=q1('#glisten',box);if(gl)gl.onclick=()=>K.speak(q.listen.join('. '));
+ const gl=q1('#glisten',box);if(gl)gl.onclick=()=>K.speakTap(q.listen.join('. '));
  btns.forEach(b=>b.onclick=()=>{if(ctl.st.done)return;if(b.dataset.id===q.answer){b.classList.add('good');btns.forEach(x=>x.disabled=true);ctl.ok()}else{b.classList.add('try');b.disabled=true;ctl.err(pickOf(TRIES))}});
  return{hint(){const g=btns.find(b=>b.dataset.id===q.answer);if(g)g.classList.add('ghint');ctl.fb('Mira este.');K.speak(q.explain)}}};
 
@@ -1492,7 +1812,7 @@ M.place=(q,box,ctl)=>{
 M.follow=(q,box,ctl)=>{
  let k=0;
  box.innerHTML='<div class="gopts c3 board">'+q.board.map(o=>'<button class="gopt" data-id="'+esc(o.id)+'" aria-label="'+esc(o.art.label)+'">'+A(o.art)+'</button>').join('')+'</div><div class="row center"><button class="soft" id="grep">♫ Escuchar la instrucción</button></div>';
- const btns=qa('.gopt',box);q1('#grep',box).onclick=()=>K.speak(q.prompt);
+ const btns=qa('.gopt',box);q1('#grep',box).onclick=()=>K.speakTap(q.prompt);
  btns.forEach(b=>b.onclick=()=>{if(ctl.st.done||b.classList.contains('good'))return;if(b.dataset.id===q.targets[k]){b.classList.add('good');k++;sGood();if(k===q.targets.length)ctl.ok();else ctl.fb('¡Sí! Ahora lo que sigue.')}else{b.classList.add('try');setTimeout(()=>b.classList.remove('try'),600);ctl.err(k===0?pickOf(TRIES):'Casi. Escucha la instrucción otra vez.')}});
  return{hint(){const g=btns.find(b=>b.dataset.id===q.targets[k]);if(g)g.classList.add('ghint');ctl.fb('Mira este.');K.speak(q.explain)}}};
 
@@ -1584,16 +1904,18 @@ const solved={
 function gdata(){const s=S();s.games=s.games||{skills:{},mixed:null};s.games.skills=s.games.skills||{};return s.games}
 function saveResult(id,res){const g=gdata(),o=g.skills[id]||{runs:0,best:0,ind:0,sup:0,last:null},now=Date.now();
  /* Progress.record recorta el historial a las últimas sesiones pero conserva las pruebas permanentes (días y formas con comprobación buena). */
- root.Progress.record(o,{d:root.Progress.day(now),ts:now,ok:res.ok,of:res.of,pi:res.pi||0,ps:res.ps||0,er:res.er||0,hn:res.hn||0,ty:res.ty||[],bad:res.bad||[],mode:res.mode||'full'});
+ root.Progress.record(o,{d:root.Progress.day(now),ts:now,ok:res.ok,of:res.of,pi:res.pi||0,ps:res.ps||0,er:res.er||0,hn:res.hn||0,ty:res.ty||[],bad:res.bad||[],mode:res.mode||'full',src:res.src||'libre'});
  o.runs++;o.ind+=res.ind;o.sup+=res.sup;o.last={ok:res.ok,of:res.of};o.best=Math.max(o.best,res.ok);o.ts=now;g.skills[id]=o;K.save()}
 /* Guardado para reanudar la última actividad (JSON sencillo; las preguntas ya generadas se conservan). */
-function snap(){if(!run||run.kind!=='skill')return;const s=S(),sess=Object.assign({},run.sess);delete sess.skill;delete sess.more;s.resume={k:'skill',id:run.sk.id,mode:run.mode||'full',phase:run.phase,i:run.i,res:run.res,more:run.more,streak:run.streak||0,data:sess,ts:Date.now()};K.save()}
+function snapObj(){const sess=Object.assign({},run.sess);delete sess.skill;delete sess.more;return{k:'skill',id:run.sk.id,mode:run.mode||'full',phase:run.phase,i:run.i,res:run.res,more:run.more,streak:run.streak||0,data:sess,ts:Date.now()}}
+/* En una clase guiada el avance se guarda dentro del curso (s.course.cur.snap); el juego libre sigue usando s.resume. Así una cosa nunca pisa a la otra. */
+function snap(){if(!run||run.kind!=='skill')return;if(run.course){const c=root.Curriculum.ensure(S());if(c.cur&&c.cur.l===run.course.l){c.cur.snap=snapObj();c.cur.ts=Date.now();K.save()}return}S().resume=snapObj();K.save()}
 
 /* ---------- corredor de 5 fases ---------- */
 const PH=[['learn','💡','Aprendo'],['examples','👀','Ejemplos'],['practice','✋','Practico'],['reinforce','🔁','Refuerzo'],['check','⭐','Compruebo']];
 function stepper(cur){const ci=PH.findIndex(x=>x[0]===cur);return '<ol class="phases" aria-label="Pasos de la actividad">'+PH.map(([k,e,l],i)=>'<li class="'+(i===ci?'on':i<ci?'done':'')+'"'+(i===ci?' aria-current="step"':'')+'><i aria-hidden="true">'+e+'</i><span>'+l+'</span></li>').join('')+'</ol>'}
 let run=null;
-const view=(mod)=>'g:'+mod;
+const view=(mod)=>(run&&run.course?'cls:':'g:')+mod;
 function ctxNow(){return C.ctxFrom(E,S(),new Date())}
 
 function openModule(id){
@@ -1601,40 +1923,45 @@ function openModule(id){
  K.page(K.head(mod.title,K.home,'Ruta')+'<div class="gmodhead" style="--bg:'+mod.bg+'"><span class="gmodicon" aria-hidden="true">'+mod.icon+'</span><p>'+esc(mod.blurb)+'. Cada juego tiene cinco pasos: aprendo, veo ejemplos, practico, refuerzo y compruebo.</p></div><div class="routebar" aria-label="Estado de las habilidades de esta ruta">'+sk.map(s=>'<i class="pip s-'+root.Progress.skillState(g[s.id],Date.now()).state+'" title="'+esc(s.title)+'"></i>').join('')+'</div><div class="gskills">'+sk.map(s=>{const r=g[s.id],ps=root.Progress.skillState(r,Date.now()),st='<small class="stat st-'+ps.state+'"><span aria-hidden="true">'+root.Progress.ICON[ps.state]+'</span> '+(s===first?'Empieza aquí':root.Progress.LABEL[ps.state])+(ps.repaso?' · conviene repasar':'')+'</small>'+(r?'<small class="sub">Última vez: '+r.last.ok+' de '+r.last.of+' sin ayuda</small>':'');return '<button class="gskill'+(s===first?' first':'')+'" data-skill="'+s.id+'"><span class="sk-i" aria-hidden="true">'+s.icon+'</span><span class="sk-t"><strong>'+esc(s.title)+'</strong><small>'+esc(s.blurb)+'</small>'+st+'</span></button>'}).join('')+'</div>','gm:'+id);
  K.bindBack(K.home);qa('[data-skill]').forEach(b=>b.onclick=()=>openSkill(b.dataset.skill))}
 
-function openSkill(id,mode){
- mode=mode||'full';const sk=C.byId[id],ctx=ctxNow();
+function openSkill(id,mode,opts){
+ mode=mode||'full';opts=opts||{};const sk=C.byId[id],ctx=ctxNow();
  if(sk.available&&!sk.available(ctx)){nameScreen(sk);return}
  const h=root.Progress.hist((gdata().skills||{})[id]),bad=h.length?(h[h.length-1].bad||[]):[];
- run={sk,ctx,sess:C.session(sk,ctx,Math.random,{extra:mode==='extra'?bad:[]}),phase:'learn',i:0,res:{practice:[],reinforce:[],check:[]},more:false,kind:'skill',mode,streak:0};
- if(mode==='review'){run.phase='check';run.sess.practice=[];run.sess.reinforce=[];showQuestion();return}
+ run={sk,ctx,sess:C.session(sk,ctx,Math.random,{extra:mode==='extra'?bad:[]}),phase:'learn',i:0,res:{practice:[],reinforce:[],check:[]},more:false,kind:'skill',mode,streak:0,course:opts.course||null};
+ if(mode==='review'){run.phase='check';run.sess.practice=[];run.sess.reinforce=[];if(opts.limit)run.sess.check=run.sess.check.slice(0,opts.limit);showQuestion();return}
  showLearn()}
 function resumeInfo(){const r=S().resume;if(!r||r.k!=='skill'||Date.now()-r.ts>72*3600e3)return null;const sk=C.byId[r.id];if(!sk)return null;return{title:sk.title,icon:sk.icon,label:({learn:'Aprendo',examples:'Ejemplos',practice:'Practico',reinforce:'Refuerzo',check:'Compruebo'})[r.phase],kind:'skill'}}
 function resume(){const s=S(),r=s.resume;if(!resumeInfo())return false;const sk=C.byId[r.id],ctx=ctxNow();
  run={sk,ctx,sess:C.rebuild(sk,ctx,r.data,Math.random),phase:r.phase,i:r.i,res:r.res,more:r.more,kind:'skill',mode:r.mode||'full',streak:r.streak||0};
  if(run.phase==='learn')showLearn();else if(run.phase==='examples')showExample();else showQuestion();return true}
+/* Reanuda una sesión guardada dentro de una clase (el orquestador pasa su descriptor). */
+function rebuildRun(r,course,quiet){const sk=C.byId[r.id],ctx=ctxNow();
+ run={sk,ctx,sess:C.rebuild(sk,ctx,r.data,Math.random),phase:r.phase,i:r.i,res:r.res,more:r.more,kind:'skill',mode:r.mode||'full',streak:r.streak||0,course:course||null};
+ if(quiet)return;
+ if(run.phase==='learn')showLearn();else if(run.phase==='examples')showExample();else showQuestion()}
 function nameScreen(sk){K.page(K.head(sk.title,()=>openModule(sk.mod),'Mi nombre')+'<div class="study"><div class="object">✏️</div><h2>¿Cómo se llama?</h2><p>Escribe el nombre del niño o de la niña para jugar con sus letras. Se guarda solo en este teléfono.</p><input id="gname" maxlength="24" aria-label="Nombre" autocomplete="off"><button class="primary" id="gnsave">Guardar y jugar</button></div>',view(sk.mod));K.bindBack(()=>openModule(sk.mod));q1('#gnsave').onclick=()=>{const v=q1('#gname').value.trim();if(v.length<2){K.notice('Escribe al menos dos letras.');return}S().name=v;K.save();openSkill(sk.id)}}
 
-function frame(inner,label){return K.head(run.sk?run.sk.title:'Reto variado',leave,label)+stepper(run.phase)+inner}
-function leave(){if(run&&run.kind==='mixed')K.home();else openModule(run.sk.mod)}
+function frame(inner,label){return K.head(run.sk?run.sk.title:'Reto variado',leave,label)+(run.course&&run.course.role==='probe'?'':stepper(run.phase))+inner}
+function leave(){if(run&&run.course&&K.course){K.course.pause();return}if(run&&run.kind==='mixed')K.home();else openModule(run.sk.mod)}
 
 function showLearn(){
  snap();const L=run.sess.learn;
  L.cards.forEach(c=>{if(c.observe&&!c._o){c._o=1;E.observe(S(),c.observe.area,c.observe.id)}});K.save();
  K.page(frame('<div class="study gl"><span class="eyebrow">Aprendo</span><h2>'+esc(L.title)+'</h2><p>'+esc(L.say)+'</p><div class="gcards">'+L.cards.map((c,i)=>'<button class="gcard" data-c="'+i+'" aria-label="'+esc(c.label)+'"><span class="gcarts">'+c.arts.map(a=>A(a)).join('')+'</span><small>'+esc(c.label)+'</small></button>').join('')+'</div>'+(L.adult?'<details class="gadult"><summary>Para el adulto</summary><p>'+esc(L.adult)+'</p></details>':'')+'</div><div class="row center"><button class="soft" id="ghear">♫ Escuchar</button><button class="primary" id="gnext">Ver ejemplos →</button></div>','Aprendo'),view(run.sk.mod));
  K.bindBack(leave);qa('.gcard').forEach(b=>b.onclick=()=>{const c=L.cards[+b.dataset.c];b.classList.add('on');K.speak(c.say||c.label)});
- q1('#ghear').onclick=()=>K.speak(L.say);q1('#gnext').onclick=()=>{run.phase='examples';run.i=0;showExample()};K.speak(L.say)}
+ q1('#ghear').onclick=()=>K.speakTap(L.say);q1('#gnext').onclick=()=>{run.phase='examples';run.i=0;showExample()};K.speak(L.say)}
 
 function showExample(){
  snap();const q=run.sess.examples[run.i],n=run.sess.examples.length;
  K.page(frame('<div class="gq"><span class="eyebrow">Mira cómo se hace</span><h2 class="gprompt">'+esc(q.prompt)+'</h2>'+(solved[q.type]?solved[q.type](q):'')+'<p class="gexplain" id="gex">'+esc(q.explain)+'</p></div><div class="row center"><button class="soft" id="ghear">♫ Escuchar el ejemplo</button><button class="primary" id="gnext">'+(run.i+1<n?'Otro ejemplo →':'Ahora yo →')+'</button></div>','Ejemplo '+(run.i+1)+' de '+n),view(run.sk.mod));
- K.bindBack(leave);q1('#ghear').onclick=()=>K.speak(q.explain);q1('#gnext').onclick=()=>{if(run.i+1<n){run.i++;showExample()}else{run.phase='practice';run.i=0;showQuestion()}};K.speak(q.prompt+' '+q.explain)}
+ K.bindBack(leave);q1('#ghear').onclick=()=>K.speakTap(q.explain);q1('#gnext').onclick=()=>{if(run.i+1<n){run.i++;showExample()}else{run.phase='practice';run.i=0;showQuestion()}};K.speak(q.prompt+' '+q.explain)}
 
 function listFor(ph){return run.sess[ph]}
 function showQuestion(){
- snap();const ph=run.phase,list=listFor(ph),q=list[run.i],label=({practice:'Practico',reinforce:'Refuerzo',check:'Compruebo'})[ph]+' '+(run.i+1)+' de '+list.length;
- K.page(frame('<div class="gq"><h2 class="gprompt" id="gprompt">'+esc(q.prompt)+'</h2><div class="row center"><button class="soft" id="ghear">♫ Escuchar</button></div><div id="gbox"></div><div class="feedback" id="gfb" aria-live="polite"></div><div class="row center">'+(ph!=='check'?'<button class="soft" id="ghint">Ver una pista</button>':'')+'<button class="primary" id="gnext" hidden>Siguiente →</button></div></div>',label),view(run.sk?run.sk.mod:'mixed'));
- window.__gq=q;K.bindBack(leave);
- const hearText=q.say||q.prompt;q1('#ghear').onclick=()=>K.speak(hearText);
+ snap();const ph=run.phase,list=listFor(ph),q=list[run.i],label=run.course&&run.course.role==='probe'?'La mochila · '+(run.course.idx+1)+' de '+run.course.n:({practice:'Practico',reinforce:'Refuerzo',check:'Compruebo'})[ph]+' '+(run.i+1)+' de '+list.length;
+ K.page(frame('<div class="gq"><h2 class="gprompt" id="gprompt">'+esc(q.prompt)+'</h2><div class="row center"><button class="soft" id="ghear">♫ Escuchar</button></div><div id="gbox"></div><div class="feedback" id="gfb" aria-live="polite"></div><div class="row center">'+(ph!=='check'?'<button class="soft" id="ghint">Ver una pista</button>':'')+(run.course&&run.course.role==='probe'?'<button class="soft" id="gskip">Todavía no lo sé</button>':'')+'<button class="primary" id="gnext" hidden>Siguiente →</button></div></div>',label),view(run.sk?run.sk.mod:'mixed'));
+ window.__gq=q;K.bindBack(leave);if(K.audio)K.audio.attention(ph==='check'||q.type==='simon'||q.type==='recall');
+ const hearText=q.say||q.prompt;q1('#ghear').onclick=()=>K.speakTap(hearText);
  const st={errors:0,hinted:false,done:false};
  const ctl={st,fb:h=>{const f=q1('#gfb');if(f)f.innerHTML=h},
   err(m){st.errors++;sBad();if(m){ctl.fb(m);K.speak(plain(m))}},
@@ -1643,6 +1970,7 @@ function showQuestion(){
  const h=M[q.type](q,q1('#gbox'),ctl);
  if(ph!=='check'){q1('#ghint').onclick=()=>{if(st.done)return;st.hinted=true;h.hint()}}
  q1('#gnext').onclick=()=>advance();
+ const sk_=q1('#gskip');if(sk_)sk_.onclick=()=>{if(st.done)return;st.done=true;(run.res[ph]=run.res[ph]||[]).push({ok:false,fmt:q.fmt,ty:q.type,er:0,hn:0,skip:1});advance()};
  if(q.type!=='recall'&&q.type!=='simon')K.speak(hearText)}
 
 function advance(){
@@ -1652,7 +1980,7 @@ function advance(){
   const miss=run.res.practice.filter(r=>!r.ok);
   if(miss.length&&!run.more){run.more=true;run.sess.reinforce.push(run.sess.more(miss[0].fmt))}
   run.phase='reinforce';run.i=0;showQuestion();return}
- if(ph==='reinforce'){run.phase='check';run.i=0;showQuestion();return}
+ if(ph==='reinforce'){run.phase='check';run.i=0;if(run.course&&K.course&&K.course.beforeCheck(run))return;showQuestion();return}
  if(ph==='check'){finish()}}
 
 function finish(){
@@ -1660,8 +1988,10 @@ function finish(){
  if(run.kind==='mixed'){const g=gdata();g.mixed={ok,of,ts:Date.now()};K.save();mixedResult(ok,of);return}
  const all=[...run.res.practice,...run.res.reinforce],ind=all.filter(r=>r.ok).length+ok,sup=all.filter(r=>!r.ok).length+(of-ok);
  const every=[...run.res.practice,...run.res.reinforce,...ck];
- saveResult(run.sk.id,{ok,of,ind,sup,pi:run.res.practice.concat(run.res.reinforce).filter(r=>r.ok).length,ps:run.res.practice.concat(run.res.reinforce).filter(r=>!r.ok).length,er:every.reduce((a,r)=>a+(r.er||0),0),hn:every.reduce((a,r)=>a+(r.hn||0),0),ty:[...new Set(ck.filter(r=>r.ok).map(r=>r.ty))],bad:[...new Set(every.filter(r=>!r.ok).map(r=>r.fmt))],mode:run.mode});
- S().sessions=(S().sessions||0)+1;delete S().resume;K.save();const news=K.shell?K.shell.evaluate():null;
+ const probe=run.course&&run.course.role==='probe';/* una sola pregunta de la exploración inicial no es evidencia de dominio: no entra al historial */
+ if(!probe)saveResult(run.sk.id,{ok,of,ind,sup,pi:run.res.practice.concat(run.res.reinforce).filter(r=>r.ok).length,ps:run.res.practice.concat(run.res.reinforce).filter(r=>!r.ok).length,er:every.reduce((a,r)=>a+(r.er||0),0),hn:every.reduce((a,r)=>a+(r.hn||0),0),ty:[...new Set(ck.filter(r=>r.ok).map(r=>r.ty))],bad:[...new Set(every.filter(r=>!r.ok).map(r=>r.fmt))],mode:run.mode,src:run.course?'clase':'libre'});
+ if(!probe)S().sessions=(S().sessions||0)+1;if(!run.course)delete S().resume;K.save();const news=K.shell?K.shell.evaluate():null;
+ if(run.course&&K.course){K.course.skillFinished(run,{ok,of,ind,sup,er:every.reduce((a,r)=>a+(r.er||0),0),hn:every.reduce((a,r)=>a+(r.hn||0),0),bad:[...new Set(every.filter(r=>!r.ok).map(r=>r.fmt))]},news);return}
  const msg=ok===of?'¡Lo lograste sin ayuda!':ok*2>=of?'¡Vas muy bien! Con otro rato de práctica saldrá aún mejor.':'Esto se aprende poco a poco. Repítanlo con ayuda otro día.';
  K.page(K.head(run.sk.title,leave,'Resultado')+stepper('check')+'<div class="center"><div class="result-icon">'+(ok===of?'🌟':'🌱')+'</div><span class="eyebrow">Un paso más</span><h1>'+esc(msg)+'</h1><div class="study" style="min-height:150px"><h3>Comprobación: '+ok+' de '+of+' sin ayuda</h3><p>Practicamos: '+all.filter(r=>r.ok).length+' sin ayuda y '+all.filter(r=>!r.ok).length+' con ayuda.</p><p><b>Para hacer en casa:</b> '+esc(run.sk.home)+'</p><p class="small">Esto es solo una muestra de hoy; no es una nota ni un diagnóstico.</p></div><div class="row center"><button class="primary" id="gagain">Repetir con otras preguntas</button><button class="soft" id="gmod">Otra habilidad</button></div></div>',view(run.sk.mod));
  K.bindBack(leave);q1('#gagain').onclick=()=>openSkill(run.sk.id);q1('#gmod').onclick=()=>openModule(run.sk.mod);K.speak(msg);if(news&&K.shell)K.shell.showNew(news)}
@@ -1683,7 +2013,7 @@ function report(){
 const OFF=[['Plastilina o barro','Modelar su cuerpo, un animal o una fruta (MINED p. 8).'],['Rasgado y arrugado','Rasgar papel y pegar bolitas en una tortuga o en las ventanas de un bus (MINED pp. 16–17).'],['Recortar y pegar','Buscar en revistas imágenes de la familia, de comida o de objetos y pegarlas (MINED pp. 12–13).'],['Dactilopintura','Pintar con las manos y dibujar lo que ve (MINED p. 29).'],['Canto y movimiento','Cantar los buenos días, las vocales y villancicos; bailar con música (MINED pp. 5, 12, 19 y 30).'],['Huerto o maceta','Sembrar una semilla y regarla cada día (MINED p. 30).'],['Cuentos y conversación','Comentar láminas, celebraciones familiares, normas de seguridad y derechos y deberes (MINED pp. 17, 25, 26 y 31).'],['Trazos en papel','Líneas rectas, curvas, ondas, zigzag y bucles con crayón (MINED pp. 19–20).'],['Reloj y moneda','Mirar un reloj real y monedas del país; comentar su valor (MINED pp. 28–29). Aún no está en la aplicación.'],['Símbolos patrios y nacionales','La bandera, el escudo, la flor, el ave y el árbol nacionales, con imágenes reales (MINED p. 24). Aún no está en la aplicación.']];
 function offscreen(){return '<h3>Para hacer fuera de la pantalla</h3><p>Lo que más enseña a esta edad es manipular, hablar y moverse. Estas ideas siguen el Cuadernillo MINED de III Nivel:</p><div class="reports">'+OFF.map(o=>'<div class="report"><b>'+esc(o[0])+'</b><p>'+esc(o[1])+'</p></div>').join('')+'</div>'}
 
-return{openModule,openSkill,mixed,report,offscreen,resume,resumeInfo,parts:{M,A,drag,tapOnly,tone,sGood,sBad,sTap,hue,PAINTSVG,bodySvg,faceSvg,TAPIDS,qa,q1,pickOf,GOODS,TRIES,shuffle,plain,SG,sceneInner,objText,SKY,PCOLS,solved,zoneDraw},moduleOf:v=>String(v).startsWith('g:')?String(v).slice(2):null,modules:C.modules,skillCount:C.skills.length,
+return{openModule,openSkill,rebuildRun,continueRun:()=>showQuestion(),snapNow:()=>snap(),runInfo:()=>run&&{skill:run.sk&&run.sk.id,phase:run.phase,i:run.i,course:run.course},mixed,report,offscreen,resume,resumeInfo,parts:{M,A,drag,tapOnly,tone,sGood,sBad,sTap,hue,PAINTSVG,bodySvg,faceSvg,TAPIDS,qa,q1,pickOf,GOODS,TRIES,shuffle,plain,SG,sceneInner,objText,SKY,PCOLS,solved,zoneDraw},moduleOf:v=>/^(g|cls):/.test(String(v))?String(v).replace(/^(g|cls):/,''):null,modules:C.modules,skillCount:C.skills.length,
  skillMeta:id=>C.byId[id]};
 };
 })(typeof globalThis!=='undefined'?globalThis:this);
@@ -1876,28 +2206,28 @@ ADV.forEach(a=>{a.skills=a.skills.filter(i=>C.byId[i])});
 /* ===================== ejecución ===================== */
 let run=null;
 const advOf=id=>ADV.find(a=>a.id===id);
-const view=id=>'adv:'+id;
+const view=id=>run&&run.lesson?'cls:adv':'adv:'+id;
 function dots(i,n,res){return '<div class="advdots" aria-hidden="true">'+Array.from({length:n},(_,k)=>'<i class="'+(k<i?(res[k]?'ok':'help'):k===i?'now':'')+'"></i>').join('')+'</div>'}
-function snapA(){if(!run)return;const s=S();s.resume={k:'adv',id:run.a.id,i:run.i,res:run.res,chs:run.chs,ts:Date.now()};K.save()}
+function snapA(){if(!run||run.lesson)return;const s=S();s.resume={k:'adv',id:run.a.id,i:run.i,res:run.res,chs:run.chs,ts:Date.now()};K.save()}
 function open(id){const a=advOf(id),ctx=ctxNow(),rng=Math.random;run={a,chs:a.build(rng,ctx),i:-1,res:[]};intro()}
 function resumeInfo(){const r=S().resume;if(!r||r.k!=='adv'||Date.now()-r.ts>72*3600e3)return null;const a=advOf(r.id);return a?{title:a.title,icon:a.icon,label:'Reto '+(r.i+1)+' de '+r.chs.length,kind:'adv'}:null}
 function resume(){const r=S().resume,info=resumeInfo();if(!info)return false;run={a:advOf(r.id),chs:r.chs,i:r.i,res:r.res};r.i<0?intro():challenge();return true}
-function leave(){K.shell?K.shell.jugar():K.home()}
+function leave(){if(run&&run.lesson){run.onLeave();return}K.shell?K.shell.jugar():K.home()}
 function intro(){const a=run.a,face=K.shell.avatar('hero','adv');
  K.page(K.head(a.title,leave,'Aventura')+'<div class="advintro" style="--a:'+a.color+'"><div class="ai-scene" aria-hidden="true"><span class="ai-big">'+a.icon+'</span></div><div class="ai-row"><div class="ai-char">'+face+'</div><div class="ai-bubble"><p>'+esc(a.story)+'</p></div></div><div class="row center"><button class="soft" id="ahear">♫ Escuchar</button><button class="primary xl" id="astart">¡Vamos!</button></div></div>',view(a.id));
- K.bindBack(leave);q1('#ahear').onclick=()=>K.speak(a.story);q1('#astart').onclick=()=>{run.i=0;snapA();challenge()};K.speak(a.story);snapA()}
+ K.bindBack(leave);q1('#ahear').onclick=()=>K.speakTap(a.story);q1('#astart').onclick=()=>{run.i=0;snapA();challenge()};K.speak(a.story);snapA()}
 function challenge(){
  const a=run.a,ch=run.chs[run.i],n=run.chs.length;snapA();
- K.page(K.head(a.title,leave,'Reto '+(run.i+1)+' de '+n)+'<div class="advframe" style="--a:'+a.color+'">'+dots(run.i,n,run.res)+'<div class="ch-say"><span class="ch-face">'+K.shell.avatar('face','tiny')+'</span><div class="ai-bubble"><b>'+esc(ch.title)+'</b><p id="chsay">'+esc(ch.say)+'</p></div><button class="soft" id="chear" aria-label="Escuchar">♫</button></div>'+(ch.mech==='q'?'<h2 class="gprompt">'+esc(ch.q.prompt)+'</h2>':'')+'<div id="gbox"></div><div class="feedback" id="gfb" aria-live="polite"></div><div class="row center"><button class="soft" id="ghint">Ver una pista</button><button class="primary" id="gnext" hidden>Siguiente →</button></div></div>',view(a.id));
- window.__gch=ch;K.bindBack(leave);
- const sayT=ch.mech==='q'?ch.say+' '+(ch.q.say||ch.q.prompt):ch.say;q1('#chear').onclick=()=>K.speak(sayT);
+ K.page(K.head(a.title,leave,run.lesson?'Jugamos':'Reto '+(run.i+1)+' de '+n)+'<div class="advframe" style="--a:'+a.color+'">'+dots(run.i,n,run.res)+'<div class="ch-say"><span class="ch-face">'+K.shell.avatar('face','tiny')+'</span><div class="ai-bubble"><b>'+esc(ch.title)+'</b><p id="chsay">'+esc(ch.say)+'</p></div><button class="soft" id="chear" aria-label="Escuchar">♫</button></div>'+(ch.mech==='q'?'<h2 class="gprompt">'+esc(ch.q.prompt)+'</h2>':'')+'<div id="gbox"></div><div class="feedback" id="gfb" aria-live="polite"></div><div class="row center"><button class="soft" id="ghint">Ver una pista</button><button class="primary" id="gnext" hidden>Siguiente →</button></div></div>',view(a.id));
+ window.__gch=ch;K.bindBack(leave);if(K.audio)K.audio.attention(ch.mech==='memory');
+ const sayT=ch.mech==='q'?ch.say+' '+(ch.q.say||ch.q.prompt):ch.say;q1('#chear').onclick=()=>K.speakTap(sayT);
  const st={errors:0,hinted:false,done:false},ctl={st,fb:t=>{const f=q1('#gfb');if(f)f.innerHTML=t},
   err(m){st.errors++;X.sBad();if(m){ctl.fb(m);K.speak(X.plain(m))}},
   ok(m){if(st.done)return;st.done=true;X.sGood();const asst=st.errors>0||st.hinted,msg=m||(asst?'¡Lo encontramos juntos!':pickOf(X.GOODS));ctl.fb(msg);K.speak(X.plain(msg));q1('#ghint').hidden=true;q1('#gnext').hidden=false;run.res[run.i]=!asst;
    run.streak=asst?0:(run.streak||0)+1;if(!asst&&run.streak%3===0&&K.shell)K.shell.celebrate({kind:'streak'});const nb=q1('#gnext');if(nb.scrollIntoView)nb.scrollIntoView({block:'nearest',behavior:'smooth'})}};
  const m=MEC[ch.mech](ch,q1('#gbox'),ctl);
  q1('#ghint').onclick=()=>{if(st.done)return;st.hinted=true;m.hint()};
- q1('#gnext').onclick=()=>{run.i++;if(run.i>=n)finish();else challenge()};
+ q1('#gnext').onclick=()=>{run.i++;if(run.i>=n){if(run.lesson){run.onDone({ok:!!run.res[0]});return}finish()}else challenge()};
  if(ch.mech!=='cross'&&ch.mech!=='memory')K.speak(sayT)}
 function finish(){
  const a=run.a,ind=run.res.filter(Boolean).length,n=run.chs.length,frac=ind/n,stars=frac>=.8?3:frac>=.5?2:1,s=S();s.adv=s.adv||{};const o=s.adv[a.id]||{runs:0,stars:0};o.runs++;o.stars=Math.max(o.stars||0,stars);o.ts=Date.now();o.last={ind,of:n};s.adv[a.id]=o;delete s.resume;s.sessions=(s.sessions||0)+1;K.save();
@@ -1905,7 +2235,186 @@ function finish(){
  K.page(K.head(a.title,leave,'¡Aventura completada!')+'<div class="center advend" style="--a:'+a.color+'"><div class="medal" aria-hidden="true">'+a.medal+'</div><span class="eyebrow">Medalla</span><h1>'+esc(a.title)+'</h1><p class="stars" aria-label="'+stars+' estrellas">'+'⭐'.repeat(stars)+'☆'.repeat(3-stars)+'</p><p class="endtxt">'+esc(a.end)+'</p><p class="small">Sin ayuda: '+ind+' de '+n+' retos. Las estrellas muestran cuánto lo hizo solo hoy; se puede jugar otra vez con retos nuevos.</p><div class="row center"><button class="primary" id="aagain">Jugar otra vez</button><button class="soft" id="aback">Más aventuras</button></div></div>',view(a.id));
  K.bindBack(leave);q1('#aagain').onclick=()=>open(a.id);q1('#aback').onclick=leave;K.speak(a.end);K.shell.showNew(news)}
 
-return{list:ADV,open,resume,resumeInfo,MEC,FIGS,walkPlan}
+/* Un solo reto de una aventura dentro de una clase guiada (no guarda medalla, estrellas ni s.resume). */
+function playChallenge(id,idx,o){const a=advOf(id),chs=a.build(Math.random,ctxNow());run={a,chs:[chs[Math.min(idx,chs.length-1)]],i:0,res:[],lesson:true,onDone:o.onDone,onLeave:o.onLeave};challenge()}
+
+return{list:ADV,open,playChallenge,resume,resumeInfo,MEC,FIGS,walkPlan}
+};
+})(typeof globalThis!=='undefined'?globalThis:this);
+</script><script>/* Orquestador de clases guiadas («Mi camino de aprendizaje»).
+   NO es otro motor educativo: ordena y encadena lo que ya existe (openSkill con sus cinco fases, rondas de símbolos del módulo original,
+   retos de aventura) según el currículo de curriculum.js. Todo el estado propio vive en state.course; el juego libre nunca lo modifica. */
+(function(root){
+'use strict';
+root.CourseUI=function(K,G,Adv,Sh){
+const CUR=root.Curriculum,C=root.Content,P=root.Progress,esc=K.escape;
+const qa=(sel,r)=>Array.from((r||document).querySelectorAll(sel)),q1=(sel,r)=>(r||document).querySelector(sel);
+const S=()=>K.state(),course=()=>CUR.ensure(S()),nm=()=>Sh.nm(),now=()=>Date.now(),save=()=>K.save();
+let act=false,news=null;
+const speak=(t,tap)=>tap&&K.speakTap?K.speakTap(t):K.speak(t);
+function env(){const sn=Sh.snapshot();return{states:sn.states,sym:K.symCounts(),sn}}
+const unitOf=l=>CUR.units[CUR.unitIndex(l.unit)];
+const titleOf=id=>C.byId[id]?C.byId[id].title:id;
+const PHASE_L={learn:'Aprendo',examples:'Ejemplos',practice:'Practico',reinforce:'Refuerzo',check:'Compruebo'};
+
+/* ---------- estado visible desde la portada ---------- */
+function stepLabel(cur){if(!cur)return'';if(cur.step==='welcome')return'Al empezar';if(cur.step==='game')return'Jugamos';if(cur.step==='recall')return'Recordamos';
+ if(cur.snap&&cur.snap.phase)return PHASE_L[cur.snap.phase]||'En marcha';if(cur.items&&cur.items.length)return'Repaso '+(cur.items.length+1);return'En marcha'}
+function homeInfo(){const c=course(),e=env(),n=CUR.next(c,e,now()),u=CUR.currentUnit(c),up=CUR.unitProgress(c,u.id),ls=CUR.unitLessons(u.id);
+ let label,sub;
+ if(n.kind==='continuar'){label='Continuar mi clase';sub=n.lesson.kid+' · '+stepLabel(c.cur)}
+ else if(n.kind==='primera'){label='Empezar mi primera clase';sub=n.lesson.kid}
+ else if(n.kind==='siguiente'){label='Mi siguiente clase';sub=n.lesson.kid+(n.mode==='refuerzo'?' · otra mirada con calma':n.mode==='confirmar'?' · solo lo comprobamos':'')}
+ else{label='Repasar mi camino';sub='¡Recorriste todo el camino!'}
+ return{label,sub,kind:n.kind,lesson:n.lesson,mode:n.mode,reason:n.reason,cur:!!c.cur,
+  unit:{n:CUR.unitIndex(u.id)+1,total:CUR.units.length,title:u.title,icon:u.icon,done:up.done,total2:up.total,pips:ls.map(l=>c.cur&&c.cur.l===l.id?'c':CUR.isDone(c,l.id)?'d':CUR.status(c,l.id)==='refuerzo'?'r':'')}}}
+
+/* ---------- pantallas puente ---------- */
+function bridge(o){K.page('<div class="clsbridge"><div class="cb-i" aria-hidden="true">'+o.icon+'</div><span class="eyebrow">'+esc(o.eyebrow||'Mi clase')+'</span><h1>'+esc(o.title)+'</h1><p class="lead">'+esc(o.text)+'</p><div class="row center"><button class="soft" id="cbhear">♫ Escuchar</button><button class="primary xl" id="cbgo">'+esc(o.btn||'▶ Seguir')+'</button></div><div class="row center"><button class="linkb" id="cblater">Ahora no, guardar mi lugar</button></div></div>','cls:bridge');
+ q1('#cbgo').onclick=o.go;q1('#cblater').onclick=pause;q1('#cbhear').onclick=()=>speak(o.say||o.text,1);speak(o.say||o.text)}
+
+/* ---------- comenzar, pausar, reanudar ---------- */
+function begin(){const c=course();if(c.cur){resume();return}const n=CUR.next(c,env(),now());if(!n.lesson){camino();return}
+ if(!c.started&&!c.diag.done&&!c.diag.skipped&&!Object.keys(c.done).length){mochilaIntro();return}
+ start(n.lesson,n.mode)}
+function start(l,mode){const c=course();c.cur={l:l.id,mode:mode||'nueva',step:'welcome',recall:null,items:[],rs:null,game:0,struggle:0,cd:null,snap:null,t0:now(),symBefore:(K.symCounts()[l.area]||0)};save();act=true;welcome(l)}
+function pause(){const c=course();act=false;if(c.cur){save();K.notice('Tu clase quedó guardada. ¡Aquí te esperamos!')}Sh.hoy()}
+function abandon(){const c=course();c.cur=null;save();act=false}
+function resume(){const c=course(),cur=c.cur,l=cur&&CUR.byId[cur.l];if(!l){c.cur=null;save();Sh.hoy();return}act=true;
+ if(cur.step==='welcome'){welcome(l);return}
+ if(cur.cd&&cur.snap){if(cur.step==='game'){G.rebuildRun(cur.snap,cur.cd,true);gameBridge(l);return}G.rebuildRun(cur.snap,cur.cd);return}
+ if(cur.step==='recall'){recallStep(l);return}
+ mainStep(l)}
+
+/* ---------- bienvenida ---------- */
+function planSteps(l,cur){const c=course(),steps=[],long=c.prefs.min>8;
+ if(cur.mode==='confirmar'){steps.push(['⭐','Comprobamos lo que ya sabes'])}
+ else if(l.kind==='skill'){if(long&&CUR.pickRecall(c,l,now()))steps.push(['🧠','Recordamos algo que ya aprendimos']);steps.push(['💡','Aprendemos y vemos ejemplos']);steps.push(['✋','Practicamos con ayudas']);if(l.game&&c.prefs.game&&long)steps.push(['🎮','Jugamos']);steps.push(['⭐','Comprobamos'])}
+ else if(l.kind==='symbols'){if(long&&CUR.pickRecall(c,l,now()))steps.push(['🧠','Recordamos algo que ya aprendimos']);steps.push(['👀','Miramos y escuchamos']);steps.push(['✋','Practicamos'])}
+ else steps.push(['🧠','Recordamos tres cosas']);
+ steps.push(['🎉','Celebramos y vemos qué sigue']);return steps}
+function welcome(l){const c=course(),cur=c.cur,u=unitOf(l),say='¡Hola, '+nm()+'! Hoy vamos a '+l.hook+'.'+(cur.mode==='confirmar'?' Ya sabes algo de esto, así que solo lo comprobamos.':cur.mode==='refuerzo'?' Lo miramos otra vez, con calma.':'');
+ K.page('<div class="clswel"><span class="chip">'+u.icon+' Unidad '+(CUR.unitIndex(u.id)+1)+' · '+esc(u.title)+'</span><div class="cw-char" aria-hidden="true">'+Sh.avatar('face','cwface')+'</div><span class="eyebrow">Mi clase</span><h1>'+esc(l.kid)+'</h1><p class="lead">'+esc(say)+'</p><ol class="cw-steps">'+planSteps(l,cur).map(([e,t])=>'<li><i aria-hidden="true">'+e+'</i><span>'+esc(t)+'</span></li>').join('')+'</ol><p class="small">Unos '+c.prefs.min+' minutos, sin prisa. Puedes parar cuando quieras: tu lugar queda guardado.</p><div class="row center"><button class="soft" id="cwhear">♫ Escuchar</button><button class="primary xl" id="cwgo">▶ ¡Vamos!</button></div><div class="row center"><button class="linkb" id="cwlater">Ahora no, guardar mi lugar</button></div></div>','cls:welcome');
+ q1('#cwhear').onclick=()=>speak(say,1);q1('#cwlater').onclick=pause;q1('#cwgo').onclick=()=>{if(cur.mode!=='confirmar'&&c.prefs.min>8&&CUR.pickRecall(c,l,now()))recallStep(l);else mainStep(l)};speak(say)}
+
+/* ---------- 2 · recordamos ---------- */
+function recallStep(l){const c=course(),cur=c.cur,r=CUR.pickRecall(c,l,now());if(!r){mainStep(l);return}
+ cur.step='recall';cur.recall={skill:r.skill,why:r.why,done:0};cur.cd={role:'recall',l:l.id,skill:r.skill};cur.snap=null;save();
+ const t=titleOf(r.skill),say='Antes de aprender algo nuevo, recordamos: '+t+'. Son solo dos preguntas.';
+ bridge({icon:C.byId[r.skill].icon,eyebrow:'Recordamos',title:t,text:say,btn:'▶ Recordar',go:()=>G.openSkill(r.skill,'review',{limit:2,course:cur.cd})})}
+
+/* ---------- 3-5 · aprendemos, ejemplos, practicamos, jugamos, comprobamos ---------- */
+function mainStep(l){const c=course(),cur=c.cur;cur.step='main';cur.snap=null;
+ if(l.kind==='skill'){const sk0=C.byId[l.skill];if(sk0.available&&!sk0.available(C.ctxFrom(K.E,S(),new Date()))){bridge({icon:'✏️',eyebrow:'Mi clase',title:'Falta mi nombre',text:'Para esta clase un adulto debe escribir el nombre en Ajustes. Tu lugar queda guardado.',btn:'Entendido',go:pause});return}
+  const mode=({nueva:'full',refuerzo:'extra',confirmar:'review',repaso:'full'})[cur.mode]||'full';cur.cd={role:'main',l:l.id,mode:cur.mode};save();G.openSkill(l.skill,mode,{course:cur.cd})}
+ else if(l.kind==='symbols'){cur.cd=null;cur.symBefore=K.symCounts()[l.area]||0;save();K.startRound(l.area,null,{l:l.id,role:'main'})}
+ else reviewNext(l)}
+function reviewNext(l){const c=course(),cur=c.cur;if(!cur.rs)cur.rs=CUR.reviewSkills(c,l,now());
+ if(!cur.rs.length){finishLesson(l,{ok:true,ck:[0,0],mode:'repaso',items:[]});return}
+ if(cur.items.length>=cur.rs.length){const g=cur.items.filter(i=>i.good).length;finishLesson(l,{ok:g>=Math.min(2,cur.items.length),ck:[g,cur.items.length],mode:'repaso',items:cur.items.map(i=>({skill:i.skill,good:i.good}))});return}
+ const i=cur.items.length,sk=cur.rs[i];cur.cd={role:'review',l:l.id,skill:sk,idx:i};cur.snap=null;save();
+ const say='Recordamos: '+titleOf(sk)+'. Son dos preguntas.';
+ bridge({icon:C.byId[sk].icon,eyebrow:'Repaso '+(i+1)+' de '+cur.rs.length,title:titleOf(sk),text:say,btn:'▶ Recordar',go:()=>G.openSkill(sk,'review',{limit:2,course:cur.cd})})}
+
+/* Se llama justo antes de la comprobación: si hay un juego relacionado, se juega ahora (decisión pedagógica: practicar jugando antes de comprobar). */
+function beforeCheck(run){const c=course(),cur=c.cur,cd=run.course;if(!cur||!cd||cd.role!=='main'||cur.l!==cd.l)return false;const l=CUR.byId[cur.l];
+ const fails=[...run.res.practice,...run.res.reinforce].filter(r=>!r.ok).length;if(fails>=3)cur.struggle=1;
+ const want=l.game&&c.prefs.game&&c.prefs.min>8&&cur.mode!=='confirmar'&&cur.mode!=='repaso'&&!cur.struggle&&!cur.game;
+ if(!want){save();return false}
+ cur.step='game';G.snapNow();save();gameBridge(l);return true}
+function gameBridge(l){const cur=course().cur;
+ bridge({icon:'🎮',eyebrow:'Jugamos',title:'¡Ahora jugamos!',text:'Un juego para practicar lo que aprendimos. Después comprobamos.',btn:'▶ ¡A jugar!',
+  go:()=>Adv.playChallenge(l.game.adv,l.game.ch,{onDone:()=>{cur.game=1;cur.step='main';save();G.continueRun()},onLeave:pause})})}
+
+/* ---------- resultados que llegan de games.js y app.js ---------- */
+function skillFinished(run,res,n){const c=course(),cd=run.course,cur=c.cur;news=n||null;const good=P.good({ok:res.ok,of:res.of});
+ if(cd.role==='probe'){probeDone(cd,good);return}
+ const l=CUR.byId[cd.l];if(!cur||!l||cur.l!==cd.l){Sh.hoy();return}
+ cur.snap=null;
+ if(cd.role==='recall'){cur.recall.ok=res.ok;cur.recall.of=res.of;cur.recall.good=good?1:0;cur.recall.done=1;cur.cd=null;save();K.notice(good?'¡Te acordaste! Muy bien.':'Lo vamos a repasar otra vez más adelante.');mainStep(l);return}
+ if(cd.role==='review'){cur.items.push({skill:cd.skill,ok:res.ok,of:res.of,good:good?1:0});cur.cd=null;save();reviewNext(l);return}
+ if(cur.mode==='confirmar'&&!good){cur.mode='nueva';cur.fell=[res.ok,res.of];cur.cd=null;save();
+  bridge({icon:'🌱',eyebrow:'Mi clase',title:'Vamos a verlo juntos',text:'Esto todavía se está aprendiendo, y está bien. Lo practicamos paso a paso.',btn:'▶ Empezar',go:()=>mainStep(l)});return}
+ finishLesson(l,{ok:good,ck:[res.ok,res.of],er:res.er,hn:res.hn,mode:cur.mode,bad:res.bad})}
+function symbolsDone(cd,r){const c=course(),cur=c.cur,l=CUR.byId[cd.l];if(!cur||!l||cur.l!==cd.l){Sh.hoy();return}
+ const after=K.symCounts()[l.area]||0,ok=cur.symBefore>=l.reach?r.ind>=3:after>=l.reach;
+ finishLesson(l,{ok,ck:[r.ind,5],er:r.supported,hn:0,mode:cur.mode,reach:[cur.symBefore,after,l.reach]})}
+function finishLesson(l,res){const c=course(),cur=c.cur;res.recall=cur&&cur.recall&&cur.recall.done?{skill:cur.recall.skill,good:cur.recall.good}:null;res.fell=cur&&cur.fell||null;
+ const rec=CUR.recordLesson(c,l,res,now());save();act=false;closeScreen(l,rec,res)}
+
+/* ---------- 8 · celebramos y mostramos qué sigue ---------- */
+function closeScreen(l,rec,res){const c=course(),e=env(),n=CUR.next(c,e,now()),today=CUR.classesToday(c,now()),over=today>=c.prefs.perDay,ok=!!res.ok;
+ const retrySym=l.kind==='symbols'&&!ok&&rec.n<CUR.MAX_ATTEMPTS;
+ const head=ok?'¡Terminaste tu clase, '+nm()+'!':'¡Hiciste un buen esfuerzo, '+nm()+'!',
+  body=ok?(l.kind==='review'?'Hoy recordaste cosas que ya sabías.':'Hoy aprendiste: '+l.kid+'.'):(retrySym?'Una ronda más y aparecen cosas nuevas.':'Esto se aprende poco a poco. Lo veremos otra vez con calma.');
+ const ck=res.ck&&res.ck[1]?(l.kind==='review'?'Recordaste '+res.ck[0]+' de '+res.ck[1]+' sin ayuda.':'En la comprobación: '+res.ck[0]+' de '+res.ck[1]+' sin ayuda.'):'';
+ const rc=res.recall?(res.recall.good?'Te acordaste de «'+titleOf(res.recall.skill)+'».':'Repasaremos «'+titleOf(res.recall.skill)+'» otro día.'):'';
+ const nextTxt=n.lesson?'<div class="cc-next"><span class="eyebrow">Lo que sigue</span><b>'+esc(n.lesson.kid)+'</b><small>'+esc(unitOf(n.lesson).title)+'</small></div>':'<div class="cc-next"><b>¡Recorriste todo el camino!</b><small>Puedes repasar o jugar libremente.</small></div>';
+ const say=head+' '+body+(n.lesson&&!over?' Mañana o ahora, sigue: '+n.lesson.kid+'.':'');
+ K.page('<div class="clsclose"><div class="result-icon" aria-hidden="true">'+(ok?'🌟':'🌱')+'</div><span class="eyebrow">Clase terminada</span><h1>'+esc(head)+'</h1><p class="lead">'+esc(body)+'</p><div class="cc-detail">'+(ck?'<p>'+esc(ck)+'</p>':'')+(rc?'<p>'+esc(rc)+'</p>':'')+'<p class="small">No es una nota: es una muestra de hoy.</p></div>'+nextTxt+
+  (over&&!retrySym?'<p class="small">Hoy ya hiciste '+today+' clase'+(today===1?'':'s')+'. ¡Descansar y jugar también enseña!</p>':'')+
+  '<div class="row center">'+(retrySym?'<button class="primary xl" id="ccagain">▶ Otra ronda</button>':n.lesson&&!over?'<button class="primary xl" id="ccnext">▶ Mi siguiente clase</button>':'<button class="primary xl" id="ccplay">🎮 Jugar libremente</button>')+
+  '<button class="soft" id="ccrest">'+(over||retrySym?(n.lesson&&!retrySym?'▶ Otra clase más':'Descansar'):'Descansar')+'</button></div></div>','cls:close');
+ const nx=q1('#ccnext'),ag=q1('#ccagain'),pl=q1('#ccplay'),rs=q1('#ccrest');
+ if(nx)nx.onclick=()=>start(n.lesson,n.mode);if(ag)ag.onclick=()=>start(l,'refuerzo');if(pl)pl.onclick=()=>Sh.jugar();
+ rs.onclick=()=>{if(over&&n.lesson&&!retrySym)start(n.lesson,n.mode);else Sh.hoy()};
+ speak(say);if(news&&K.shell)setTimeout(()=>K.shell.showNew(news),600);news=null}
+
+/* ---------- exploración inicial: «La mochila misteriosa» ---------- */
+function mochilaIntro(){const c=course(),tmp=c.diag.tmp,say='Vamos a jugar con la mochila misteriosa. Sacamos cosas y tú respondes lo que sepas. Si no sabes, tocas «Todavía no lo sé». No hay notas.';
+ K.page('<div class="clsbridge mochila"><div class="cb-i" aria-hidden="true">🎒</div><span class="eyebrow">Antes de empezar</span><h1>La mochila misteriosa</h1><p class="lead">Sacamos cosas de la mochila y respondes lo que sepas. Así sabemos por dónde empezar. <b>No hay notas ni errores.</b></p><p class="small">Son '+CUR.PROBES.length+' preguntas cortas, unos 4 minutos.'+(tmp&&tmp.idx?' Ya llevabas '+tmp.idx+'.':'')+'</p><div class="row center"><button class="soft" id="mhear">♫ Escuchar</button><button class="primary xl" id="mgo">🎒 '+(tmp&&tmp.idx?'Seguir con la mochila':'Abrir la mochila')+'</button></div><div class="row center"><button class="soft" id="mskip">Empezar desde cero</button><button class="linkb" id="mlater">Ahora no</button></div></div>','cls:mochila');
+ q1('#mhear').onclick=()=>speak(say,1);q1('#mgo').onclick=()=>{act=true;c.diag.tmp=c.diag.tmp||{idx:0,res:{}};save();probe(c.diag.tmp.idx)};
+ q1('#mskip').onclick=()=>{CUR.applyDiag(c,{},now(),true);delete c.diag.tmp;save();const n=CUR.next(c,env(),now());start(n.lesson,n.mode)};q1('#mlater').onclick=()=>Sh.hoy();speak(say)}
+function probe(i){const c=course();if(i>=CUR.PROBES.length){mochilaEnd();return}c.diag.tmp=c.diag.tmp||{idx:0,res:{}};c.diag.tmp.idx=i;save();
+ const skill=CUR.PROBES[i];G.openSkill(skill,'review',{limit:1,course:{role:'probe',l:'diag',idx:i,n:CUR.PROBES.length,skill}})}
+function probeDone(cd,good){const c=course();c.diag.tmp=c.diag.tmp||{idx:0,res:{}};c.diag.tmp.res[cd.skill]=good?1:0;c.diag.tmp.idx=cd.idx+1;save();probe(cd.idx+1)}
+function mochilaEnd(){const c=course(),res=c.diag.tmp?c.diag.tmp.res:{};CUR.applyDiag(c,res,now(),false);delete c.diag.tmp;save();act=false;
+ const sm=CUR.diagSummary(c),n=CUR.next(c,env(),now()),say='¡Terminamos la mochila, '+nm()+'! Ya sé por dónde empezamos.';
+ K.page('<div class="clsclose"><div class="result-icon" aria-hidden="true">🎒</div><span class="eyebrow">¡Terminamos!</span><h1>'+esc(say)+'</h1><div class="cc-detail">'+(sm.known.length?'<p><b>Ya conoces algo de:</b> '+sm.known.map(k=>esc(C.byId[k].icon+' '+C.byId[k].title)).join(' · ')+'. Esas clases serán más cortas: solo las comprobamos.</p>':'<p>Empezamos con lo más sencillo, paso a paso.</p>')+(sm.later.length?'<p><b>Lo vamos a aprender juntos:</b> '+sm.later.map(k=>esc(C.byId[k].icon+' '+C.byId[k].title)).join(' · ')+'.</p>':'')+'<p class="small">Esto no es una nota. Se ajusta solo mientras avanzamos.</p></div>'+(n.lesson?'<div class="cc-next"><span class="eyebrow">Empezamos por</span><b>'+esc(n.lesson.kid)+'</b></div>':'')+'<div class="row center"><button class="primary xl" id="mstart">▶ Empezar mi primera clase</button><button class="soft" id="mrest">Después</button></div></div>','cls:mochila');
+ q1('#mstart').onclick=()=>n.lesson?start(n.lesson,n.mode):camino();q1('#mrest').onclick=()=>Sh.hoy();speak(say)}
+
+/* ---------- el mapa: Mi camino ---------- */
+const ST_ICON={hecha:'✅',apoyo:'🌱',refuerzo:'🔁',nueva:'▶'};
+function camino(){const c=course(),e=env(),n=CUR.next(c,e,now()),tot=CUR.totals(c),hi=homeInfo(),curU=CUR.currentUnit(c);act=false;
+ const rows=u=>CUR.unitLessons(u.id).map(l=>{const st=CUR.status(c,l.id),av=CUR.available(c,l),isCur=c.cur&&c.cur.l===l.id,isNext=n.lesson&&n.lesson.id===l.id&&!c.cur,locked=!av.ok||(c.cur&&!isCur);
+  const ic=isCur?'▶':isNext?'⭐':locked?'🔒':ST_ICON[st],lab=isCur?'En curso':isNext?'Siguiente':st==='hecha'?'Hecha':st==='apoyo'?'Seguimos con apoyo':st==='refuerzo'?'Otra mirada':!av.ok?'Más adelante':c.cur?'Termina tu clase primero':'Disponible';
+  return '<li><button class="lrow'+(isNext||isCur?' cur':'')+(st==='hecha'?' ok':'')+'" data-lesson="'+l.id+'"'+(locked?' disabled aria-disabled="true"':'')+'><span class="lr-i" aria-hidden="true">'+ic+'</span><span class="lr-t"><strong>'+esc(l.kid)+'</strong><small>'+(l.kind==='review'?'Repaso de la unidad':l.kind==='symbols'?'Símbolos':C.byId[l.skill]?esc(C.byId[l.skill].blurb):'')+' · '+lab+'</small></span></button></li>'}).join('');
+ K.page('<section class="camino"><h1 class="pagetitle">Mi camino</h1><p class="lead">Clase a clase, empezando por lo básico. Llevas <b>'+tot.done+'</b> de '+tot.total+' clases.</p>'+
+  '<div class="pathcta"><button class="primary xl" id="pcgo"><span>▶ '+esc(hi.label)+'</span><small>'+esc(hi.sub)+'</small></button>'+(c.cur?'<button class="linkb" id="pcdrop">Dejar esta clase y elegir otra</button>':'')+(!c.diag.done&&!c.diag.skipped&&!Object.keys(c.done).length?'<button class="soft" id="pcbag">🎒 Jugar la mochila misteriosa</button>':'')+'</div>'+
+  CUR.units.map(u=>{const p=CUR.unitProgress(c,u.id),open=u.id===curU.id,lk=!CUR.unitOpen(c,u.id);return '<details class="unit'+(lk?' lk':'')+'"'+(open?' open':'')+'><summary><span class="u-i" aria-hidden="true">'+u.icon+'</span><span class="u-t"><strong>Unidad '+(CUR.unitIndex(u.id)+1)+' · '+esc(u.title)+'</strong><small>'+esc(u.kid)+'</small></span><span class="u-c">'+(lk?'🔒':p.done+' de '+p.total)+'</span></summary><ul class="lessons">'+rows(u)+'</ul></details>'}).join('')+
+  '<p class="small">Las clases se hacen en orden razonable, pero tú puedes jugar o explorar lo que quieras en <b>Aprender</b> y <b>Jugar</b>: eso no cambia tu lugar en el camino.</p></section>','camino');
+ q1('#pcgo').onclick=begin;const d=q1('#pcdrop');if(d)d.onclick=()=>{if(confirm('¿Dejar la clase a medias? Se pierde solo la posición dentro de esa clase; lo aprendido se conserva.')){abandon();camino()}};
+ const b=q1('#pcbag');if(b)b.onclick=mochilaIntro;
+ qa('[data-lesson]').forEach(x=>x.onclick=()=>{const l=CUR.byId[x.dataset.lesson];if(c.cur)return;start(l,CUR.modeFor(c,l,e))})}
+
+/* ---------- panel adulto: seguimiento del curso ---------- */
+const fmt=d=>{const [y,m,x]=String(d).split('-');return x+'/'+m};
+const MODO={nueva:'clase nueva',refuerzo:'refuerzo',confirmar:'comprobación',repaso:'repaso'};
+function upcoming(c,e,max){const out=[];for(const l of CUR.lessons){if(CUR.isDone(c,l.id))continue;if(!CUR.available(c,l).ok)continue;out.push(l);if(out.length>=max)break}return out}
+function adultHTML(){const c=course(),e=env(),n=CUR.next(c,e,now()),tot=CUR.totals(c),u=CUR.currentUnit(c),sn=e.sn,df=CUR.difficulties(c),up=upcoming(c,e,3),due=CUR.dueReviews(c,now()),sm=CUR.diagSummary(c);
+ const clsLog=c.log.filter(x=>x.k==='clase'||x.k==='repaso').slice(-8).reverse(),days=[];for(let i=6;i>=0;i--)days.push(CUR.addDays(CUR.day(now()),-i));
+ const libre={},clase={};for(const k of C.skills)for(const h of P.hist(sn.recs[k.id])){if(h.src==='clase')clase[h.d]=(clase[h.d]||0)+1;else libre[h.d]=(libre[h.d]||0)+1}
+ const intro=tot.done,okc=CUR.lessons.filter(l=>c.done[l.id]&&c.done[l.id].ok).length,dom=C.skills.filter(k=>{const s=sn.states[k.id].state;return s==='comprobada'||s==='consolidacion'}).length;
+ const lessonLine=l=>'<b>'+esc(l.kid)+'</b> <small>('+esc(unitOf(l).title)+')</small>';
+ return '<h3>Mi camino · clases guiadas</h3><p class="small">Aquí se ve el <b>recorrido de clases</b>. No es lo mismo que el <b>dominio de cada habilidad</b> (pestaña Progreso) ni que el <b>nivel de aventura</b> (insignias): una clase terminada significa que se hizo y su comprobación salió bien, no que el aprendizaje esté asegurado.</p>'+
+ '<div class="recbox"><b>Dónde va</b><p>Unidad '+(CUR.unitIndex(u.id)+1)+' de '+CUR.units.length+': «'+esc(u.title)+'». '+(c.cur?'Clase en curso: <b>'+esc(CUR.byId[c.cur.l].kid)+'</b> ('+esc(stepLabel(c.cur))+').':'No hay una clase a medias.')+'</p><p>'+(n.lesson?'Siguiente recomendada: '+lessonLine(n.lesson)+'. <small>'+esc(n.reason)+'</small>':'Recorrió todo el camino.')+'</p><p>Clases terminadas: <b>'+tot.done+'</b> de '+tot.total+'.</p></div>'+
+ '<h4>Unidades</h4><ul class="aul">'+CUR.units.map(x=>{const p=CUR.unitProgress(c,x.id);return '<li>'+x.icon+' '+esc(x.title)+': <b>'+p.done+'</b> de '+p.total+(CUR.unitOpen(c,x.id)?'':' <small>(todavía cerrada)</small>')+'</li>'}).join('')+'</ul>'+
+ '<h4>Clases finalizadas recientes</h4>'+(clsLog.length?'<ul class="aul">'+clsLog.map(x=>{const l=CUR.byId[x.l];return '<li>'+fmt(x.d)+' · '+esc(l?l.kid:x.l)+' · '+(MODO[x.m]||'clase')+(x.ck&&x.ck[1]?' · '+x.ck[0]+' de '+x.ck[1]+' sin ayuda':'')+(x.ok?'':' <small>(se repite con calma)</small>')+'</li>'}).join('')+'</ul>':'<p class="small">Todavía no hay clases terminadas.</p>')+
+ '<h4>Habilidades (tres cosas distintas)</h4><ul class="aul"><li>Introducidas en clase: <b>'+intro+'</b> lecciones (incluyen repasos de unidad y símbolos).</li><li>Con comprobación buena en clase: <b>'+okc+'</b>.</li><li>Con dominio demostrado (varios días y formas de jugar, de cualquier origen): <b>'+dom+'</b> de '+C.skills.length+'.</li></ul>'+
+ '<h4>Dificultades encontradas</h4>'+((df.lecciones.length||df.repasos.length)?'<ul class="aul">'+df.lecciones.map(x=>'<li>'+esc(x.l.kid)+': '+x.tipo+' ('+x.n+' intento'+(x.n===1?'':'s')+')</li>').join('')+df.repasos.map(x=>'<li>Repaso de «'+esc(titleOf(x.skill))+'»: salió flojo; vuelve a aparecer el '+fmt(x.due)+'.</li>').join('')+'</ul>':'<p class="small">Sin dificultades registradas.</p>')+
+ '<h4>Próximos contenidos</h4><ul class="aul">'+(up.length?up.map(l=>'<li>'+lessonLine(l)+'</li>').join(''):'<li>Nada pendiente.</li>')+'</ul>'+
+ '<h4>Repasos pendientes</h4>'+(due.length?'<ul class="aul">'+due.slice(0,8).map(x=>'<li>'+esc(titleOf(x.skill))+' <small>(tocaba el '+fmt(x.due)+')</small></li>').join('')+'</ul><p class="small">Aparecen solos en «Recordamos» al inicio de las próximas clases.</p>':'<p class="small">No hay repasos pendientes hoy.</p>')+
+ '<h4>Clases y juego libre (últimos 7 días)</h4><table class="atable"><tr><th>Día</th><th>Clases</th><th>Juego libre</th></tr>'+days.map(d=>'<tr><td>'+fmt(d)+'</td><td>'+(clase[d]||0)+'</td><td>'+(libre[d]||0)+'</td></tr>').join('')+'</table><p class="small">Cuenta sesiones de habilidades guardadas. El juego libre aporta evidencias al dominio, pero <b>no mueve el camino</b>.</p>'+
+ '<h4>En casa esta semana</h4><ul class="aul">'+(up.slice(0,2).filter(l=>l.skill).map(l=>'<li>'+esc(C.byId[l.skill].home)+'</li>').join('')||'<li>Cuenten cosas, nombren colores y hablen del día.</li>')+'</ul>'+
+ '<h4>Exploración inicial</h4><p class="small">'+(c.diag.done?'Hecha el '+fmt(CUR.day(c.diag.ts))+': ya reconocía '+(sm.known.length?sm.known.map(k=>esc(titleOf(k))).join(', '):'nada todavía')+'; lo demás se aprende en clase. Sin nota.':c.diag.skipped?'Se empezó desde cero.':'Aún no se hizo.')+'</p><div class="row"><button class="soft" id="cuMochila">🎒 '+(c.diag.done?'Repetir la mochila':'Jugar la mochila')+'</button></div>'+
+ '<h4>Preferencias de las clases</h4><label for="cuMin">Duración orientativa (sin cronómetro)</label><select id="cuMin">'+[8,10,12].map(m=>'<option value="'+m+'"'+(c.prefs.min===m?' selected':'')+'>'+m+' minutos'+(m===8?' (sin juego ni recuerdo)':m===12?' (con juego y recuerdo)':'')+'</option>').join('')+'</select><label for="cuPer">Clases por día recomendadas</label><select id="cuPer">'+[1,2,3,4].map(m=>'<option value="'+m+'"'+(c.prefs.perDay===m?' selected':'')+'>'+m+'</option>').join('')+'</select><label class="chk"><input type="checkbox" id="cuGame"'+(c.prefs.game?' checked':'')+'> Incluir un juego relacionado en las clases</label><p class="small">Al pasar de las clases recomendadas el niño solo ve una sugerencia de descansar; nunca se bloquea ni se castiga.</p>'+
+ '<div class="row"><button class="soft" id="cuReset">Reiniciar el camino…</button></div><p class="small">Reiniciar borra solo el recorrido de clases; no toca el dominio, las insignias, el nivel ni el juego libre.</p>'}
+function bindAdult(refresh){const c=course();
+ const mm=q1('#cuMin');if(mm)mm.onchange=()=>{c.prefs.min=+mm.value;save()};const pp=q1('#cuPer');if(pp)pp.onchange=()=>{c.prefs.perDay=+pp.value;save()};const gg=q1('#cuGame');if(gg)gg.onchange=()=>{c.prefs.game=gg.checked;save()};
+ const mo=q1('#cuMochila');if(mo)mo.onclick=()=>{const d=q1('#dialog');if(d&&d.open)d.close();if(c.cur&&!confirm('Hay una clase a medias. ¿Dejarla para jugar la mochila?'))return;if(c.cur)abandon();c.diag.tmp=null;mochilaIntro()};
+ const rs=q1('#cuReset');if(rs)rs.onclick=()=>{if(!confirm('¿Reiniciar el recorrido de clases desde la primera? No se borra el dominio, las insignias ni el juego libre.'))return;const pf=c.prefs;S().course=CUR.fresh();S().course.prefs=pf;save();refresh()}}
+
+return{active:()=>act,pause,begin,resume,start,camino,homeInfo,skillFinished,symbolsDone,beforeCheck,adultHTML,bindAdult,abandon,mochilaIntro,state:course,env}
 };
 })(typeof globalThis!=='undefined'?globalThis:this);
 </script><script>/* Centro de Estudios Carlos José · cáscara de la aplicación (v5):
@@ -1978,10 +2487,10 @@ function avatar(kind,cls){const p=st().profile,src=kind==='face'?(p.face||AS.fac
 
 /* ---------- navegación ---------- */
 const TABS={hoy:'home',aprender:'aprender',jugar:'jugar',logros:'logros'};
-const HUB=['home','aprender','jugar','logros'];
+const HUB=['home','camino','aprender','jugar','logros'];
 function mode(name){const hub=HUB.includes(name)||String(name).startsWith('gm:'),app=$('#app');if(app)app.dataset.mode=hub?'hub':'focus';
- const act=name==='home'?'hoy':name==='jugar'?'jugar':name==='logros'?'logros':'aprender';$$('[data-tab]').forEach(b=>{b.classList.toggle('on',hub&&b.dataset.tab===act);if(hub&&b.dataset.tab===act)b.setAttribute('aria-current','page');else b.removeAttribute('aria-current')})}
-const go=t=>({hoy,aprender,jugar,logros})[t]();
+ const act=name==='home'?'hoy':name==='camino'?'camino':name==='jugar'?'jugar':name==='logros'?'logros':'aprender';if(app)app.dataset.cls=String(name).startsWith('cls:')||(K.course&&K.course.active())?'1':'0';$$('[data-tab]').forEach(b=>{b.classList.toggle('on',hub&&b.dataset.tab===act);if(hub&&b.dataset.tab===act)b.setAttribute('aria-current','page');else b.removeAttribute('aria-current')})}
+const go=t=>({hoy,aprender,jugar,logros,camino:()=>K.course.camino()})[t]();
 function bindTabs(){$$('[data-tab]').forEach(b=>b.onclick=()=>go(b.dataset.tab))}
 const pips=(ids,states)=>'<span class="pips" aria-hidden="true">'+ids.map(i=>'<i class="pip s-'+states[i].state+'"></i>').join('')+'</span>';
 const KIND={nuevo:['✨','Nuevo'],seguir:['🌱','Seguir'],repasar:['🔁','Repasar'],confirmar:['✅','Comprobar'],recordar:['🧠','Recordar'],aventura:['🎒','Aventura']};
@@ -1991,16 +2500,18 @@ function startRec(r){if(r.advId)Adv.open(r.advId);else G.openSkill(r.skillId,r.m
 function hoy(){
  const sn=snapshot(),recs=plan(3),ri=G.resumeInfo(),advR=Adv&&Adv.resumeInfo?Adv.resumeInfo():null,res=advR||ri,lv=sn.lv,pct=lv.next?Math.round(lv.into/lv.span*100):100;
  const last=Object.entries(sn.s.badges).sort((a,b)=>b[1].ts-a[1].ts).filter(([id])=>!/^nivel-/.test(id))[0],bc=P.badgeCtx(sn.skills,C.modules,advList(),sn.recs,sn.s.adv,sn.states,sn.now),defs=P.allBadges(bc),lastB=last&&defs.find(b=>b.id===last[0]);
- const first=recs[0],contT=res?'Continuar: '+res.title:first?(first.kind==='nuevo'?'Empezar: ':'Seguir con: ')+first.title:'Explorar',contS=res?res.label:first?first.kid:'¡Elige una aventura!';
+ const ci=K.course.homeInfo(),contT=ci.label,contS=ci.sub,un=ci.unit;
  K.page('<section class="hoy"><div class="hero5"><div class="hero5-sky" aria-hidden="true"><svg viewBox="0 0 400 200" preserveAspectRatio="xMidYMax slice"><circle cx="300" cy="120" r="46" fill="#ffe29a" opacity=".9"/><circle cx="300" cy="120" r="70" fill="#ffe29a" opacity=".22"/><path d="M0 150Q80 120 160 138T400 130V200H0z" fill="#3d7f55"/><path d="M0 172Q90 150 190 164T400 158V200H0z" fill="#2f6b49"/><g stroke="#8fd3a0" stroke-width="2" opacity=".5"><path d="M20 200l40-34M90 200l30-34M160 200l16-34M230 200l-6-34M300 200l-30-34M370 200l-52-34"/></g></svg></div>'+
  '<div class="hero5-text"><span class="eyebrow">Aprendo, juego y descubro</span><h1>¡Hola, '+esc(nm())+'!</h1><div class="lvl"><span class="lvl-i" aria-hidden="true">'+lv.level.icon+'</span><span><b>'+esc(lv.level.name)+'</b><small>Nivel '+lv.level.n+(lv.next?' · camino a '+esc(lv.next.name):' · ¡el más alto!')+'</small></span></div><div class="lvbar" role="img" aria-label="Camino al siguiente nivel"><i style="width:'+Math.max(6,pct)+'%"></i></div>'+
+ '<div class="path" role="img" aria-label="Unidad '+un.n+' de '+un.total+': '+esc(un.title)+'. '+un.done+' de '+un.total2+' clases hechas."><span class="path-t">'+un.icon+' Unidad '+un.n+' · '+esc(un.title)+'</span><span class="path-d" aria-hidden="true">'+un.pips.map(p=>'<i class="'+p+'"></i>').join('')+'</span></div>'+
  '<div class="row hero-actions"><button class="primary xl" id="cont"><span>▶ '+esc(contT)+'</span><small>'+esc(contS)+'</small></button><button class="soft" id="greet" aria-label="Escuchar el saludo">♫</button></div></div>'+
  '<div class="hero5-char" aria-hidden="true">'+avatar('hero')+'</div></div>'+
- '<div class="section-title"><h2>Mi aventura de hoy</h2><small>Elige lo que quieras</small></div><div class="today">'+(recs.length?recs.map((r,i)=>'<button class="tcard k-'+r.kind+'" data-rec="'+i+'"><span class="tc-i" aria-hidden="true">'+r.icon+'</span><span class="tc-t"><em>'+KIND[r.kind][0]+' '+KIND[r.kind][1]+'</em><strong>'+esc(r.title)+'</strong><small>'+esc(r.kid)+'</small></span><span class="tc-go" aria-hidden="true">›</span></button>').join(''):'<p>¡Todo al día! Juega una aventura.</p>')+'</div>'+
+ (res?'<div class="freeres"><span class="fr-i" aria-hidden="true">'+(res.icon||'🎮')+'</span><span class="fr-t"><small>Juego libre a medias</small><b>'+esc(res.title)+'</b><small>'+esc(res.label||'')+'</small></span><button class="soft" id="freeres">Retomar</button></div>':'')+
+ '<div class="section-title"><h2>Mi aventura de hoy</h2><small>Juego libre · no cambia mi camino</small></div><div class="today">'+(recs.length?recs.map((r,i)=>'<button class="tcard k-'+r.kind+'" data-rec="'+i+'"><span class="tc-i" aria-hidden="true">'+r.icon+'</span><span class="tc-t"><em>'+KIND[r.kind][0]+' '+KIND[r.kind][1]+'</em><strong>'+esc(r.title)+'</strong><small>'+esc(r.kid)+'</small></span><span class="tc-go" aria-hidden="true">›</span></button>').join(''):'<p>¡Todo al día! Juega una aventura.</p>')+'</div>'+
  '<div class="section-title"><h2>Aventuras</h2><button class="linkb" id="alladv">Ver todas ›</button></div><div class="advrow">'+(Adv?Adv.list.map(a=>advCard(a,sn.s.adv[a.id])).join(''):'')+'</div>'+
  '<div class="section-title"><h2>Mi último logro</h2></div><div class="lastb">'+(lastB?'<span class="lb-i" aria-hidden="true">'+lastB.icon+'</span><span><strong>'+esc(lastB.title)+'</strong><small>'+esc(lastB.kid)+'</small></span>':'<span class="lb-i" aria-hidden="true">🌱</span><span><strong>Tus logros aparecerán aquí</strong><small>Cada habilidad que practiques te dará estrellas e insignias.</small></span>')+'<button class="soft" id="allach">Ver mis logros</button></div></section>','home');
- $('#cont').onclick=()=>{if(advR&&Adv.resume())return;if(ri&&G.resume())return;if(first)startRec(first);else jugar()};
- $('#greet').onclick=()=>K.speak('¡Hola, '+nm()+'! ¿Listo para aprender, jugar y descubrir?');
+ $('#cont').onclick=()=>K.course.begin();const fr=$('#freeres');if(fr)fr.onclick=()=>{if(advR&&Adv.resume())return;if(ri&&G.resume())return};
+ $('#greet').onclick=()=>K.speakTap('¡Hola, '+nm()+'! ¿Listo para aprender, jugar y descubrir?');
  qa('[data-rec]').forEach(b=>b.onclick=()=>startRec(recs[+b.dataset.rec]));
  $('#alladv').onclick=jugar;$('#allach').onclick=logros;bindAdv()}
 function advCard(a,rec){const done=rec&&rec.runs>0,stars=rec&&rec.stars||0;return '<button class="advcard" data-adv="'+a.id+'" style="--a:'+a.color+'"><span class="adv-i" aria-hidden="true">'+a.icon+'</span><strong>'+esc(a.title)+'</strong><small>'+esc(a.blurb)+'</small><span class="adv-s">'+(done?'⭐'.repeat(stars)+'<em>Jugada</em>':'<em>Nueva</em>')+'</span></button>'}
@@ -2045,7 +2556,7 @@ function bindPersonal(refresh){const s=st();
 /* ---------- panel adulto ---------- */
 const fmtD=d=>{const [y,m,dd]=String(d).split('-');return dd+'/'+m};
 const bars=h=>'<span class="hist" role="img" aria-label="Últimas comprobaciones">'+h.slice(-8).map(e=>'<i class="'+(P.good(e)?'g':e.ok*2<e.of?'b':'')+'" style="height:'+(6+Math.round(e.ok/e.of*18))+'px" title="'+fmtD(e.d)+': '+e.ok+' de '+e.of+' sin ayuda"></i>').join('')+'</span>';
-function adultTabs(tab){return '<h2>Para mamá o papá</h2><div class="atabs" role="tablist">'+[['resumen','Resumen'],['progreso','Progreso'],['casa','En casa'],['ajustes','Ajustes']].map(([k,l])=>'<button role="tab" data-atab="'+k+'" class="'+(k===tab?'on':'')+'" aria-selected="'+(k===tab)+'">'+l+'</button>').join('')+'</div>'}
+function adultTabs(tab){return '<h2>Para mamá o papá</h2><div class="atabs" role="tablist">'+[['resumen','Resumen'],['curso','Mi camino'],['progreso','Progreso'],['casa','En casa'],['ajustes','Ajustes']].map(([k,l])=>'<button role="tab" data-atab="'+k+'" class="'+(k===tab?'on':'')+'" aria-selected="'+(k===tab)+'">'+l+'</button>').join('')+'</div>'}
 function sessionsOf(sn){const out=[];for(const k of C.skills)for(const e of P.hist(sn.recs[k.id]))out.push({k,e});return out.sort((a,b)=>b.e.ts-a.e.ts)}
 function recHTML(max){return plan(max).map(r=>'<div class="recbox"><b>'+r.icon+' '+KIND[r.kind][1]+': '+esc(r.title)+'</b><small>'+esc(r.reason)+'</small></div>').join('')||'<p>Todo al día por hoy.</p>'}
 function resumen(){const sn=snapshot(),ss=sessionsOf(sn),days=new Set(C.skills.flatMap(k=>P.proof(sn.recs[k.id]).active)),total=Object.values(sn.states).reduce((a,x)=>a+x.sessions,0),st=Object.values(sn.states),cnt=k=>st.filter(x=>x.state===k).length,adv=Object.keys(sn.s.adv).filter(k=>sn.s.adv[k].runs>0);
@@ -2064,13 +2575,13 @@ function casa(){const sn=snapshot(),rs=plan(5).filter(r=>r.skillId),weak=C.skill
  (weak.length?'<h3>Si algo cuesta</h3><p class="small">Pasen a objetos reales y a tareas más cortas, sin corregir con prisa:</p>'+weak.map(k=>'<div class="recbox"><b>'+k.icon+' '+esc(k.title)+'</b><small>'+esc(k.home)+'</small></div>').join(''):'')+
  '<h3>Sesiones y descanso</h3><p class="small">Para cinco años funciona mejor una habilidad o una aventura por sesión (5–10 minutos), acompañado, y descansar entre una y otra. Alternen pantalla con juego libre, dibujo y movimiento.</p>'+G.offscreen()}
 function backupHTML(){return '<h3 style="margin-top:22px">Respaldo de avances</h3><p class="small">Los avances viven solo en este navegador (no hay cuentas ni servidores). Descarga un archivo para guardarlo o pasarlo a otro dispositivo. Las fotos no se incluyen.</p><div class="row"><button class="soft" id="bkExp">Descargar respaldo</button><label class="filebtn">Restaurar desde archivo<input type="file" accept="application/json,.json" id="bkImp" hidden></label><button class="soft" id="bkPersist">Proteger datos en este dispositivo</button></div><p class="small" id="bkMsg" role="status"></p>'}
-function aboutHTML(){return '<h3 style="margin-top:22px">Acerca de</h3><p class="small"><b>Centro de Estudios Carlos José</b> · «Aprendo, juego y descubro» · By Carlos Tijerino · versión 5.0 (build '+esc(APPI.build)+'). Basado en el Cuadernillo Didáctico de III Nivel (MINED, 2021). No reproduce un examen del colegio.</p>'}
+function aboutHTML(){return '<h3 style="margin-top:22px">Acerca de</h3><p class="small"><b>Centro de Estudios Carlos José</b> · «Aprendo, juego y descubro» · By Carlos Tijerino · versión 5.1 (build '+esc(APPI.build)+'). Basado en el Cuadernillo Didáctico de III Nivel (MINED, 2021). No reproduce un examen del colegio.</p>'}
 function bindBackup(){const msg=t=>{const m=$('#bkMsg');if(m)m.textContent=t};
  $('#bkExp').onclick=()=>{const data=JSON.parse(JSON.stringify(S()));delete data.resume;delete data.profile;const blob=new Blob([JSON.stringify({app:'centro-carlos-jose',v:5,exportado:Date.now(),estado:data},null,1)],{type:'application/json'}),a=document.createElement('a');a.href=URL.createObjectURL(blob);a.download='respaldo-carlos-jose-'+P.day(Date.now())+'.json';document.body.appendChild(a);a.click();a.remove();setTimeout(()=>URL.revokeObjectURL(a.href),2000);msg('Respaldo descargado.')};
  $('#bkImp').onchange=e=>{const f=e.target.files[0];if(!f)return;const rd=new FileReader();rd.onload=()=>{try{const o=JSON.parse(rd.result),d=o.estado||o;if(!d||d.version!==3||typeof d.records!=='object')throw new Error('formato');if(!confirm('Esto reemplaza los avances de este dispositivo por los del archivo. ¿Continuar?'))return;const keep=S().profile;K.replaceState(Object.assign({},d,{profile:keep}));applyMotion();evaluate(true);msg('Avances restaurados.');adult('ajustes')}catch(err){msg('No se pudo leer el archivo: no parece un respaldo de esta aplicación.')}};rd.readAsText(f)};
  $('#bkPersist').onclick=async()=>{try{const ok=navigator.storage&&navigator.storage.persist?await navigator.storage.persist():false;msg(ok?'Listo: el navegador protegerá los datos de borrados automáticos.':'Este navegador no confirmó la protección. Descarga un respaldo de vez en cuando.')}catch(e){msg('No disponible en este navegador. Descarga un respaldo de vez en cuando.')}}}
 /* ---------- canal de prueba, actualización y diagnóstico del dispositivo ---------- */
-const APPI=root.APP||{channel:'producción',version:'5.0.0',build:'dev',commit:''};
+const APPI=root.APP||{channel:'producción',version:'5.1.0',build:'dev',commit:''};
 function updateReady(){const b=$('#updbar');if(!b)return;b.hidden=false;$('#updgo').onclick=()=>location.reload();$('#updlater').onclick=()=>{b.hidden=true}}
 function ribbon(){if(APPI.channel==='prueba'&&!$('#ribbon')){const r=document.createElement('div');r.id='ribbon';r.textContent='PRUEBA · '+APPI.version+' · '+APPI.build;document.body.appendChild(r)}}
 const CHECKS=[['persist','Cerré y abrí la aplicación y mi avance seguía ahí'],['instale','Instalé la aplicación en la pantalla de inicio'],['offline','La abrí sin conexión (modo avión) y funcionó'],['arrastre','Arrastré con el dedo (clasificar, unir, curitas, piezas)'],['voz','Oí la voz en español'],['respaldo','Descargué y restauré un respaldo'],['update','Vi llegar una versión nueva y la actualicé']];
@@ -2086,11 +2597,12 @@ async function bindDiag(){const s=st();s.diag=s.diag||{};let data={};const msg=t
  const paint=async()=>{data=await diagData();const t=$('#dgtable');if(t)t.innerHTML='<table class="adulttbl"><tbody>'+dgRows(data).map(([a,b,c])=>'<tr><td>'+esc(a)+'</td><td>'+esc(b)+'</td><td>'+dgMark[c]+'</td></tr>').join('')+'</tbody></table>'};await paint();
  let type='',done=false;const ball=$('#dgball');if(ball){ball.addEventListener('pointerdown',e=>{type=e.pointerType||'?'});G.parts.drag(ball,t=>{const b=t&&t.closest&&t.closest('.dgbox');if(b){done=true;msg('✅ Arrastre detectado con: '+(type==='touch'?'dedo (táctil)':type==='mouse'?'ratón':type)+'.');s.diag.arrastreTipo=type;K.save()}else msg('Suelta la pelota sobre la caja.')})}
  const u=$('#dgupd');if(u)u.onclick=async()=>{try{if(!root.appReg)throw 0;await root.appReg.update();msg('Búsqueda hecha. Si hay una versión nueva aparecerá el aviso «Actualizar».')}catch(e){msg('Aquí no hay service worker activo (abre la dirección HTTPS de la aplicación).')};await paint()};
- const v=$('#dgvoice');if(v)v.onclick=()=>{G.parts.tone(660,.2);K.speak('Hola, '+nm()+'. Esta es la voz en español.')};
+ const v=$('#dgvoice');if(v)v.onclick=()=>{G.parts.tone(660,.2);K.speakTap('Hola, '+nm()+'. Esta es la voz en español.')};
  const c=$('#dgcopy');if(c)c.onclick=async()=>{const txt='Informe de prueba · Centro de Estudios Carlos José\n'+dgRows(data).map(([a,b,k])=>dgMark[k]+' '+a+': '+b).join('\n')+'\nArrastre: '+(s.diag.arrastreTipo||'sin probar')+'\nLista: '+CHECKS.map(([k,l])=>(s.diag[k]?'[x] ':'[ ] ')+l).join(' | ');const ta=$('#dgrep');ta.value=txt;ta.hidden=false;try{await navigator.clipboard.writeText(txt);msg('Informe copiado.')}catch(e){ta.focus();ta.select();msg('Copia el informe seleccionado.')}};
  qa('[data-dg]').forEach(b=>b.onchange=()=>{if(b.checked)s.diag[b.dataset.dg]=Date.now();else delete s.diag[b.dataset.dg];K.save()})}
 function adult(tab){const d=$('#dialog'),c=$('#dialogContent');tab=tab||'resumen';
- if(tab==='ajustes'){K.legacyDash();c.insertAdjacentHTML('afterbegin',adultTabs('ajustes'));c.insertAdjacentHTML('beforeend',personalHTML()+backupHTML()+diagHTML()+aboutHTML());bindPersonal(()=>adult('ajustes'));bindBackup();bindDiag()}
+ if(tab==='ajustes'){K.legacyDash();c.insertAdjacentHTML('afterbegin',adultTabs('ajustes'));c.insertAdjacentHTML('beforeend',K.audio.panelHTML()+personalHTML()+backupHTML()+diagHTML()+aboutHTML());K.audio.bindPanel();bindPersonal(()=>adult('ajustes'));bindBackup();bindDiag()}
+ else if(tab==='curso'){c.innerHTML=adultTabs(tab)+K.course.adultHTML();K.course.bindAdult(()=>adult('curso'))}
  else c.innerHTML=adultTabs(tab)+({resumen,progreso,casa})[tab]();
  qa('[data-atab]',c).forEach(b=>b.onclick=()=>adult(b.dataset.atab));if(!d.open)d.showModal()}
 
@@ -2105,10 +2617,10 @@ let voiceErrorShown=false,Sh=null,Adv=null;if(!s.name)s.name='Carlos José';
 let screenToken=0,timers=[],voiceList=[],area='numbers',id='1',round=null,installPrompt=null,cleanup=null,view='home',matchLinks=[],lastMatches=null;
 const titles={numbers:'Números',vowels:'Vocales',colors:'Colores',shapes:'Figuras y X'},hues=Object.fromEntries(Object.entries(Content.COLORS).map(([k,v])=>[k,v.hex])),refs={a:['✈️','avión'],e:['🐘','elefante'],i:['🏝️','isla'],o:['🐻','oso'],u:['🍇','uva']};
 function escape(t){return String(t).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]))}
-function save(){try{localStorage.setItem(SK,JSON.stringify(s))}catch(e){storage=false}$('#sound').textContent=s.sound?'♫':'♪'}
+function save(){try{localStorage.setItem(SK,JSON.stringify(s))}catch(e){storage=false}}
 function later(fn,ms){const token=screenToken;const t=setTimeout(()=>{if(token===screenToken)fn()},ms);timers.push(t);return t}
-function page(html,name){screenToken++;timers.forEach(clearTimeout);timers=[];if(cleanup){cleanup();cleanup=null}if('speechSynthesis'in window)speechSynthesis.cancel();main.innerHTML=html;view=name;window.scrollTo(0,0);syncModules();if(Sh)Sh.mode(name);}
-function speak(text,done){if(!s.sound){if(done)done();return}if(!('speechSynthesis'in window)){notice('La voz no está disponible. Un adulto puede leer las instrucciones.');if(done)done();return}voices();speechSynthesis.cancel();const u=new SpeechSynthesisUtterance(text);u.lang='es-MX';u.rate=s.rate;u.pitch=1;u.voice=voiceList.find(v=>v.voiceURI===s.voice)||voiceList[0]||null;const token=screenToken;u.onend=()=>{if(token===screenToken&&done)done()};u.onerror=e=>{if(token!==screenToken)return;if(!['interrupted','canceled'].includes(e.error)&&!voiceErrorShown){voiceErrorShown=true;notice('No se pudo reproducir la voz. Revisa el volumen y la voz española en ⚙.');}if(done)done()};speechSynthesis.speak(u)}
+function page(html,name){screenToken++;timers.forEach(clearTimeout);timers=[];if(cleanup){cleanup();cleanup=null}if('speechSynthesis'in window)speechSynthesis.cancel();if(Au){Au.duck(false);Au.attention(false)}main.innerHTML=html;view=name;window.scrollTo(0,0);syncModules();if(Sh)Sh.mode(name);}
+function speak(text,done,opt){if(!Au.canSpeak(opt&&opt.tap)){if(done)done();return}if(!('speechSynthesis'in window)){notice('La voz no está disponible. Un adulto puede leer las instrucciones.');if(done)done();return}voices();speechSynthesis.cancel();const u=new SpeechSynthesisUtterance(text);u.lang='es-MX';u.rate=s.rate;u.pitch=1;u.voice=voiceList.find(v=>v.voiceURI===s.voice)||voiceList[0]||null;const token=screenToken;u.onstart=()=>Au.duck(true);u.onend=()=>{Au.duck(false);if(token===screenToken&&done)done()};u.onerror=e=>{Au.duck(false);if(token!==screenToken)return;if(!['interrupted','canceled'].includes(e.error)&&!voiceErrorShown){voiceErrorShown=true;notice('No se pudo reproducir la voz. Revisa el volumen y la voz española en ⚙.');}if(done)done()};speechSynthesis.speak(u)}
 function voices(){voiceList=('speechSynthesis'in window?speechSynthesis.getVoices():[]).filter(v=>/^es/i.test(v.lang));voiceList.sort((a,b)=>Number(b.localService)-Number(a.localService));}
 if('speechSynthesis'in window){voices();speechSynthesis.onvoiceschanged=voices}
 function notice(text){$('#notice').textContent=text;$('#notice').style.display='block';setTimeout(()=>$('#notice').style.display='none',3500)}
@@ -2117,18 +2629,18 @@ function shape(x,size){const d=SHAPE_D[x]||SHAPE_D.X;return '<svg class="shapesv
 function visual(a,x,study=false){if(a==='numbers')return '<span class="'+(study?'big':'')+'">'+x+'</span>';if(a==='vowels')return '<span class="letter '+(study?'big':'')+'">'+x+(study?'<span class="upper">'+x.toUpperCase()+'</span>':'')+'</span>';if(a==='colors')return '<span class="swatch" style="--c:'+hues[x]+'" aria-label="'+x+'"></span>';return shape(x,study?180:undefined)}
 function head(title,back,label){return '<div class="topline"><button class="back" id="back" aria-label="Volver">←</button><h2>'+title+'</h2>'+(label?'<span class="label">'+label+'</span>':'')+'</div>'}
 function bindBack(fn){$('#back').onclick=fn}
-function home(){Sh.hoy()}
-function areaHome(){const pool=E.active(s,area),first=E.target(s,area);page(head(titles[area],home,'Paso a paso')+'<div class="study"><span class="eyebrow">Primero lo conocemos</span>'+visual(area,first,true)+'<h3>'+({numbers:'Un número tiene una cantidad.',vowels:'Las letras también tienen un sonido.',colors:'Mira cómo cambia el color.',shapes:'Mira su forma con atención.'}[area])+'</h3><p>Escucha el ejemplo y después inténtalo.</p><div class="row"><button class="primary" id="learn">▶ Aprender conmigo</button><button class="soft" id="practice">Ya lo vi · Practicar</button></div></div><p>Ahora descubrimos: '+pool.join(' · ')+'. Aparecerán más cuando reconozca estos.</p><div class="lesson-list">'+pool.map(x=>'<button class="mini" data-item="'+x+'">'+escape(x)+'</button>').join('')+'</div>','area');bindBack(home);$('#learn').onclick=()=>teach(first);$('#practice').onclick=()=>startRound(area);$$('[data-item]').forEach(b=>b.onclick=()=>teach(b.dataset.item))}
+function home(){if(kit.course&&kit.course.active()){kit.course.pause();return}Sh.hoy()}
+function areaHome(){if(round&&round.course&&kit.course){kit.course.pause();return}const pool=E.active(s,area),first=E.target(s,area);page(head(titles[area],home,'Paso a paso')+'<div class="study"><span class="eyebrow">Primero lo conocemos</span>'+visual(area,first,true)+'<h3>'+({numbers:'Un número tiene una cantidad.',vowels:'Las letras también tienen un sonido.',colors:'Mira cómo cambia el color.',shapes:'Mira su forma con atención.'}[area])+'</h3><p>Escucha el ejemplo y después inténtalo.</p><div class="row"><button class="primary" id="learn">▶ Aprender conmigo</button><button class="soft" id="practice">Ya lo vi · Practicar</button></div></div><p>Ahora descubrimos: '+pool.join(' · ')+'. Aparecerán más cuando reconozca estos.</p><div class="lesson-list">'+pool.map(x=>'<button class="mini" data-item="'+x+'">'+escape(x)+'</button>').join('')+'</div>','area');bindBack(home);$('#learn').onclick=()=>teach(first);$('#practice').onclick=()=>startRound(area);$$('[data-item]').forEach(b=>b.onclick=()=>teach(b.dataset.item))}
 function lessonText(a,x){return a==='numbers'?'Este es el número '+x+'. Vamos a contar '+x+' objetos.':a==='vowels'?'Esta es la '+x+' minúscula. '+refs[x][1]+' empieza con '+x+'.':a==='colors'?'Este color se llama '+x+'. Míralo con atención.':x==='X'?'Esta es la equis. Son dos líneas inclinadas que se cruzan.':'Este es el '+x+'. Mira su forma.'}
-function teach(x,resume=false){id=x;E.observe(s,area,x);save();const r=refs[x];page(head('Mira y escucha',areaHome,'Aprendo')+'<div class="study">'+visual(area,x,true)+(area==='numbers'?'<div class="objects">'+Array.from({length:+x},(_,i)=>'<button class="count-object" data-count="'+i+'" aria-label="Contar objeto '+(i+1)+'">🍎</button>').join('')+'</div><p>Toca cada manzana. Contamos juntos.</p>':area==='vowels'?'<div class="object">'+r[0]+'</div><h3>'+r[1]+'</h3><p>La grande y la pequeña suenan igual.</p>':'<h3>'+escape(x)+'</h3><p>'+lessonText(area,x)+'</p>')+'</div><div class="row"><button class="soft" id="repeat">♫ Escuchar otra vez</button><button class="primary" id="try">Ahora yo →</button></div>','teach');bindBack(areaHome);$('#repeat').onclick=()=>speak(lessonText(area,x));$('#try').onclick=()=>{if(resume)ask();else startRound(area,x)};let count=0;$$('[data-count]').forEach(b=>b.onclick=()=>{if(b.classList.contains('counted'))return;b.classList.add('counted');b.disabled=true;count++;speak(count===+x?count+'. Hay '+x+' en total.':String(count))});speak(lessonText(area,x));}
-function startRound(a,first){area=a;round={area:a,index:0,total:5,independent:0,supported:0,previous:null,current:first||E.target(s,a),check:false};ask()}
-function ask(){if(!round)return;area=round.area;const x=round.current;if(!round.check&&E.rec(s,area,x).seen===0){teach(x,true);return}const q=E.question(s,area,x);round.quantity=area==='numbers'&&round.index%2===1;round.assisted=false;round.finished=false;page(head(round.check?'Lo que ya reconozco':'Ahora te toca',areaHome,(round.index+1)+' de '+round.total)+'<div class="progress"><i style="width:'+(round.index/round.total*100)+'%"></i></div><div class="center"><button class="soft" id="hear">♫ Escuchar</button><h2 id="prompt">'+printedPrompt(area,x)+'</h2>'+(round.quantity?'<div class="quantity" aria-label="Manzanas para contar">'+'<span>🍎</span>'.repeat(+x)+'</div>':'')+'<p>Sin prisa. Toca una opción.</p></div><div class="options '+(q.options.length===3?'three':'')+'">'+q.options.map(v=>'<button class="choice" data-answer="'+v+'" aria-label="'+v+'">'+visual(area,v)+'</button>').join('')+'</div><div class="feedback" id="feedback" aria-live="polite"></div><div class="row" style="justify-content:center"><button class="soft" id="help">Ver una pista</button><button class="primary" id="next" hidden>Siguiente →</button></div>','ask');bindBack(()=>round.check?home():areaHome());$('#hear').onclick=()=>speak(prompt(area,x));$('#help').onclick=()=>{round.assisted=true;$('#feedback').innerHTML='Mira el ejemplo: '+visual(area,x);speak('Busca uno igual. '+lessonText(area,x))};$$('[data-answer]').forEach(b=>b.onclick=()=>answer(b,x));$('#next').onclick=nextQuestion;speak(prompt(area,x));}
+function teach(x,resume=false){id=x;E.observe(s,area,x);save();const r=refs[x];page(head('Mira y escucha',areaHome,'Aprendo')+'<div class="study">'+visual(area,x,true)+(area==='numbers'?'<div class="objects">'+Array.from({length:+x},(_,i)=>'<button class="count-object" data-count="'+i+'" aria-label="Contar objeto '+(i+1)+'">🍎</button>').join('')+'</div><p>Toca cada manzana. Contamos juntos.</p>':area==='vowels'?'<div class="object">'+r[0]+'</div><h3>'+r[1]+'</h3><p>La grande y la pequeña suenan igual.</p>':'<h3>'+escape(x)+'</h3><p>'+lessonText(area,x)+'</p>')+'</div><div class="row"><button class="soft" id="repeat">♫ Escuchar otra vez</button><button class="primary" id="try">Ahora yo →</button></div>','teach');bindBack(areaHome);$('#repeat').onclick=()=>speak(lessonText(area,x),null,{tap:true});$('#try').onclick=()=>{if(resume)ask();else startRound(area,x)};let count=0;$$('[data-count]').forEach(b=>b.onclick=()=>{if(b.classList.contains('counted'))return;b.classList.add('counted');b.disabled=true;count++;speak(count===+x?count+'. Hay '+x+' en total.':String(count))});speak(lessonText(area,x));}
+function startRound(a,first,course){area=a;round={area:a,index:0,total:5,independent:0,supported:0,previous:null,current:first||E.target(s,a),check:false,course:course||null};ask()}
+function ask(){if(!round)return;area=round.area;const x=round.current;if(!round.check&&E.rec(s,area,x).seen===0){teach(x,true);return}window.__asked=x;const q=E.question(s,area,x);round.quantity=area==='numbers'&&round.index%2===1;round.assisted=false;round.finished=false;page(head(round.check?'Lo que ya reconozco':'Ahora te toca',areaHome,(round.index+1)+' de '+round.total)+'<div class="progress"><i style="width:'+(round.index/round.total*100)+'%"></i></div><div class="center"><button class="soft" id="hear">♫ Escuchar</button><h2 id="prompt">'+printedPrompt(area,x)+'</h2>'+(round.quantity?'<div class="quantity" aria-label="Manzanas para contar">'+'<span>🍎</span>'.repeat(+x)+'</div>':'')+'<p>Sin prisa. Toca una opción.</p></div><div class="options '+(q.options.length===3?'three':'')+'">'+q.options.map(v=>'<button class="choice" data-answer="'+v+'" aria-label="'+v+'">'+visual(area,v)+'</button>').join('')+'</div><div class="feedback" id="feedback" aria-live="polite"></div><div class="row" style="justify-content:center"><button class="soft" id="help">Ver una pista</button><button class="primary" id="next" hidden>Siguiente →</button></div>','ask');bindBack(()=>round.check?home():areaHome());$('#hear').onclick=()=>speak(prompt(area,x),null,{tap:true});$('#help').onclick=()=>{round.assisted=true;$('#feedback').innerHTML='Mira el ejemplo: '+visual(area,x);speak('Busca uno igual. '+lessonText(area,x))};$$('[data-answer]').forEach(b=>b.onclick=()=>answer(b,x));$('#next').onclick=nextQuestion;speak(prompt(area,x));}
 const numberWords=['cero','uno','dos','tres','cuatro','cinco','seis','siete','ocho','nueve','diez'];
 function printedPrompt(a,x){return a==='numbers'&&round?.quantity?'Cuenta las manzanas. ¿Cuántas hay?':a==='numbers'?'Escucha y toca el número.':a==='vowels'?'Escucha y toca la vocal.':prompt(a,x)}
 function prompt(a,x){return a==='numbers'?(round?.quantity?'Cuenta las manzanas. ¿Cuántas hay?':'¿Dónde está el '+numberWords[+x]+'?'):a==='vowels'?'Toca la '+x+'.':a==='colors'?'Busca el color '+x+'.':'Busca '+(x==='X'?'la equis.':'el '+x+'.')}
 function answer(b,x){if(round.finished)return;const ok=b.dataset.answer===x;if(!ok){round.assisted=true;b.classList.add('try');b.disabled=true;$('#feedback').innerHTML='Vamos a mirar otra vez. '+visual(area,x);speak('Mira el ejemplo. Busca uno igual.');return}round.finished=true;b.classList.add('good');$$('[data-answer]').forEach(e=>e.disabled=true);$('#help').hidden=true;$('#next').hidden=false;E.record(s,area,x,!round.assisted);round.assisted?round.supported++:round.independent++;save();$('#feedback').textContent=round.assisted?'¡Lo encontramos juntos!':'¡Lo reconociste!';speak(round.assisted?'¡Lo encontramos juntos!':'¡Lo reconociste! Muy bien.');}
 function nextQuestion(){round.index++;round.previous=round.current;if(round.index>=round.total){s.sessions++;save();results();return}if(round.check){const item=round.queue[round.index];round.area=item.area;round.current=item.id}else round.current=E.target(s,area,round.previous);ask()}
-function results(){const a=round.area,ind=round.independent,supported=round.supported;page('<div class="center"><div class="result-icon">🌱</div><span class="eyebrow">Un pequeño paso cuenta</span><h1>¡Bien hecho!</h1><p>Ya terminaste esta actividad.</p><div class="study" style="min-height:170px"><h3>'+ind+' respuestas sin ayuda</h3><p>'+supported+' respuestas que encontramos juntos.</p><p>Ahora busca '+(a==='numbers'?'tres juguetes y cuéntalos.':a==='colors'?'algo rojo en la habitación.':a==='vowels'?'un objeto cuyo nombre empiece con a.':'algo redondo en casa.')+'</p></div><div class="row" style="justify-content:center"><button class="primary" id="done">Volver a mis juegos</button><button class="soft" id="again">Otra actividad corta</button></div></div>','result');$('#done').onclick=home;$('#again').onclick=()=>{area=a;teach(E.target(s,a))}}
+function results(){const a=round.area,ind=round.independent,supported=round.supported;if(round.course&&kit.course){const cd=round.course;round=null;kit.course.symbolsDone(cd,{area:a,ind,supported});return}page('<div class="center"><div class="result-icon">🌱</div><span class="eyebrow">Un pequeño paso cuenta</span><h1>¡Bien hecho!</h1><p>Ya terminaste esta actividad.</p><div class="study" style="min-height:170px"><h3>'+ind+' respuestas sin ayuda</h3><p>'+supported+' respuestas que encontramos juntos.</p><p>Ahora busca '+(a==='numbers'?'tres juguetes y cuéntalos.':a==='colors'?'algo rojo en la habitación.':a==='vowels'?'un objeto cuyo nombre empiece con a.':'algo redondo en casa.')+'</p></div><div class="row" style="justify-content:center"><button class="primary" id="done">Volver a mis juegos</button><button class="soft" id="again">Otra actividad corta</button></div></div>','result');$('#done').onclick=home;$('#again').onclick=()=>{area=a;teach(E.target(s,a))}}
 function checkIntro(){page(head('Un pequeño reto',home,'Sin nota')+'<div class="study"><div class="object">🔎</div><h2>Veamos qué reconoce.</h2><p>Hasta ocho preguntas sobre los símbolos que ya ha visto.<br>Las pistas cuentan como respuestas con ayuda.</p><p>Si aún no ha aprendido los símbolos, empieza por “Aprender conmigo”.</p><div class="row"><button class="primary" id="startCheck">Empezar</button><button class="soft" id="learnFirst">Aprender primero</button></div></div>','check');bindBack(home);$('#learnFirst').onclick=()=>{area='numbers';teach('1')};$('#startCheck').onclick=()=>{const queue=Object.keys(E.groups).flatMap(a=>E.active(s,a).filter(x=>E.rec(s,a,x).seen>0).sort((x,y)=>E.rec(s,a,x).streak-E.rec(s,a,y).streak).slice(0,2).map(x=>({area:a,id:x})));if(!queue.length){notice('Primero descubramos un símbolo juntos.');area='numbers';teach('1');return}round={queue,index:0,total:queue.length,independent:0,supported:0,area:queue[0].area,current:queue[0].id,check:true};ask()}}
 function matchMenu(){page(head('Unimos parejas',home,'Tocar o arrastrar')+'<p>Primero una tarjeta de la izquierda; después su pareja.</p><div class="extras"><button class="extra" id="same">○ Figuras iguales<small>Observa y encuentra</small></button><button class="extra" id="amount">1 · ● Número y cantidad<small>Cantidades que vamos descubriendo</small></button><button class="extra" id="cases">a · A Vocales<small>Pequeña y grande</small></button><button class="extra" id="colorImage">🎨 Color e imagen<small>Animales y objetos del mismo color</small></button><button class="extra" id="shapeObject">○ Figura y objeto<small>Rueda, ventana y techo</small></button></div>','matchmenu');bindBack(home);$('#same').onclick=()=>matching('shape');$('#amount').onclick=()=>matching('count');$('#cases').onclick=()=>matching('case');$('#colorImage').onclick=()=>matching('colorImage');$('#shapeObject').onclick=()=>matching('shapeObject');}
 function matching(kind,ready=false,board=0){const custom=['colorImage','shapeObject'].includes(kind);if(custom&&!ready){pairLesson(kind,board);return}const matchArea={shape:'shapes',count:'numbers',case:'vowels'}[kind];let pairs=custom?A.pairs(kind,board).map(p=>({key:p.key,l:art(p.left),r:art(p.right),name:p.left.label,rightName:p.right.label})):E.shuffle(E.active(s,matchArea)).slice(0,3).map(x=>({key:x,l:kind==='shape'?shape(x,50):x,r:kind==='shape'?shape(x,50):kind==='count'?'<span class="dot-count">'+'<i></i>'.repeat(+x)+'</span>':x.toUpperCase(),name:x}));const returnTo=custom?relations:matchMenu;page(head('Encuentra su pareja',returnTo,pairs.length+' parejas')+'<div class="center"><button class="soft" id="example">♫ Ver un ejemplo</button><p>Toca o arrastra entre los dos lados.</p></div><div class="matchbox" id="matchbox"><svg class="lines" id="lines"></svg>'+['l','r'].map(side=>'<div class="matchcol">'+E.shuffle(pairs).map(p=>'<button class="match" data-side="'+side+'" data-key="'+p.key+'" aria-label="'+side+' '+(side==='r'?(p.rightName||p.name):p.name)+'">'+p[side]+'</button>').join('')+'</div>').join('')+'</div><div class="feedback" id="feedback"></div><div class="row"><button class="primary" id="matchDone" hidden>¡Listo! Volver</button></div>','match');bindBack(returnTo);let selected=null,done=0,helped=new Set();matchLinks=[];lastMatches={kind};function choose(b){if(b.classList.contains('done'))return;if(!selected||selected.dataset.side===b.dataset.side){$$('.match').forEach(x=>x.classList.remove('selected'));selected=b;b.classList.add('selected');speak(b.getAttribute('aria-label').slice(2));return}if(selected.dataset.key===b.dataset.key){selected.classList.add('done');b.classList.add('done');matchLinks.push([selected,b]);drawLines();done++;A.record(s,custom?kind:'matching',!helped.has(b.dataset.key));save();$('#feedback').textContent='¡Son pareja!';speak('¡Son pareja!');if(done===pairs.length){$('#matchDone').hidden=false;$('#feedback').textContent='¡Uniste todas las parejas!'}}else{helped.add(selected.dataset.key);helped.add(b.dataset.key);$('#feedback').textContent='Mira de nuevo. Busca su pareja.';speak('Mira de nuevo. Busca su pareja.')}selected.classList.remove('selected');selected=null}let drag=null,suppressClick=false;
@@ -2186,14 +2698,14 @@ function activityReport(){const labels={...A.names,colorImage:'Color e imagen',s
 
 function parents(){const d=$('#dialog');$('#dialogContent').innerHTML='<h2>Para mamá o papá</h2><p>Escribe el resultado: 4 + 3</p><input id="gate" inputmode="numeric" aria-label="Respuesta"><button id="enter" class="primary">Entrar</button><p id="gateMessage"></p>';d.showModal();$('#enter').onclick=()=>{if($('#gate').value.trim()==='7')dashboard();else $('#gateMessage').textContent='Revisa la respuesta.'};$('#gate').onkeydown=e=>{if(e.key==='Enter')$('#enter').click()}}
 function dashboardLegacy(){voices();$('#dialogContent').innerHTML='<h2>Aprende desde cero</h2><p>La app inicia con 1–3, a–e y dos colores o figuras. Dos aciertos independientes seguidos por símbolo permiten ampliar el grupo. Lo descubierto permanece disponible aunque necesite repaso. Es una regla del juego, no una valoración escolar.</p><label for="name">Nombre (opcional)</label><input id="name" maxlength="24" value="'+escape(s.name)+'"><p>Si no suena, activa el sonido ♫ y revisa el volumen del teléfono.</p>'+(voiceList.length?'':'<p>No se detectaron voces españolas. Revisa las voces de texto a voz instaladas en el teléfono y vuelve a abrir la app.</p>')+'<label for="voice">Voz en español</label><select id="voice"><option value="">Automática</option>'+voiceList.map(v=>'<option value="'+escape(v.voiceURI)+'" '+(s.voice===v.voiceURI?'selected':'')+'>'+escape(v.name)+' · '+(v.localService?'en dispositivo':'puede necesitar internet')+'</option>').join('')+'</select><label for="rate">Velocidad</label><select id="rate">'+[.75,.85,1].map(v=>'<option value="'+v+'" '+(s.rate===v?'selected':'')+'>'+v+'</option>').join('')+'</select><button class="primary" id="settings">Guardar y escuchar</button><h3 style="margin-top:24px">Lo que está practicando</h3><div class="reports">'+Object.keys(E.groups).map(a=>{const rows=E.groups[a].filter(x=>E.rec(s,a,x).seen||E.rec(s,a,x).independent||E.rec(s,a,x).supported);return '<div class="report"><b>'+titles[a]+'</b>'+(!rows.length?'<p>Aún por explorar</p>':rows.map(x=>{const r=E.rec(s,a,x);return '<p>'+escape(x)+': '+r.independent+' sin ayuda · '+r.supported+' con ayuda'+(r.streak<2?' · Conviene repasar':' · Seguir practicando')+'</p>'}).join(''))+'</div>'}).join('')+'</div>'+activityReport()+'<p>Trazos que recorrieron la guía: '+s.drawings+'.</p><div class="hint">Prueba una actividad corta y luego usa papel, juguetes y objetos de casa. El reto no reproduce el examen del colegio. Las respuestas con pista se registran por separado.</div><details style="margin:16px 0"><summary>Fuera de la pantalla</summary>'+G.offscreen()+'</details><details style="margin:16px 0"><summary>Referencia para el adulto</summary><p>Adaptación del Cuadernillo Didáctico de III Nivel, MINED (2021): cuerpo, sentidos y cantidades (pp. 6–7), nociones espaciales y de tiempo (pp. 8–10), hábitos (p. 11), lateralidad y lleno/vacío (pp. 12–13), nombre propio y figuras (pp. 14–15), seriación, vocales y grafomotricidad (pp. 19–20), sonidos, sílabas y rimas (pp. 21–22), transporte y seguridad vial (p. 23), números y antecesor/sucesor (pp. 27–28). Quedan fuera de la pantalla: modelado, recorte, canto, moneda, reloj y símbolos patrios con imágenes reales. No se cubre todo el año escolar ni se reproduce el examen del colegio.</p><p>Los datos quedan en este navegador. No se envían a un servidor. La voz usa el servicio del dispositivo o del navegador. Las voces en línea pueden necesitar conexión.</p></details><div class="row"><button class="soft" id="installHelp">Cómo instalar</button><button class="soft" id="reset">Reiniciar progreso</button></div>'+(!storage?'<p>Este navegador no permite guardar el avance.</p>':'');$('#settings').onclick=()=>{s.name=$('#name').value.trim();s.voice=$('#voice').value;s.rate=+$('#rate').value;save();speak('Hola. Vamos a mirar, escuchar y aprender juntos.');notice('Preferencias guardadas')};$('#installHelp').onclick=()=>notice('Abre el enlace HTTPS en Chrome: menú ⋮ → Instalar aplicación o Añadir a inicio. En iPhone: Safari → Compartir → Añadir a inicio.');$('#reset').onclick=()=>{if(confirm('¿Borrar solamente el progreso de esta aplicación?')){const keep={name:s.name,voice:s.voice,rate:s.rate,sound:s.sound};s={...E.fresh(),...keep};save();dashboard()}}}
-$('#home').onclick=home;$('#parents').onclick=parents;$('#sound').onclick=()=>{s.sound=!s.sound;if(!s.sound&&'speechSynthesis'in window)speechSynthesis.cancel();save();if(s.sound)speak('Vamos a escuchar.')};$('#closeDialog').onclick=()=>{$('#dialog').close();if(view==='home')home()};
+$('#home').onclick=home;$('#parents').onclick=parents;$('#closeDialog').onclick=()=>{$('#dialog').close();if(view==='home')home()};
 addEventListener('beforeinstallprompt',e=>{e.preventDefault();installPrompt=e;$('#install').hidden=false});$('#install').onclick=async()=>{if(!installPrompt)return;await installPrompt.prompt();installPrompt=null;$('#install').hidden=true};addEventListener('appinstalled',()=>{$('#install').hidden=true});
 if(!window.CJ_PREVIEW&&'serviceWorker'in navigator&&(location.protocol==='https:'||/^(localhost|127\.0\.0\.1)$/.test(location.hostname))){const had=!!navigator.serviceWorker.controller;navigator.serviceWorker.addEventListener('controllerchange',()=>{if(had&&Sh)Sh.updateReady()});navigator.serviceWorker.register('./sw.js').then(r=>{window.appReg=r;return navigator.serviceWorker.ready}).then(()=>{window.appOfflineReady=true}).catch(()=>{notice('No se pudo preparar el uso sin conexión. Puedes seguir jugando con internet.')})}
 function dashboard(){Sh.adult('resumen')}
-const kit={$,$$,page,speak,notice,head,bindBack,later,save,escape,state:()=>s,E,A,Content,art,home,legacyDash:dashboardLegacy,replaceState:o=>{s={...E.fresh(),...o};save()}};
-const G=GamesUI(kit);
+const kit={$,$$,page,speak,speakTap:(t,d)=>speak(t,d,{tap:true}),audio:null,notice,head,bindBack,later,save,escape,state:()=>s,E,A,Content,art,home,startRound,symCounts:()=>({numbers:E.active(s,'numbers').length,vowels:E.active(s,'vowels').length,colors:E.active(s,'colors').length,shapes:E.active(s,'shapes').length}),course:null,legacyDash:dashboardLegacy,replaceState:o=>{s={...E.fresh(),...o};save()}};
+const Au=AudioUI(kit);kit.audio=Au;Au.cfg();const G=GamesUI(kit);
 const LEG={openArea:a=>{area=a;areaHome()},relations,join:matchMenu,draw:()=>trace('círculo'),memory:()=>memory(3),positions:()=>spatial(0,false),check:checkIntro};
-Adv=AdventuresUI(kit,G);Sh=ShellUI(kit,G,Adv,LEG);kit.shell=Sh;$('#logo').innerHTML=Sh.LOGO;Sh.init();
+Adv=AdventuresUI(kit,G);Sh=ShellUI(kit,G,Adv,LEG);kit.shell=Sh;kit.course=CourseUI(kit,G,Adv,Sh);$('#logo').innerHTML=Sh.LOGO;Sh.init();
 home();save();
 })();
 </script></body></html>
