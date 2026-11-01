@@ -136,3 +136,23 @@ Diseño y decisiones: `docs/CURSO_GUIADO.md`. Capturas reales de Chromium en `do
 Defectos reales encontrados durante la ronda y corregidos: avatar de la bienvenida sin tamaño (clase CSS equivocada); el botón «Continuar» antiguo ya no es el principal (pruebas actualizadas); el fallo intermitente del arrastre del diagnóstico tenía como causa real el relleno asíncrono de la tabla de diagnóstico (empuja la pelota ~517 px), no las llamadas a `center()`.
 
 **No verificado (requiere teléfono):** escuchar la voz y la música por el altavoz y juzgar si resultan agradables y si la música estorba a la voz; el arrastre con dedo físico dentro de las clases; la duración real de una clase con Carlos José; el funcionamiento de la pausa del audio al bloquear la pantalla del teléfono.
+
+
+## Ronda v5.2 · Identidad personalizada, Galaxy Tab A9 y Partes de mi cuerpo
+Documentos: `docs/PERSONALIZACION_HUMANA.md`, `docs/TABLET_GALAXY_TAB_A9.md`. Capturas: `docs/capturas/icono_carlos_jose_tamanos.png`, `v51_390_*` (antes) y `v52_*` (después, teléfono y tablet), `personas_zonas_*` (zonas táctiles sobre cada figura).
+
+| Prueba | Resultado (local) |
+|---|---|
+| `node test.cjs` | 55 grupos aprobados (nuevos: íconos 192/512/maskable y zona segura, distintivo PRUEBA solo en el canal de prueba, manifiesto y service worker con todos los recursos, registro de personas) |
+| `qa/partes-smoke.cjs` (390, 600×950, 800×1260, 533×830, 1005×540, 893×470, 1340×700) | 12/12 en cada viewport |
+| `qa/tablet-smoke.cjs` (6 viewports de la Galaxy Tab A9 emulada) | 18/18 en cada viewport, incluidos arrastre, unir, trazo y toque con eventos táctiles |
+| `qa/ui-smoke.cjs` a 893×470 (15 habilidades) · 320 px | 0 fallas |
+| `qa/course-smoke.cjs` · `qa/v5-smoke.cjs` · `qa/legacy-smoke.cjs` · `qa/ci-visual.cjs` · `qa/cloudflare-check.cjs` | 0 fallas |
+
+Defectos reales encontrados y corregidos en esta ronda:
+- En la tablet apaisada baja (893×470) «clasificar» y «unir parejas» obligaban a desplazar la página durante el arrastre (origen y destino no cabían juntos): ahora esas preguntas van en dos columnas.
+- Controles de la zona de adultos (casillas, «Para el adulto») por debajo de 44 px.
+- En las fotos, la zona táctil de «mano» invadía la mejilla; las zonas pequeñas se ampliaron de forma invisible y se miden en pantalla real.
+- La simulación de Cloudflare detectó íconos aún no versionados (el clon limpio solo copia archivos versionados).
+
+**No verificado (tablet física):** valores reales de área visible y densidad (el diagnóstico de la app los muestra), tamaño percibido con los dedos de Carlos José, aspecto del ícono en el lanzador de Samsung, giro de pantalla en plena clase, voz y música por el altavoz.

@@ -66,6 +66,13 @@ Auditoría completa y matriz de cobertura del Cuadernillo MINED en [`docs/AUDITO
 Limitaciones conocidas: ver §7 de la auditoría (voz española, pruebas en teléfonos reales, emojis como ilustraciones, contenido nacional pendiente, Registro de valoración no recibido).
 
 
+## Versión 5.2 · Identidad personalizada, Galaxy Tab A9 y Partes de mi cuerpo
+Documentos: [`docs/PERSONALIZACION_HUMANA.md`](docs/PERSONALIZACION_HUMANA.md), [`docs/TABLET_GALAXY_TAB_A9.md`](docs/TABLET_GALAXY_TAB_A9.md). Portada y navegación sin cambios.
+- **Ícono y cabecera** con Carlos José y su cubo (recorte limpio de su fotografía; 192/512, `maskable`, favicon). El distintivo PRUEBA existe solo en el canal de Cloudflare.
+- **Partes de mi cuerpo** con fotos auténticas de Carlos José, su ilustración y otras personas ilustradas (mamá, papá, niña, abuelo): zonas táctiles sobre la propia imagen, comprobación en otras personas y sin resaltar la respuesta.
+- **Tablet de 8,7"**: riel lateral y preguntas en dos columnas en apaisado bajo; diagnóstico con el área visible y la densidad reales; pruebas táctiles emuladas en 6 viewports.
+- Auditoría de las 40 habilidades y 5 aventuras: qué personalizar y qué conservar, y un guion de fotos para la familia.
+
 ## Versión 5.1 · Mi camino de aprendizaje (clases guiadas) y audio
 Diseño y decisiones: [`docs/CURSO_GUIADO.md`](docs/CURSO_GUIADO.md). Sobre la v5.0 aprobada (portada, imágenes, niveles, aventuras), sin rediseñarla:
 - **Mi camino**: 9 unidades en espiral y 59 lecciones (40 habilidades, 10 de símbolos y 9 de repaso) que *reutilizan* las cinco fases, las rondas de símbolos y los retos de aventura. Una clase: bienvenida por voz, recordamos, aprendemos, practicamos, jugamos, comprobamos y celebramos.
