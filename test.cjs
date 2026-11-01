@@ -457,3 +457,15 @@ test('Primero, después y al final: rutinas humanas con insignia; la foto de Car
  assert.ok(human>100&&obj>30,'mezcla de rutinas humanas y secuencias de cosas');
  const o=sk.gens.a({...ctxMax,name:'Lucía'},()=>0.1,0,'practice');assert.ok(!/carlos-cara/.test(JSON.stringify(o)),'con otro nombre no se usa la foto de Carlos');
 });
+test('Seguridad y autocuidado: toda situación tiene una única respuesta correcta que es alejarse, avisar o cuidarse; sin miedo ni imágenes de daño',()=>{
+ const sk=C.byId.seguridad;const seen=new Set();for(let i=0;i<200;i++){for(const g of ['d','e']){const q=sk.gens[g](ctxMax,Math.random,i,'practice');assert.deepEqual(C.validate(q,ctxMax),[],g);seen.add(q.model[0].label);
+  assert.ok(/aviso|alejo|lejos|cuento|lavo|cepillo|sombrero|pido ayuda|no lo toco|dejo/.test(q.answer),'respuesta correcta '+q.answer)}}
+ for(const k of ['fuego','enchufe','medicinas','estufa','calle','manos','dientes','dolor','sol'])assert.ok(seen.has(k),'cubre '+k);
+ const learn=JSON.stringify(sk.learn(ctxMax));assert.ok(/fuego o humo/.test(learn)&&/enchufe/.test(learn)&&/me duele/.test(learn),'se enseña antes de preguntar');
+ assert.ok(!/ambulancia|accidente|sangre|herid|muer/i.test(JSON.stringify([sk.learn(ctxMax),sk.gens.d(ctxMax,Math.random)])),'sin imágenes ni palabras de daño');
+});
+test('Mañana, tarde y noche: rutina de la persona en tres tiempos, sin repetir actividades y con otras personas al comprobar',()=>{
+ const PE=require('./people.js');globalThis.People=PE;const sk=C.byId['dia-noche'];
+ for(let i=0;i<60;i++){const ph=i%2?'check':'practice',q=sk.gens.d(ctxMax,Math.random,i,ph);assert.deepEqual(C.validate(q,ctxMax),[]);assert.equal(q.bins.length,3);assert.equal(q.items.length,6);assert.equal(new Set(q.items.map(x=>x.id)).size,6);
+  if(ph==='check')assert.ok(!/carlos-cara|nino-cara/.test(JSON.stringify(q)));else assert.ok(/carlos-cara/.test(JSON.stringify(q)))}
+});
