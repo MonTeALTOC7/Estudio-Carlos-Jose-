@@ -75,7 +75,7 @@ Evaluación, visión y decisiones: [`docs/V5_EVALUACION_Y_VISION.md`](docs/V5_EV
 - **Motivación sin presión**: confeti tras 3 aciertos seguidos sin ayuda, insignias, niveles y medallas; sin rankings ni días seguidos; control de animaciones.
 - **5 aventuras** con historia y mecánicas propias (curitas arrastradas, lista de compras, buscar y memoria, mezclar colores y rompecabezas, camino con flechas y semáforo).
 - **Panel adulto** con Resumen, Progreso, En casa y Ajustes (respaldo descargable y restaurable, personalización).
-- **Privacidad**: no hay fotos en el repositorio ni en el sitio público. La foto y el personaje se cargan en ⚙ → Ajustes y se guardan solo en ese dispositivo; sin imágenes se usa un personaje dibujado.
+- **Carlos José por defecto**: `assets/hero.webp` (ilustración vestido de médico) y `assets/avatar.webp` (foto de avatar), incluidas con autorización expresa del padre; se muestran en toda instalación limpia y funcionan sin conexión. Repositorio y sitio son públicos. En ⚙ → Ajustes se pueden cambiar (se guardan solo en ese dispositivo) y «Usar las predeterminadas» las restaura.
 - Todo lo de la v4.0 se conserva (8 rutas, 40 habilidades, 5 fases, trazos, juegos antiguos, guardado `primerosPasos3`, PWA).
 
 ### Canal de prueba, actualización y validación

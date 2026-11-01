@@ -148,6 +148,13 @@ test('Distribución v4: todos los módulos incluidos y sin marcadores pendientes
  for(const t of ['GamesUI','C.skill({id:\'contar\'','C.skill({id:\'planta\'','id="chips"','Versión 5.0','M.simon','M.paint']) assert.ok(html.includes(t),t);
  for(const f of ['content.js','skills-a.js','skills-b.js','skills-c.js','progress.js','coach.js','games.js','adventures.js','shell.js','engine.js','app.js'])assert.ok(html.includes(fs.readFileSync(__dirname+'/'+f,'utf8').slice(0,200)),'falta '+f+' en dist');assert.ok(fs.readFileSync(__dirname+'/sw.js','utf8').includes('v5.0.0'))
 });
+test('Carlos José por defecto: ilustración y foto incluidas en dist, idénticas a assets/ y en la caché sin conexión',()=>{
+ const crypto=require('node:crypto'),h=f=>crypto.createHash('sha256').update(fs.readFileSync(f)).digest('hex');
+ for(const f of ['hero.webp','avatar.webp']){assert.ok(fs.existsSync(__dirname+'/dist/assets/'+f),'falta dist/assets/'+f);assert.equal(h(__dirname+'/dist/assets/'+f),h(__dirname+'/assets/'+f));
+  assert.equal(fs.readFileSync(__dirname+'/assets/'+f).subarray(0,4).toString(),'RIFF');assert.ok(fs.readFileSync(__dirname+'/dist/sw.js','utf8').includes('./assets/'+f),'el service worker no guarda '+f)}
+ const html=fs.readFileSync(__dirname+'/dist/index.html','utf8');assert.ok(html.includes("CJ_ASSETS=window.CJ_ASSETS||{hero:'assets/hero.webp',face:'assets/avatar.webp'}"));
+ /* recursos de ejemplo del kit: la ilustración (transparente) y la foto del avatar */
+ assert.equal(h(__dirname+'/assets/hero.webp'),'e0fef42a25acdc4e00577452cc5632dfe367ddcc798ec362491a076c997745dc');assert.equal(h(__dirname+'/assets/avatar.webp'),'9be7c3019c2837f375858d3a58dc14bd89e042c1871e1005716be90cd7f70145')});
 /* ===== v5: dominio, niveles, insignias y recomendaciones ===== */
 const PR=require('./progress.js'),CO=require('./coach.js');
 const D=n=>new Date(2026,10,n,10).getTime(),ent=(n,ok,ty=['choose','sort'],er=0,of=3)=>({d:PR.day(D(n)),ts:D(n),ok,of,ty,er,hn:0});

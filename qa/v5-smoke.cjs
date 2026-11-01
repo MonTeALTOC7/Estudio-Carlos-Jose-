@@ -96,7 +96,7 @@ async function advSolve(p,ch){
   ok('La foto se guarda solo en el dispositivo (perfil local)',(await state()).profile&&/^data:image\/jpeg/.test((await state()).profile.face||''));
   await p.click('#closeDialog');await goHoy(p);ok('La portada usa la foto cargada',await p.locator('.hero5 img.avimg, .hero5 .avsvg').count()>=1);
   await p.click('#parents');await p.fill('#gate','7');await p.click('#enter');await p.waitForSelector('[data-atab]');await p.click('[data-atab="ajustes"]');await p.waitForSelector('#fClear');await p.click('#fClear');await sleep(200);
-  ok('Quitar imágenes vuelve al personaje dibujado',!(await state()).profile.face);await p.click('#closeDialog')}
+  ok('«Usar las predeterminadas» elimina lo cargado en el dispositivo',!(await state()).profile.face);await p.click('#closeDialog')}
  // 6 logros y reducción de animaciones
  if(await p.locator('.tabbar').isVisible()===false)await p.click('#directHome');await p.click('[data-tab="logros"]');await p.waitForSelector('.badges');
  ok('Logros muestra insignias ganadas y nivel',await p.locator('.badge.on').count()>=2&&await p.locator('.lvcard').count()===1);

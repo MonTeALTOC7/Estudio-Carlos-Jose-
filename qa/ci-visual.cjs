@@ -12,7 +12,7 @@ const ROOT=path.join(__dirname,'..'),DIST=path.join(ROOT,'dist');
 const results=[];let failures=0;
 const rec=(grupo,nombre,okk,detalle)=>{results.push({grupo,nombre,ok:!!okk,detalle:detalle||''});if(!okk)failures++;console.log((okk?'OK    ':'FALLA ')+'['+grupo+'] '+nombre+(detalle?' · '+detalle:''))};
 async function guard(grupo,nombre,fn){try{const r=await fn();if(r!==undefined)rec(grupo,nombre,r===true,r===true?'':String(r))}catch(e){rec(grupo,nombre,false,e.message.split('\n')[0])}}
-const copyDir=(a,b)=>{fs.mkdirSync(b,{recursive:true});for(const f of fs.readdirSync(a))fs.copyFileSync(path.join(a,f),path.join(b,f))};
+const copyDir=(a,b)=>fs.cpSync(a,b,{recursive:true});
 const tmp=fs.mkdtempSync(path.join(os.tmpdir(),'cj-'));
 
 /* ---- toque real: CDP genera eventos táctiles que Chromium convierte en pointer events con pointerType=touch ---- */
@@ -26,7 +26,7 @@ async function both(p,selA,selB,innerB){const get=async()=>{const ba=await p.loc
  if(ba.y<0||bb.y<0||ba.y+ba.height>H||bb.y+bb.height>H)throw new Error('origen y destino no caben juntos en pantalla');
  return{a:{x:ba.x+ba.width/2,y:ba.y+ba.height/2},b:{x:bb.x+bb.width/2,y:bb.y+bb.height/2}}}
 const center=async(p,sel,inner)=>{const l=p.locator(sel).first();await l.evaluate(e=>e.scrollIntoView({block:'center'}));const b=await (inner?p.locator(sel+' > *').first():l).boundingBox();return{x:b.x+b.width/2,y:b.y+b.height/2}};
-const newPage=async(b,w,h,extra)=>{const ctx=await b.newContext(Object.assign({viewport:{width:w,height:h},hasTouch:true,isMobile:w<700,deviceScaleFactor:1},extra||{}));const p=await ctx.newPage();p._errs=[];p.on('pageerror',e=>p._errs.push('PAGEERROR '+e.message));p.on('console',m=>{if(m.type()==='error')p._errs.push('CONSOLE '+m.text())});return p};
+const newPage=async(b,w,h,extra)=>{const ctx=await b.newContext(Object.assign({viewport:{width:w,height:h},hasTouch:true,isMobile:w<700,deviceScaleFactor:1},extra||{}));const p=await ctx.newPage();p.setDefaultTimeout(10000);p._errs=[];p.on('pageerror',e=>p._errs.push('PAGEERROR '+e.message));p.on('console',m=>{if(m.type()==='error')p._errs.push('CONSOLE '+m.text())});return p};
 const state=(p,key)=>p.evaluate(k=>JSON.parse(localStorage.getItem(k)||'null'),key||'primerosPasos3');
 const setState=(p,o,key)=>p.evaluate(([k,s])=>localStorage.setItem(k,JSON.stringify(s)),[key||'primerosPasos3',o]);
 async function openSkill(p,mod,id){await p.click('[data-tab="aprender"]');await p.click('[data-mod="'+mod+'"]');await p.click('[data-skill="'+id+'"]');await p.waitForSelector('.gcards');await p.click('#gnext');for(;;){await p.waitForSelector('.gexplain');const last=(await p.textContent('#gnext')).includes('Ahora yo');await p.click('#gnext');if(last)break}}
@@ -146,6 +146,21 @@ async function advanceUntil(p,type){for(let i=0;i<12;i++){await p.waitForSelecto
    const caches2=await p.evaluate(async()=>(await caches.keys()));if(!caches2.some(k=>k.startsWith('mis-pasos-')))throw new Error('el service worker de prueba borró la caché de producción');
    const scopes=await p.evaluate(async()=>(await navigator.serviceWorker.getRegistrations()).map(r=>new URL(r.scope).pathname).sort());if(scopes.length!==2||scopes[0]===scopes[1])throw new Error('alcances: '+scopes.join());return true});
   rec('independencia','Sin errores de página',errs.length===0,errs[0]||'');await ctx.close();s3.srv.close()}
+
+ /* 7 ─ CARLOS JOSÉ PREDETERMINADO: instalación limpia, sin cargar nada desde Ajustes, y también sin conexión */
+ {const dirI=path.join(tmp,'I');copyDir(DIST,dirI);const s7=await serve(0,{'/':dirI});
+  const ctx=await b.newContext({viewport:{width:390,height:844},hasTouch:true,isMobile:true,serviceWorkers:'allow'}),p=await ctx.newPage();await p.goto(s7.url);await p.waitForSelector('.hero5');
+  const imgs=()=>p.evaluate(()=>[...document.images].map(i=>({src:i.getAttribute('src'),ok:i.complete&&i.naturalWidth>0,w:i.naturalWidth,vis:i.offsetParent!==null&&i.getBoundingClientRect().width>20})));
+  await guard('Carlos José','Instalación limpia: la portada muestra a Carlos José (ilustración) sin cargar nada',async()=>{await p.waitForFunction(()=>[...document.images].every(i=>i.complete));const im=await imgs();const hero=im.find(i=>/assets\/hero\.webp$/.test(i.src));return !!(hero&&hero.ok&&hero.vis&&hero.w>500)||JSON.stringify(im)});
+  await guard('Carlos José','No aparece el personaje genérico dibujado en la portada',async()=>await p.locator('.hero5 .avsvg').count()===0||'sigue el dibujo genérico');
+  await guard('Carlos José','Ajustes: la foto de avatar de Carlos José aparece por defecto',async()=>{await p.click('#parents');await p.fill('#gate','7');await p.click('#enter');await p.waitForSelector('[data-atab]');await p.click('[data-atab="ajustes"]');await p.waitForSelector('#fClear');await p.waitForFunction(()=>[...document.images].every(i=>i.complete));const im=await imgs();const f=im.find(i=>/assets\/avatar\.webp$/.test(i.src));return !!(f&&f.ok&&f.vis)||JSON.stringify(im)});
+  await p.click('#closeDialog');
+  await guard('Carlos José','Las imágenes están en la caché sin conexión',async()=>{await p.waitForFunction(()=>window.appOfflineReady===true,null,{timeout:15000});const k=await p.evaluate(async()=>{const ks=await caches.keys(),c=await caches.open(ks[0]);return{h:!!(await c.match('./assets/hero.webp')),a:!!(await c.match('./assets/avatar.webp'))}});return (k.h&&k.a)||JSON.stringify(k)});
+  await guard('Carlos José','SIN CONEXIÓN la portada sigue mostrando a Carlos José',async()=>{await p.reload();await p.waitForSelector('.hero5');await p.waitForFunction(()=>!!navigator.serviceWorker.controller);await ctx.setOffline(true);await p.reload();await p.waitForSelector('.hero5',{timeout:10000});await p.waitForFunction(()=>[...document.images].every(i=>i.complete));const im=await imgs();await ctx.setOffline(false);const hero=im.find(i=>/hero\.webp$/.test(i.src));return !!(hero&&hero.ok&&hero.vis)||JSON.stringify(im)});
+  await p.screenshot({path:path.join(OUT,'carlos-jose-390.png')});await ctx.close();
+  const ctx2=await b.newContext({viewport:{width:1440,height:900}}),p2=await ctx2.newPage();await p2.goto(s7.url);await p2.waitForSelector('.hero5');await p2.waitForFunction(()=>[...document.images].every(i=>i.complete));
+  await guard('Carlos José','En escritorio (1440 px) también aparece por defecto',async()=>await p2.evaluate(()=>{const i=document.querySelector('.hero5-char img');return !!i&&i.naturalWidth>500&&i.getBoundingClientRect().height>150})||'no aparece');
+  await p2.screenshot({path:path.join(OUT,'carlos-jose-1440.png')});await ctx2.close();s7.srv.close()}
 
  srv.close();await b.close();
  const ok=results.filter(r=>r.ok).length;

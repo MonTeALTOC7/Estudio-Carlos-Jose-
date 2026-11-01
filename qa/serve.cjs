@@ -2,7 +2,7 @@
 // serve()                         → sirve dist/ en la raíz
 // serve(0,{'/prod/':dir1,'/prueba/':dir2}) → varias carpetas bajo un mismo origen (como GitHub Pages)
 const http=require('node:http'),fs=require('node:fs'),path=require('node:path');
-const types={'.html':'text/html; charset=utf-8','.js':'text/javascript','.png':'image/png','.svg':'image/svg+xml','.webmanifest':'application/manifest+json'};
+const types={'.html':'text/html; charset=utf-8','.js':'text/javascript','.png':'image/png','.webp':'image/webp','.svg':'image/svg+xml','.webmanifest':'application/manifest+json'};
 /* Lee un archivo _headers (formato de Cloudflare Pages/Netlify): línea sin sangría = ruta; líneas con sangría = «Nombre: valor». */
 const readHeaders=root=>{const f=path.join(root,'_headers');if(!fs.existsSync(f))return[];const rules=[];let cur=null;
  for(const line of fs.readFileSync(f,'utf8').split(/\r?\n/)){if(!line.trim())continue;if(/^\S/.test(line)){cur={pat:line.trim(),h:{}};rules.push(cur)}else if(cur){const i=line.indexOf(':');cur.h[line.slice(0,i).trim()]=line.slice(i+1).trim()}}return rules};

@@ -35,12 +35,12 @@ Evaluación crítica, visión y decisiones. Base: v4.0 (PR #4). El PR #5 (propue
 - **Confeti en cada acierto**: descartado; solo tras 3 aciertos seguidos sin ayuda y en logros grandes.
 
 ## 2. Foto de un menor y dónde queda alojada
-El repositorio y el sitio de GitHub Pages son **públicos**. Aunque el padre lo autorice, subir su rostro ahí lo haría visible a cualquiera y quedaría en el historial de Git. Por eso:
-1. **No se commitea ninguna foto ni personaje del kit.**
-2. La app trae un **personaje dibujado propio** (SVG) que sirve sin imágenes.
-3. En ⚙ → Ajustes → Personalización se puede **cargar la foto del rostro y el personaje transparente**. Se guardan reducidas **solo en el navegador de ese dispositivo** (no salen a internet, no van al repositorio, no entran en el respaldo).
-4. La **vista previa privada** (artefacto visible solo para la cuenta del padre) incluye los dos recursos del kit para evaluar el diseño con su imagen real.
-Si más adelante se prefiere incluir las imágenes en el repositorio, conviene hacerlo en un repositorio privado o decidirlo expresamente.
+El repositorio y el sitio son **públicos**. Inicialmente las imágenes no se subieron; **el padre autorizó expresamente incorporarlas**, así que ahora forman parte del proyecto:
+1. `assets/hero.webp`: ilustración de Carlos José vestido de médico (PNG/WebP transparente del kit, `02_ilustracion_doctor`), idéntica byte a byte a la del kit.
+2. `assets/avatar.webp`: foto real recortada para el avatar (`04_avatar/avatar_foto_real_carlos_jose.webp`).
+3. `build.cjs` las copia a `dist/assets/`, las define como imágenes **predeterminadas** (`window.CJ_ASSETS`) y entran en el hash de versión; `sw.js` las guarda en la caché sin conexión. Toda instalación limpia las muestra sin configurar nada.
+4. Seguimos conservando el personaje dibujado (SVG) solo como respaldo si faltara una imagen, y en ⚙ → Ajustes se pueden cargar otras imágenes, que se guardan **solo en ese dispositivo**; «Usar las predeterminadas» vuelve a las de Carlos José.
+Consecuencia a tener presente: al ser un repositorio público, estas imágenes son visibles para cualquiera y quedan en el historial de Git aunque se borren después.
 
 ## 3. Identidad gráfica
 - **Concepto: «atardecer en el campo»**, tomado de la fotografía: cielo violeta que pasa a coral y oro, surcos verdes, camiseta roja, pantalón azul marino.
