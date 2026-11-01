@@ -127,7 +127,7 @@ async function advanceUntil(p,type){for(let i=0;i<12;i++){await p.waitForSelecto
    const before=await p.evaluate(()=>window.APP.build);
    let html=fs.readFileSync(path.join(dirA,'index.html'),'utf8').replace('"build":"'+before+'"','"build":"zzzz9999"');fs.writeFileSync(path.join(dirA,'index.html'),html);
    let sw=fs.readFileSync(path.join(dirA,'sw.js'),'utf8').replace("const BUILD='"+before+"';","const BUILD='zzzz9999';");fs.writeFileSync(path.join(dirA,'sw.js'),sw);
-   await p.evaluate(()=>window.appReg.update());await p.waitForSelector('#updbar:not([hidden])',{timeout:15000});await p.click('#updgo');await p.waitForSelector('.hero5');
+   await p.click('#home');await p.waitForSelector('.hero5');await p.evaluate(()=>window.appReg.update());await p.waitForSelector('#updbar:not([hidden])',{timeout:15000});await p.click('#updgo');await p.waitForSelector('.hero5');
    const after=await p.evaluate(()=>window.APP.build),ks=await p.evaluate(async()=>(await caches.keys()));return after==='zzzz9999'&&ks.length===1&&ks[0].endsWith('zzzz9999')?true:'build '+after+' cachés '+ks.join()});
   rec('PWA','Sin errores de consola en el ciclo de PWA',errs.length===0,errs[0]||'');await ctx.close();s2.srv.close()}
 

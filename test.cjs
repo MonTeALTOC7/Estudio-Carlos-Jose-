@@ -145,8 +145,8 @@ test('Mi nombre: solo disponible con nombre, y las letras formadas corresponden 
 test('Distribución v4: todos los módulos incluidos y sin marcadores pendientes',()=>{
  const html=fs.readFileSync(__dirname+'/dist/index.html','utf8');
  for(const t of ['/*CONTENT*/','/*GAMES*/']) assert.ok(!html.includes(t),t);
- for(const t of ['GamesUI','C.skill({id:\'contar\'','C.skill({id:\'planta\'','id="chips"','Versión 5.1','M.simon','M.paint']) assert.ok(html.includes(t),t);
- for(const f of ['content.js','skills-a.js','skills-b.js','skills-c.js','progress.js','coach.js','curriculum.js','people.js','games.js','adventures.js','course.js','audio.js','shell.js','engine.js','app.js'])assert.ok(html.includes(fs.readFileSync(__dirname+'/'+f,'utf8').slice(0,200)),'falta '+f+' en dist');assert.ok(fs.readFileSync(__dirname+'/sw.js','utf8').includes('v5.1.0'))
+ for(const t of ['GamesUI','C.skill({id:\'contar\'','C.skill({id:\'planta\'','id="chips"','Versión '+fs.readFileSync(__dirname+'/VERSION','utf8').trim(),'M.simon','M.paint']) assert.ok(html.includes(t),t);
+ for(const f of ['content.js','skills-a.js','skills-b.js','skills-c.js','progress.js','coach.js','curriculum.js','people.js','games.js','adventures.js','course.js','audio.js','shell.js','pwa.js','engine.js','app.js'])assert.ok(html.includes(fs.readFileSync(__dirname+'/'+f,'utf8').slice(0,200)),'falta '+f+' en dist');assert.ok(fs.readFileSync(__dirname+'/dist/sw.js','utf8').includes("const VERSION='"+fs.readFileSync(__dirname+'/VERSION','utf8').trim()+"'"))
 });
 test('Carlos José por defecto: ilustración y foto incluidas en dist, idénticas a assets/ y en la caché sin conexión',()=>{
  const crypto=require('node:crypto'),h=f=>crypto.createHash('sha256').update(fs.readFileSync(f)).digest('hex');
@@ -406,3 +406,16 @@ test('Personas: el dibujo para colorear usa regiones en plural y no resalta nada
  const svg=PE.paint({});for(const r of ['cabeza','brazos','manos','piernas','pies','barriga'])assert.ok(svg.includes('data-r="'+r+'"'),r);assert.ok(!/ hl"/.test(svg));
  const ex=PE.svg('carlos-doctor',{hl:'mano'});assert.equal((ex.match(/ hl"/g)||[]).length,1);assert.ok(ex.includes('class="rg zona hl" data-r="mano"'));
  const plain=PE.svg('mama-cuerpo');assert.ok(!/ hl"/.test(plain));assert.ok(/aria-label="Dibujo de mamá"/.test(plain))});
+
+test('Versión única: VERSION es la única fuente y no quedan literales de versión en el código',()=>{
+ const V=fs.readFileSync(__dirname+'/VERSION','utf8').trim();assert.match(V,/^\d+\.\d+\.\d+$/);
+ const html=fs.readFileSync(__dirname+'/dist/index.html','utf8');assert.ok(html.includes('"version":"'+V+'"'),'APP.version');assert.ok(html.includes('Versión '+V));
+ const sw=fs.readFileSync(__dirname+'/dist/sw.js','utf8');assert.ok(sw.includes("const VERSION='"+V+"'"));assert.ok(!/BUILD='dev'/.test(sw)&&!/VERSION='0\.0\.0'/.test(sw));
+ for(const f of ['shell.js','app.js','pwa.js','course.js','page.html'])assert.ok(!/(?<![\d.#a-f])5\.[123]\.\d(?![\d])|Versión 5\.\d|versión 5\.\d/.test(fs.readFileSync(__dirname+'/'+f,'utf8')),'literal de versión en '+f);
+});
+test('Instalación y actualización: sin botón fijo «Instalar» y con aviso de actualización contextual',()=>{
+ const html=fs.readFileSync(__dirname+'/dist/index.html','utf8');assert.ok(!html.includes('id="install"'));assert.ok(!html.includes('beforeinstallprompt\'')||html.includes('PwaUI'));
+ assert.ok(html.includes('id="pwaSlot"'));assert.ok(html.includes('Actualizar ahora')&&html.includes('Después de mi clase'));
+ assert.ok(!/Notification\.requestPermission|pushManager/.test(html),'no se piden permisos de notificaciones');
+ assert.ok(!/skipWaiting\(\)\)/.test(fs.readFileSync(__dirname+'/sw.js','utf8').split("'install'")[1].split("'activate'")[0].replace(/if\(!self\.registration\.active\)return self\.skipWaiting\(\)/,'')),'el service worker no se salta la espera por su cuenta');
+});

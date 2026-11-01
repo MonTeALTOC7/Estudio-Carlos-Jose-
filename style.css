@@ -4,7 +4,7 @@
 .match{touch-action:none;user-select:none;-webkit-user-select:none;min-width:0}
 .dot-count{display:grid;grid-template-columns:repeat(5,12px);gap:6px;justify-content:center;padding:10px 0}.dot-count i{width:12px;height:12px;border-radius:50%;background:#287859}.quantity{display:grid;grid-template-columns:repeat(5,1fr);max-width:320px;gap:8px;margin:18px auto;font-size:36px}
 .choice>svg{max-width:100%;height:auto}.topline h2{min-width:0;overflow-wrap:anywhere}.topline .back{flex-shrink:0}.label{flex-shrink:0;max-width:105px;text-align:center}
-#install{min-height:44px;border-radius:12px;padding:8px;background:#edf1e7}.palette{width:48px;height:48px}.header-actions{flex-wrap:wrap;justify-content:flex-end}.brand{flex-shrink:0}.app{padding-bottom:max(20px,env(safe-area-inset-bottom))}
+.palette{width:48px;height:48px}.header-actions{flex-wrap:wrap;justify-content:flex-end}.brand{flex-shrink:0}.app{padding-bottom:max(20px,env(safe-area-inset-bottom))}
 @media(max-width:380px){.brandmark{display:none}.brand b{font-size:22px}.header-actions{gap:5px}.icon{width:44px;padding:8px}.topline{gap:8px}.topline h2{font-size:23px}.label{font-size:11px;padding:7px}.options.three .swatch{width:56px;height:56px}.choice{padding:8px}.tile .symbol{font-size:40px}.study{padding:18px}.dot-count{grid-template-columns:repeat(5,10px);gap:4px}.dot-count i{width:10px;height:10px}}
 
 #notice{pointer-events:none;width:min(480px,calc(100% - 24px));font-size:14px}
@@ -257,3 +257,10 @@ input[type=checkbox]{width:28px;height:28px;flex:0 0 auto;margin:0;accent-color:
  .gbin{min-height:96px;padding:4px}.gbins{margin:4px auto;gap:8px}.gtray{margin:6px auto;padding:6px;min-height:64px;--u:clamp(44px,10vh,62px)}
  .gmatch{margin:4px auto;max-width:560px;gap:28px;--u:46px}.gcol{gap:6px}.gm{min-height:56px;padding:2px 6px;--u:clamp(36px,9vh,46px)}
 }
+
+/* Invitación contextual a instalar (en «Hoy», sin modal) y panel de instalación/actualización */
+.pwacard{display:flex;align-items:center;gap:14px;flex-wrap:wrap;background:#fff;border:2px solid var(--line);border-radius:20px;padding:12px 14px;margin:14px 0 0}
+.pwacard .pc-i{border-radius:14px;flex:none}.pwacard .pc-t{flex:1 1 220px;min-width:0}.pwacard h2{font-size:17px;margin:0 0 2px}.pwacard p{margin:0;font-size:14px;color:var(--ink2,#44506a)}
+.pwacard .pc-b{display:flex;gap:8px;flex-wrap:wrap}.pwacard button{min-height:44px;padding:8px 16px}
+.pwapanel{background:#f6f8f2;border-radius:16px;padding:10px 14px}.pwapanel .row{display:flex;gap:8px;flex-wrap:wrap;margin:6px 0}.pwapanel button{min-height:44px}
+#updbar button[disabled]{opacity:.7}

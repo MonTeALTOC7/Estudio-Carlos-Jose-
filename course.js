@@ -96,7 +96,7 @@ function skillFinished(run,res,n){const c=course(),cd=run.course,cur=c.cur;news=
 function symbolsDone(cd,r){const c=course(),cur=c.cur,l=CUR.byId[cd.l];if(!cur||!l||cur.l!==cd.l){Sh.hoy();return}
  const after=K.symCounts()[l.area]||0,ok=cur.symBefore>=l.reach?r.ind>=3:after>=l.reach;
  finishLesson(l,{ok,ck:[r.ind,5],er:r.supported,hn:0,mode:cur.mode,reach:[cur.symBefore,after,l.reach]})}
-function finishLesson(l,res){const c=course(),cur=c.cur;res.recall=cur&&cur.recall&&cur.recall.done?{skill:cur.recall.skill,good:cur.recall.good}:null;res.fell=cur&&cur.fell||null;
+function finishLesson(l,res){if(K.pwa)setTimeout(()=>K.pwa.noteClassEnd(),0);const c=course(),cur=c.cur;res.recall=cur&&cur.recall&&cur.recall.done?{skill:cur.recall.skill,good:cur.recall.good}:null;res.fell=cur&&cur.fell||null;
  const rec=CUR.recordLesson(c,l,res,now());save();act=false;closeScreen(l,rec,res)}
 
 /* ---------- 8 · celebramos y mostramos qué sigue ---------- */
