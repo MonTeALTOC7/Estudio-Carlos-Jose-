@@ -17,6 +17,20 @@ P.good=e=>e.of>0&&e.ok*3>=e.of*2;
 /* Historial de una habilidad; los registros de la v4.0 (sin historial) cuentan como una sola sesión. */
 P.hist=rec=>{if(!rec)return[];if(rec.hist&&rec.hist.length)return rec.hist;return rec.last?[{d:P.day(rec.ts||0),ts:rec.ts||0,ok:rec.last.ok,of:rec.last.of,ty:[],er:0,hn:0,legacy:true}]:[]};
 
+/* Pruebas permanentes: el historial se recorta (últimas 14 sesiones) pero lo demostrado NO se descarta.
+   proof.days = días con comprobación buena; proof.types = formas de jugar con acierto sin ayuda;
+   proof.active = días con actividad; proof.persever = hubo una sesión terminada con 3 errores o más.
+   Solo crece, así que el estado derivado nunca baja por haber descartado registros antiguos. */
+P.HIST_CAP=14;P.PROOF_CAP=120;
+const uniq=(a,cap)=>{let u=[...new Set(a)].sort();if(cap&&u.length>cap)u=u.slice(0,10).concat(u.slice(-(cap-10)));return u};
+P.proof=rec=>{const b=(rec&&rec.proof)||{},h=P.hist(rec),g=h.filter(P.good);
+ return{days:uniq([...(b.days||[]),...g.map(e=>e.d)],P.PROOF_CAP),types:[...new Set([...(b.types||[]),...g.flatMap(e=>e.ty||[])])],active:uniq([...(b.active||[]),...h.map(e=>e.d)],P.PROOF_CAP),persever:!!b.persever||h.some(e=>(e.er||0)>=3)}};
+/* Agrega una sesión al registro de una habilidad: recorta el historial sin perder las pruebas. Mutates y devuelve rec. */
+P.record=(rec,entry,cap)=>{const o=rec||{},base=o.hist?o.hist.slice():P.hist(o),pr=P.proof({proof:o.proof,hist:base});
+ if(P.good(entry)){pr.days=uniq(pr.days.concat(entry.d),P.PROOF_CAP);pr.types=[...new Set(pr.types.concat(entry.ty||[]))]}
+ pr.active=uniq(pr.active.concat(entry.d),P.PROOF_CAP);if((entry.er||0)>=3)pr.persever=true;
+ base.push(entry);o.hist=base.slice(-(cap||P.HIST_CAP));o.proof=pr;return o};
+
 /* Reglas (también se muestran al adulto):
    Por descubrir: nunca se ha jugado.
    Aprendiendo: se jugó, pero ninguna comprobación tuvo 2 de 3 o más sin ayuda.
@@ -27,13 +41,13 @@ P.RULES={practicando:'1 comprobación con 2 de 3 o más sin ayuda',comprobada:'c
 P.skillState=(rec,nowTs)=>{
  const h=P.hist(rec),today=P.day(nowTs==null?Date.now():nowTs);
  if(!h.length)return{state:'descubrir',repaso:false,sinceGood:null,goodDays:0,types:0,sessions:0,last:null,lastGoodDay:null,lastDay:null};
- const goods=h.filter(P.good),days=[...new Set(goods.map(e=>e.d))].sort(),types=new Set(goods.flatMap(e=>e.ty||[])),last=h[h.length-1];
+ const pf=P.proof(rec),days=pf.days,types=new Set(pf.types),last=h[h.length-1];
  let state='aprendiendo';
  if(days.length>=1)state='practicando';
  if(days.length>=2&&types.size>=2)state='comprobada';
  if(state==='comprobada'&&days.length>=3&&P.dayNum(days[days.length-1])-P.dayNum(days[0])>=6)state='consolidacion';
  const lastGoodDay=days.length?days[days.length-1]:null;
- return{state,repaso:P.rank(state)>=2&&last.ok*2<last.of,sinceGood:lastGoodDay?P.dayNum(today)-P.dayNum(lastGoodDay):null,goodDays:days.length,types:types.size,sessions:h.length,last,lastGoodDay,lastDay:last.d}};
+ return{state,repaso:P.rank(state)>=2&&last.ok*2<last.of,sinceGood:lastGoodDay?P.dayNum(today)-P.dayNum(lastGoodDay):null,goodDays:days.length,types:types.size,sessions:Math.max(h.length,(rec&&rec.runs)||0),last,lastGoodDay,lastDay:last.d}};
 P.WEIGHT={descubrir:0,aprendiendo:1,practicando:2,comprobada:4,consolidacion:6};
 P.LEVELS=[{n:1,name:'Explorador',min:0,icon:'🧭'},{n:2,name:'Investigador',min:10,icon:'🔍'},{n:3,name:'Descubridor',min:35,icon:'🔭'},{n:4,name:'Gran Explorador',min:80,icon:'🏔️'},{n:5,name:'Gran Descubridor',min:140,icon:'🌟'}];
 /* Puntos = peso del estado actual de cada habilidad + 3 por cada aventura completada alguna vez.
@@ -52,9 +66,9 @@ P.all=(skills,recs,nowTs)=>{const out={};for(const s of skills)out[s.id]=P.skill
 
 /* Insignias: se ganan una vez y se conservan para siempre. */
 P.badgeCtx=(skills,mods,advList,recs,adv,states,nowTs)=>{
- const hs=skills.map(s=>({s,h:P.hist((recs||{})[s.id])})),days=new Set(),routes=new Set();let sessions=0,persever=false,recalled=false;
- for(const {s,h} of hs){if(h.length)routes.add(s.mod);sessions+=h.length;for(const e of h){days.add(e.d);if((e.er||0)>=3)persever=true}
-  const gd=[...new Set(h.filter(P.good).map(e=>e.d))].sort();if(gd.length>=2&&P.dayNum(gd[gd.length-1])-P.dayNum(gd[0])>=3)recalled=true}
+ const days=new Set(),routes=new Set();let sessions=0,persever=false,recalled=false;
+ for(const s of skills){const rec=(recs||{})[s.id],h=P.hist(rec);if(!h.length)continue;routes.add(s.mod);sessions+=Math.max(h.length,(rec&&rec.runs)||0);const pf=P.proof(rec);pf.active.forEach(d=>days.add(d));if(pf.persever)persever=true;
+  const gd=pf.days;if(gd.length>=2&&P.dayNum(gd[gd.length-1])-P.dayNum(gd[0])>=3)recalled=true}
  const advDone=new Set(Object.keys(adv||{}).filter(k=>adv[k].runs>0));for(const k of advDone)if(adv[k].ts)days.add(P.day(adv[k].ts));
  return{skills,mods,advList,states,routes,days,sessions,persever,recalled,advDone,pts:P.points(states,advDone.size)};};
 const nS=(c,min)=>Object.values(c.states).filter(s=>P.rank(s.state)>=P.rank(min)).length;

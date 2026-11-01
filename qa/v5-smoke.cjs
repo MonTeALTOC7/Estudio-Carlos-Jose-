@@ -59,6 +59,17 @@ async function advSolve(p,ch){
  s=await state();s.games.skills={'clasif-color':{runs:2,best:3,ind:5,sup:1,last:{ok:3,of:3},ts:Date.now()-4*DAY,hist:[ent(4,3)]}};delete s.resume;await setState(s);await p.reload();await p.waitForSelector('.hero5');
  const confirmIdx=(await p.locator('.tcard em').allTextContents()).findIndex(k=>/Comprobar|Recordar/.test(k));
  if(confirmIdx>=0){await p.click('.tcard >> nth='+confirmIdx);await p.waitForSelector('#gprompt');ok('Confirmar/recordar va directo a «Compruebo», sin pistas',/Compruebo/.test(await p.textContent('.phases li.on span'))&&await p.locator('#ghint').count()===0)}else ok('Confirmar/recordar aparece en las sugerencias',false);
+ // 4b REGRESIÓN: habilidad consolidada con el historial lleno y una sesión real fallida no pierde su estado
+ {s=await state();const e=(n,ok,er)=>({d:day(n),ts:Date.now()-n*DAY,ok,of:3,pi:0,ps:3,er,hn:0,ty:ok>=2?['choose','put']:['choose'],bad:['a']});
+  s.games.skills={contar:{runs:30,best:3,ind:20,sup:40,last:{ok:0,of:3},ts:Date.now()-DAY,hist:Array.from({length:14},(_,i)=>e(14-i,0,4)),proof:{days:[day(40),day(30),day(20)],types:['choose','put'],active:[day(40),day(30),day(20)],persever:true}}};delete s.resume;await setState(s);
+  await p.reload();await p.waitForSelector('.hero5');await p.click('[data-tab="aprender"]');await p.click('[data-mod="cantidad"]');await p.waitForSelector('.gskill');
+  ok('La ruta muestra la habilidad consolidada aunque el historial sea de sesiones fallidas',/consolid/i.test(await p.textContent('[data-skill="contar"]')));
+  await p.click('[data-skill="contar"]');await p.waitForSelector('.gcards');await p.click('#gnext');for(;;){await p.waitForSelector('.gexplain');const last=(await p.textContent('#gnext')).includes('Ahora yo');await p.click('#gnext');if(last)break}
+  let nq=0;for(;;){await p.waitForSelector('#gprompt');const q=await p.evaluate(()=>window.__gq);await solve(p,q,true);await p.waitForSelector('#gnext:not([hidden])');await p.click('#gnext');nq++;if(await p.locator('#gagain').count())break;if(nq>20)throw new Error('demasiadas')}
+  await sleep(300);if(await p.locator('#celebrate.on').count())await p.click('#celok');
+  const r=(await state()).games.skills.contar;ok('La sesión fallida se guarda pero el historial sigue acotado y las pruebas permanecen',r.hist.length===14&&r.proof.days.length===3&&r.runs===31&&r.last.ok<2,'ok '+r.last.ok+' de '+r.last.of);
+  await p.click('#directHome');await p.click('[data-tab="logros"]');await p.waitForSelector('.routelist');await p.click('.rt >> nth=0');
+  ok('Logros sigue mostrando «En consolidación» y sugiere repaso',(await p.textContent('.rt >> nth=0')).includes('En consolidación')&&(await p.textContent('.rt >> nth=0')).includes('repasar'))}
  // 5 aventuras
  await goHoy(p);await p.click('[data-tab="jugar"]');await p.waitForSelector('.advgrid');
  const ids=await p.$$eval('[data-adv]',els=>[...new Set(els.map(e=>e.dataset.adv))]);

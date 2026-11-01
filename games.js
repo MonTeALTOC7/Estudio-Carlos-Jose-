@@ -270,9 +270,10 @@ const solved={
 
 /* ---------- progreso guardado ---------- */
 function gdata(){const s=S();s.games=s.games||{skills:{},mixed:null};s.games.skills=s.games.skills||{};return s.games}
-function saveResult(id,res){const g=gdata(),o=g.skills[id]||{runs:0,best:0,ind:0,sup:0,last:null},now=Date.now(),base=o.hist?o.hist.slice():root.Progress.hist(o);
- o.runs++;o.ind+=res.ind;o.sup+=res.sup;o.last={ok:res.ok,of:res.of};o.best=Math.max(o.best,res.ok);o.ts=now;
- base.push({d:root.Progress.day(now),ts:now,ok:res.ok,of:res.of,pi:res.pi||0,ps:res.ps||0,er:res.er||0,hn:res.hn||0,ty:res.ty||[],bad:res.bad||[],mode:res.mode||'full'});o.hist=base.slice(-14);g.skills[id]=o;K.save()}
+function saveResult(id,res){const g=gdata(),o=g.skills[id]||{runs:0,best:0,ind:0,sup:0,last:null},now=Date.now();
+ /* Progress.record recorta el historial a las últimas sesiones pero conserva las pruebas permanentes (días y formas con comprobación buena). */
+ root.Progress.record(o,{d:root.Progress.day(now),ts:now,ok:res.ok,of:res.of,pi:res.pi||0,ps:res.ps||0,er:res.er||0,hn:res.hn||0,ty:res.ty||[],bad:res.bad||[],mode:res.mode||'full'});
+ o.runs++;o.ind+=res.ind;o.sup+=res.sup;o.last={ok:res.ok,of:res.of};o.best=Math.max(o.best,res.ok);o.ts=now;g.skills[id]=o;K.save()}
 /* Guardado para reanudar la última actividad (JSON sencillo; las preguntas ya generadas se conservan). */
 function snap(){if(!run||run.kind!=='skill')return;const s=S(),sess=Object.assign({},run.sess);delete sess.skill;delete sess.more;s.resume={k:'skill',id:run.sk.id,mode:run.mode||'full',phase:run.phase,i:run.i,res:run.res,more:run.more,streak:run.streak||0,data:sess,ts:Date.now()};K.save()}
 
