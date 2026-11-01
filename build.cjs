@@ -5,12 +5,12 @@ const fs=require('node:fs'),path=require('node:path'),crypto=require('node:crypt
 const root=__dirname,preview=process.env.PREVIEW==='1',out=path.resolve(root,process.env.OUT||(preview?'dist-preview':'dist'));
 fs.mkdirSync(out,{recursive:true});
 const read=f=>fs.readFileSync(path.join(root,f),'utf8');
-const SRC=[['CSS',['style.css']],['ENGINE',['engine.js']],['ACTIVITIES',['activities.js']],['CONTENT',['content.js','skills-a.js','skills-b.js','skills-c.js']],['PROGRESS',['progress.js','coach.js']],['GAMES',['games.js']],['ADV',['adventures.js']],['SHELL',['shell.js']],['APP',['app.js']]];
+const SRC=[['CSS',['style.css']],['ENGINE',['engine.js']],['ACTIVITIES',['activities.js']],['CONTENT',['content.js','skills-a.js','skills-b.js','skills-c.js']],['PROGRESS',['progress.js','coach.js','curriculum.js']],['AUDIO',['audio.js']],['GAMES',['games.js']],['ADV',['adventures.js']],['COURSE',['course.js']],['SHELL',['shell.js']],['APP',['app.js']]];
 const allSrc=['page.html','sw.js','manifest.webmanifest',...SRC.flatMap(x=>x[1])];
 const IMGS=['hero.webp','avatar.webp'];/* Carlos José (ilustración y foto de avatar): recursos predeterminados, presentes en toda instalación limpia */
 const imgHash=IMGS.map(f=>crypto.createHash('sha1').update(fs.readFileSync(path.join(root,'assets',f))).digest('hex')).join('');
 const build=process.env.BUILD_ID||crypto.createHash('sha1').update(allSrc.map(read).join('\u0000')+imgHash+(preview?'P':'')).digest('hex').slice(0,8);
-const info={channel:preview?'prueba':'producción',key:preview?'primerosPasos3-prueba':'primerosPasos3',version:'5.0.0',build,commit:(process.env.GITHUB_SHA||'').slice(0,7)};
+const info={channel:preview?'prueba':'producción',key:preview?'primerosPasos3-prueba':'primerosPasos3',version:'5.1.0',build,commit:(process.env.GITHUB_SHA||'').slice(0,7)};
 if(preview)info.built=new Date().toISOString();
 let html=read('page.html');
 html=html.replace('/*APPINFO*/',()=>'window.APP='+JSON.stringify(info)+";window.CJ_ASSETS=window.CJ_ASSETS||{hero:'assets/hero.webp',face:'assets/avatar.webp'};");

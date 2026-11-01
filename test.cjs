@@ -145,8 +145,8 @@ test('Mi nombre: solo disponible con nombre, y las letras formadas corresponden 
 test('Distribución v4: todos los módulos incluidos y sin marcadores pendientes',()=>{
  const html=fs.readFileSync(__dirname+'/dist/index.html','utf8');
  for(const t of ['/*CONTENT*/','/*GAMES*/']) assert.ok(!html.includes(t),t);
- for(const t of ['GamesUI','C.skill({id:\'contar\'','C.skill({id:\'planta\'','id="chips"','Versión 5.0','M.simon','M.paint']) assert.ok(html.includes(t),t);
- for(const f of ['content.js','skills-a.js','skills-b.js','skills-c.js','progress.js','coach.js','games.js','adventures.js','shell.js','engine.js','app.js'])assert.ok(html.includes(fs.readFileSync(__dirname+'/'+f,'utf8').slice(0,200)),'falta '+f+' en dist');assert.ok(fs.readFileSync(__dirname+'/sw.js','utf8').includes('v5.0.0'))
+ for(const t of ['GamesUI','C.skill({id:\'contar\'','C.skill({id:\'planta\'','id="chips"','Versión 5.1','M.simon','M.paint']) assert.ok(html.includes(t),t);
+ for(const f of ['content.js','skills-a.js','skills-b.js','skills-c.js','progress.js','coach.js','curriculum.js','games.js','adventures.js','course.js','audio.js','shell.js','engine.js','app.js'])assert.ok(html.includes(fs.readFileSync(__dirname+'/'+f,'utf8').slice(0,200)),'falta '+f+' en dist');assert.ok(fs.readFileSync(__dirname+'/sw.js','utf8').includes('v5.1.0'))
 });
 test('Carlos José por defecto: ilustración y foto incluidas en dist, idénticas a assets/ y en la caché sin conexión',()=>{
  const crypto=require('node:crypto'),h=f=>crypto.createHash('sha256').update(fs.readFileSync(f)).digest('hex');
@@ -267,3 +267,77 @@ test('Coach: aventuras recomendadas solo con habilidades ya conocidas y es deter
  assert.ok(!mkplan(recs,{a1:{runs:1,ts:D(2)}},D(2),{max:20}).some(x=>x.kind==='aventura'),'no vuelve a ofrecer la aventura jugada hoy');
 });
 console.log(checks+' grupos de pruebas de lógica y distribución completados.');
+
+/* ===== Mi camino de aprendizaje: currículo y planificador ===== */
+const CU=require('./curriculum.js');
+const ADV_IDS=['consultorio','mercado','safari','laboratorio','colegio'];
+const T0=new Date(2026,10,1,10).getTime(),DAYMS=86400000;
+const okRes=(ck=[3,3])=>({ok:true,ck,mode:'nueva',er:0,hn:0}),badRes=()=>({ok:false,ck:[1,3],mode:'nueva',er:2,hn:0});
+const finish=(c,id,res,t)=>CU.recordLesson(c,CU.byId[id],res,t);
+test('Currículo: válido (40 habilidades una vez, requisitos anteriores, unidades en espiral con 3+ rutas y repaso)',()=>{
+ const errs=CU.validate(Content,ADV_IDS);assert.deepEqual(errs,[]);
+ assert.equal(CU.units.length,9);assert.equal(CU.lessons.filter(l=>l.kind==='skill').length,40);
+ assert.ok(CU.lessons.every(l=>l.hook&&l.goal&&l.kid));
+ for(const u of CU.units){const ls=CU.unitLessons(u.id);assert.ok(ls.length>=5&&ls.length<=8);assert.equal(ls.filter(l=>l.kind==='review').length,1)}
+ /* espiral: no hay que terminar todos los números antes de ver colores o vocales: la 1.ª unidad ya mezcla cuerpo, colores, números, tamaños y espacio */
+ const u1=CU.unitLessons('u1');assert.ok(u1.some(l=>l.area==='colors')&&u1.some(l=>l.area==='numbers')&&u1.some(l=>l.skill==='partes')&&u1.some(l=>l.skill==='posiciones'));
+ assert.ok(CU.byId['vocales-a'].n<CU.byId['numeros-d'].n&&CU.byId['figuras-a'].n<CU.byId['numeros-b'].n)});
+test('Currículo: los símbolos se desbloquean con el motor original y las habilidades dependientes los esperan',()=>{
+ for(const [a,b] of [['colores-a','clasif-color'],['figuras-a','figuras'],['vocales-a','vocal-inicial'],['numeros-a','contar'],['colores-a','colores-uso']])assert.ok(CU.byId[b].needs.includes(a),b+' necesita '+a);
+ assert.ok(CU.byId['antes-despues'].needs.includes('contar')&&CU.byId['vocal-final'].needs.includes('vocal-inicial')&&CU.byId['juntar'].needs.includes('contar'));
+ for(const l of CU.lessons.filter(x=>x.kind==='symbols'))assert.ok(l.reach>=3&&l.reach<=Learning.groups[l.area].length)});
+test('Planificador: curso nuevo → primera clase; nada se adelanta; sin migración destructiva',()=>{
+ const s={name:'Ana',records:{x:1},games:{skills:{}},extra:{a:[1]}};const c=CU.ensure(s);assert.equal(s.course,c);
+ assert.deepEqual(s.extra,{a:[1]});assert.equal(CU.ensure(s),c);                                     // idempotente
+ const n=CU.next(c,{},T0);assert.equal(n.kind,'primera');assert.equal(n.lesson.id,'partes');assert.equal(n.mode,'nueva');
+ const c2=CU.ensure({course:{started:5,done:{partes:{n:1,ok:1}},futuro:'x'}});assert.equal(c2.futuro,'x');assert.ok(c2.prefs&&c2.sr&&c2.log&&c2.diag)});
+test('Planificador: una sola comprobación buena no salta unidades; la unidad siguiente abre tras su repaso',()=>{
+ const c=CU.ensure({});finish(c,'partes',okRes(),T0);assert.equal(CU.next(c,{},T0).lesson.id,'colores-a');
+ assert.equal(CU.unitOpen(c,'u2'),false);assert.equal(CU.available(c,CU.byId['contar']).ok,false);
+ for(const l of CU.unitLessons('u1').filter(x=>x.kind!=='review'))if(!CU.isDone(c,l.id))finish(c,l.id,okRes(),T0);
+ assert.equal(CU.unitOpen(c,'u2'),false,'falta el repaso');assert.equal(CU.next(c,{},T0).lesson.id,'rev-u1');
+ finish(c,'rev-u1',okRes(),T0);assert.equal(CU.unitOpen(c,'u2'),true);assert.equal(CU.next(c,{},T0).lesson.id,'contar')});
+test('Planificador: comprobación floja → refuerzo al día siguiente → «con apoyo» tras dos intentos (nunca bloquea)',()=>{
+ const c=CU.ensure({});finish(c,'partes',badRes(),T0);assert.equal(CU.status(c,'partes'),'refuerzo');assert.equal(CU.isDone(c,'partes'),false);
+ let n=CU.next(c,{},T0);assert.notEqual(n.lesson.id,'partes','el mismo día se sigue con otra clase nueva');
+ n=CU.next(c,{},T0+DAYMS);assert.equal(n.lesson.id,'partes');assert.equal(n.mode,'refuerzo');
+ finish(c,'partes',badRes(),T0+DAYMS);assert.equal(CU.status(c,'partes'),'apoyo');assert.ok(CU.isDone(c,'partes'));assert.equal(CU.rec(c,'partes').ok,0);
+ assert.notEqual(CU.next(c,{},T0+DAYMS).lesson.id,'partes');
+ /* un éxito posterior sube a «hecha» y un fallo posterior no la baja */
+ finish(c,'partes',okRes(),T0+2*DAYMS);assert.equal(CU.status(c,'partes'),'hecha');finish(c,'partes',badRes(),T0+3*DAYMS);assert.equal(CU.status(c,'partes'),'hecha')});
+test('Planificador: la clase a medias tiene prioridad y se reanuda; abandonar no castiga',()=>{
+ const c=CU.ensure({});c.cur={l:'tamano',mode:'nueva',step:'main'};const n=CU.next(c,{},T0);assert.equal(n.kind,'continuar');assert.equal(n.lesson.id,'tamano');
+ c.cur=null;assert.equal(CU.next(c,{},T0).lesson.id,'partes');assert.equal(Object.keys(c.done).length,0)});
+test('Modo de clase: «confirmar» si ya lo sabe (exploración o práctica libre) sin dar por dominada la habilidad',()=>{
+ const c=CU.ensure({});assert.equal(CU.modeFor(c,CU.byId.partes,{states:{}}),'nueva');
+ CU.applyDiag(c,{partes:1,tamano:0},T0,false);assert.equal(CU.modeFor(c,CU.byId.partes,{states:{}}),'confirmar');assert.equal(CU.modeFor(c,CU.byId.tamano,{states:{}}),'nueva');
+ assert.equal(CU.modeFor(c,CU.byId.posiciones,{states:{posiciones:{state:'comprobada'}}}),'confirmar');assert.equal(CU.modeFor(c,CU.byId.posiciones,{states:{posiciones:{state:'practicando'}}}),'nueva');
+ assert.deepEqual(CU.diagSummary(c).known,['partes']);assert.deepEqual(CU.diagSummary(c).later,['tamano']);
+ finish(c,'partes',Object.assign(okRes(),{mode:'confirmar'}),T0);assert.ok(c.sr.partes,'incluso lo confirmado queda en repaso espaciado');
+ for(const k of CU.PROBES)assert.ok(CU.byId[k]||Content.byId[k])});
+test('Repaso espaciado: intervalos que se alargan 1-3-7-14-30 días y vuelven al primero si falla',()=>{
+ const c=CU.ensure({});const due=[];let t=T0;for(let i=0;i<6;i++){const o=CU.schedule(c,'contar',true,t);due.push(Math.round((new Date(o.due+'T12:00:00')-new Date(CU.day(t)+'T12:00:00'))/DAYMS));t+=DAYMS}
+ assert.deepEqual(due,[1,3,7,14,30,30]);const o=CU.schedule(c,'contar',false,t);assert.equal(o.b,0);assert.equal(o.ok,0);assert.equal(CU.addDays(CU.day(t),1),o.due)});
+test('Repaso espaciado: «Recordamos» elige primero lo vencido y luego lo último terminado; el gran repaso prioriza lo flojo',()=>{
+ const c=CU.ensure({});assert.equal(CU.pickRecall(c,CU.byId.partes,T0),null);
+ finish(c,'partes',okRes(),T0);finish(c,'tamano',okRes(),T0);
+ assert.equal(CU.pickRecall(c,CU.byId.posiciones,T0+10).why,'reciente');assert.equal(CU.pickRecall(c,CU.byId.posiciones,T0+10).skill,'tamano');
+ const r=CU.pickRecall(c,CU.byId.posiciones,T0+DAYMS*2);assert.equal(r.why,'repaso');assert.ok(['partes','tamano'].includes(r.skill));
+ CU.schedule(c,'partes',false,T0);assert.deepEqual(CU.reviewSkills(c,CU.byId['rev-u9'],T0)[0],'partes');assert.equal(CU.reviewSkills(c,CU.byId['rev-u1'],T0).length,3);
+ assert.equal(CU.pickRecall(c,CU.byId.partes,T0+DAYMS*2).skill,'tamano','no se recuerda la misma habilidad que se enseña')});
+test('Planificador (propiedades): con 600 resultados aleatorios el camino respeta requisitos, no retrocede y siempre ofrece algo o termina',()=>{
+ let seed=7;const rnd=()=>{seed=(seed*1103515245+12345)&0x7fffffff;return seed/0x7fffffff};
+ const c=CU.ensure({});let t=T0,steps=0,prevDone=0;
+ while(steps++<600){const n=CU.next(c,{states:{}},t);if(!n.lesson)break;const l=n.lesson;
+  assert.ok(CU.available(c,l).ok,'se recomendó algo no disponible: '+l.id);
+  const before=CU.totals(c).done;finish(c,l.id,rnd()<.7?okRes():badRes(),t);assert.ok(CU.totals(c).done>=before,'el avance no retrocede');
+  for(const x of CU.lessons)if(c.done[x.id]&&c.done[x.id].ok)assert.equal(CU.status(c,x.id),'hecha');
+  if(rnd()<.4)t+=DAYMS;if(rnd()<.05)c.cur={l:CU.lessons[Math.floor(rnd()*CU.lessons.length)].id,mode:'nueva'};if(rnd()<.2)c.cur=null}
+ assert.ok(steps<600,'el curso termina con resultados aleatorios (nunca hay bucles infinitos de refuerzo)');
+ assert.equal(CU.totals(c).done,CU.lessons.length);assert.ok(c.log.length<=300)});
+test('Curso: el progreso curricular es independiente del dominio de habilidades y del nivel de aventura',()=>{
+ const c=CU.ensure({});finish(c,'partes',okRes(),T0);
+ const rec={runs:1,hist:[{d:'2026-11-01',ts:T0,ok:3,of:3,ty:['tap'],er:0,hn:0,src:'clase'}]};const st=Progress.skillState(rec,T0);assert.equal(st.state,'practicando');   // una comprobación buena = practicando, no dominio
+ assert.equal(CU.status(c,'partes'),'hecha');assert.notEqual(st.state,'consolidacion');
+ /* la evidencia de juego libre no mueve el curso */
+ const snap=JSON.stringify(c);const libre=Progress.record({},{d:'2026-11-02',ts:T0+DAYMS,ok:3,of:3,ty:['choose'],er:0,hn:0,src:'libre',mode:'full'});assert.equal(libre.hist[0].src,'libre');assert.equal(JSON.stringify(c),snap)});

@@ -187,28 +187,28 @@ ADV.forEach(a=>{a.skills=a.skills.filter(i=>C.byId[i])});
 /* ===================== ejecución ===================== */
 let run=null;
 const advOf=id=>ADV.find(a=>a.id===id);
-const view=id=>'adv:'+id;
+const view=id=>run&&run.lesson?'cls:adv':'adv:'+id;
 function dots(i,n,res){return '<div class="advdots" aria-hidden="true">'+Array.from({length:n},(_,k)=>'<i class="'+(k<i?(res[k]?'ok':'help'):k===i?'now':'')+'"></i>').join('')+'</div>'}
-function snapA(){if(!run)return;const s=S();s.resume={k:'adv',id:run.a.id,i:run.i,res:run.res,chs:run.chs,ts:Date.now()};K.save()}
+function snapA(){if(!run||run.lesson)return;const s=S();s.resume={k:'adv',id:run.a.id,i:run.i,res:run.res,chs:run.chs,ts:Date.now()};K.save()}
 function open(id){const a=advOf(id),ctx=ctxNow(),rng=Math.random;run={a,chs:a.build(rng,ctx),i:-1,res:[]};intro()}
 function resumeInfo(){const r=S().resume;if(!r||r.k!=='adv'||Date.now()-r.ts>72*3600e3)return null;const a=advOf(r.id);return a?{title:a.title,icon:a.icon,label:'Reto '+(r.i+1)+' de '+r.chs.length,kind:'adv'}:null}
 function resume(){const r=S().resume,info=resumeInfo();if(!info)return false;run={a:advOf(r.id),chs:r.chs,i:r.i,res:r.res};r.i<0?intro():challenge();return true}
-function leave(){K.shell?K.shell.jugar():K.home()}
+function leave(){if(run&&run.lesson){run.onLeave();return}K.shell?K.shell.jugar():K.home()}
 function intro(){const a=run.a,face=K.shell.avatar('hero','adv');
  K.page(K.head(a.title,leave,'Aventura')+'<div class="advintro" style="--a:'+a.color+'"><div class="ai-scene" aria-hidden="true"><span class="ai-big">'+a.icon+'</span></div><div class="ai-row"><div class="ai-char">'+face+'</div><div class="ai-bubble"><p>'+esc(a.story)+'</p></div></div><div class="row center"><button class="soft" id="ahear">♫ Escuchar</button><button class="primary xl" id="astart">¡Vamos!</button></div></div>',view(a.id));
- K.bindBack(leave);q1('#ahear').onclick=()=>K.speak(a.story);q1('#astart').onclick=()=>{run.i=0;snapA();challenge()};K.speak(a.story);snapA()}
+ K.bindBack(leave);q1('#ahear').onclick=()=>K.speakTap(a.story);q1('#astart').onclick=()=>{run.i=0;snapA();challenge()};K.speak(a.story);snapA()}
 function challenge(){
  const a=run.a,ch=run.chs[run.i],n=run.chs.length;snapA();
- K.page(K.head(a.title,leave,'Reto '+(run.i+1)+' de '+n)+'<div class="advframe" style="--a:'+a.color+'">'+dots(run.i,n,run.res)+'<div class="ch-say"><span class="ch-face">'+K.shell.avatar('face','tiny')+'</span><div class="ai-bubble"><b>'+esc(ch.title)+'</b><p id="chsay">'+esc(ch.say)+'</p></div><button class="soft" id="chear" aria-label="Escuchar">♫</button></div>'+(ch.mech==='q'?'<h2 class="gprompt">'+esc(ch.q.prompt)+'</h2>':'')+'<div id="gbox"></div><div class="feedback" id="gfb" aria-live="polite"></div><div class="row center"><button class="soft" id="ghint">Ver una pista</button><button class="primary" id="gnext" hidden>Siguiente →</button></div></div>',view(a.id));
- window.__gch=ch;K.bindBack(leave);
- const sayT=ch.mech==='q'?ch.say+' '+(ch.q.say||ch.q.prompt):ch.say;q1('#chear').onclick=()=>K.speak(sayT);
+ K.page(K.head(a.title,leave,run.lesson?'Jugamos':'Reto '+(run.i+1)+' de '+n)+'<div class="advframe" style="--a:'+a.color+'">'+dots(run.i,n,run.res)+'<div class="ch-say"><span class="ch-face">'+K.shell.avatar('face','tiny')+'</span><div class="ai-bubble"><b>'+esc(ch.title)+'</b><p id="chsay">'+esc(ch.say)+'</p></div><button class="soft" id="chear" aria-label="Escuchar">♫</button></div>'+(ch.mech==='q'?'<h2 class="gprompt">'+esc(ch.q.prompt)+'</h2>':'')+'<div id="gbox"></div><div class="feedback" id="gfb" aria-live="polite"></div><div class="row center"><button class="soft" id="ghint">Ver una pista</button><button class="primary" id="gnext" hidden>Siguiente →</button></div></div>',view(a.id));
+ window.__gch=ch;K.bindBack(leave);if(K.audio)K.audio.attention(ch.mech==='memory');
+ const sayT=ch.mech==='q'?ch.say+' '+(ch.q.say||ch.q.prompt):ch.say;q1('#chear').onclick=()=>K.speakTap(sayT);
  const st={errors:0,hinted:false,done:false},ctl={st,fb:t=>{const f=q1('#gfb');if(f)f.innerHTML=t},
   err(m){st.errors++;X.sBad();if(m){ctl.fb(m);K.speak(X.plain(m))}},
   ok(m){if(st.done)return;st.done=true;X.sGood();const asst=st.errors>0||st.hinted,msg=m||(asst?'¡Lo encontramos juntos!':pickOf(X.GOODS));ctl.fb(msg);K.speak(X.plain(msg));q1('#ghint').hidden=true;q1('#gnext').hidden=false;run.res[run.i]=!asst;
    run.streak=asst?0:(run.streak||0)+1;if(!asst&&run.streak%3===0&&K.shell)K.shell.celebrate({kind:'streak'});const nb=q1('#gnext');if(nb.scrollIntoView)nb.scrollIntoView({block:'nearest',behavior:'smooth'})}};
  const m=MEC[ch.mech](ch,q1('#gbox'),ctl);
  q1('#ghint').onclick=()=>{if(st.done)return;st.hinted=true;m.hint()};
- q1('#gnext').onclick=()=>{run.i++;if(run.i>=n)finish();else challenge()};
+ q1('#gnext').onclick=()=>{run.i++;if(run.i>=n){if(run.lesson){run.onDone({ok:!!run.res[0]});return}finish()}else challenge()};
  if(ch.mech!=='cross'&&ch.mech!=='memory')K.speak(sayT)}
 function finish(){
  const a=run.a,ind=run.res.filter(Boolean).length,n=run.chs.length,frac=ind/n,stars=frac>=.8?3:frac>=.5?2:1,s=S();s.adv=s.adv||{};const o=s.adv[a.id]||{runs:0,stars:0};o.runs++;o.stars=Math.max(o.stars||0,stars);o.ts=Date.now();o.last={ind,of:n};s.adv[a.id]=o;delete s.resume;s.sessions=(s.sessions||0)+1;K.save();
@@ -216,6 +216,9 @@ function finish(){
  K.page(K.head(a.title,leave,'¡Aventura completada!')+'<div class="center advend" style="--a:'+a.color+'"><div class="medal" aria-hidden="true">'+a.medal+'</div><span class="eyebrow">Medalla</span><h1>'+esc(a.title)+'</h1><p class="stars" aria-label="'+stars+' estrellas">'+'⭐'.repeat(stars)+'☆'.repeat(3-stars)+'</p><p class="endtxt">'+esc(a.end)+'</p><p class="small">Sin ayuda: '+ind+' de '+n+' retos. Las estrellas muestran cuánto lo hizo solo hoy; se puede jugar otra vez con retos nuevos.</p><div class="row center"><button class="primary" id="aagain">Jugar otra vez</button><button class="soft" id="aback">Más aventuras</button></div></div>',view(a.id));
  K.bindBack(leave);q1('#aagain').onclick=()=>open(a.id);q1('#aback').onclick=leave;K.speak(a.end);K.shell.showNew(news)}
 
-return{list:ADV,open,resume,resumeInfo,MEC,FIGS,walkPlan}
+/* Un solo reto de una aventura dentro de una clase guiada (no guarda medalla, estrellas ni s.resume). */
+function playChallenge(id,idx,o){const a=advOf(id),chs=a.build(Math.random,ctxNow());run={a,chs:[chs[Math.min(idx,chs.length-1)]],i:0,res:[],lesson:true,onDone:o.onDone,onLeave:o.onLeave};challenge()}
+
+return{list:ADV,open,playChallenge,resume,resumeInfo,MEC,FIGS,walkPlan}
 };
 })(typeof globalThis!=='undefined'?globalThis:this);

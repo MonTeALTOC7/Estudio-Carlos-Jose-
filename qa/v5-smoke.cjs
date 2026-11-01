@@ -46,8 +46,8 @@ async function advSolve(p,ch){
  await goHoy(p);
  const first=await p.locator('.tcard strong >> nth=0').textContent();await p.click('.tcard >> nth=0');await p.waitForSelector('.gcards');await p.click('#gnext');await p.waitForSelector('.gexplain');
  await goHoy(p);
- ok('Hoy ofrece «Continuar» con la actividad interrumpida',(await p.textContent('#cont')).includes('Continuar:'));
- await p.click('#cont');await p.waitForSelector('.gexplain');ok('Continuar vuelve al mismo paso (Ejemplos)',/Ejemplo/.test(await p.textContent('.label')));
+ ok('El botón principal es el camino guiado (no la última actividad libre)',/Empezar mi primera clase/.test(await p.textContent('#cont')));ok('La actividad libre interrumpida se recupera con una opción secundaria',(await p.locator('#freeres').count())===1&&/Partes de mi cuerpo|Cuerpo|Contar|[A-Z]/.test(await p.textContent('.freeres')));
+ await p.click('#freeres');await p.waitForSelector('.gexplain');ok('Retomar vuelve al mismo paso (Ejemplos)',/Ejemplo/.test(await p.textContent('.label')));
  // 4 modos adaptativos con historial sembrado
  const day=n=>{const d=new Date(Date.now()-n*DAY);return d.getFullYear()+'-'+String(d.getMonth()+1).padStart(2,'0')+'-'+String(d.getDate()).padStart(2,'0')},ent=(n,ok,ty=['choose','sort'],er=0)=>({d:day(n),ts:Date.now()-n*DAY,ok,of:3,pi:2,ps:1,er,hn:0,ty,bad:ok<2?['a']:[]});
  s=await state();delete s.resume;s.games.skills={contar:{runs:3,best:3,ind:9,sup:3,last:{ok:0,of:3},ts:Date.now(),hist:[ent(6,3),ent(5,3),ent(0,0,['choose'],4)]},'clasif-color':{runs:2,best:3,ind:5,sup:1,last:{ok:3,of:3},ts:Date.now()-2*DAY,hist:[ent(4,3)]},figuras:{runs:1,best:1,ind:1,sup:2,last:{ok:1,of:3},ts:Date.now()-DAY,hist:[ent(1,1)]}};await setState(s);

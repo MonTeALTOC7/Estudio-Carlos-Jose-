@@ -1,4 +1,4 @@
-const BUILD='dev';const PREFIX='mis-pasos-';const CACHE=PREFIX+'v5.0.0-'+BUILD;
+const BUILD='dev';const PREFIX='mis-pasos-';const CACHE=PREFIX+'v5.1.0-'+BUILD;
 const ASSETS=['./','./index.html','./manifest.webmanifest','./icon.svg','./icon-192.png','./icon-512.png','./assets/hero.webp','./assets/avatar.webp'];
 self.addEventListener('install',e=>e.waitUntil(caches.open(CACHE).then(c=>c.addAll(ASSETS)).then(()=>self.skipWaiting())));
 /* Solo se borran cachés propias de este canal (prefijo): la prueba no toca las de producción. */

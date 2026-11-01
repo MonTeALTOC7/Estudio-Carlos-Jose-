@@ -11,7 +11,7 @@ jobs:
       - uses: actions/setup-node@v4
         with:
           node-version: 22
-      - run: for f in app.js engine.js activities.js content.js skills-a.js skills-b.js skills-c.js progress.js coach.js games.js adventures.js shell.js build.cjs test.cjs; do node --check $f; done && node build.cjs && node test.cjs
+      - run: for f in app.js engine.js activities.js content.js skills-a.js skills-b.js skills-c.js progress.js coach.js curriculum.js games.js adventures.js course.js audio.js shell.js build.cjs test.cjs; do node --check $f; done && node build.cjs && node test.cjs
   visual:
     name: Funciones visuales críticas (Playwright)
     runs-on: ubuntu-latest
@@ -38,6 +38,29 @@ jobs:
           name: capturas-y-resultados-visuales
           path: qa-out
           retention-days: 14
+  clases:
+    name: Modo clase guiada y audio (Playwright)
+    runs-on: ubuntu-latest
+    timeout-minutes: 25
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+      - run: node build.cjs
+      - working-directory: qa
+        run: npm ci --no-audit --no-fund && npx playwright install --with-deps chromium
+      - name: Clases, reanudar, juego libre, repasos, exploración inicial, datos anteriores, panel adulto, voz, música y efectos (390 px)
+        run: node qa/course-smoke.cjs --viewport=390x844 --shots=qa-out/clases
+      - name: Diseño del camino y del panel adulto (320 px y 1440 px)
+        run: node qa/course-smoke.cjs --viewport=320x640 --only=8,9 && node qa/course-smoke.cjs --viewport=1440x900 --only=8,9
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: capturas-clases
+          path: qa-out
+          retention-days: 14
+          if-no-files-found: ignore
   flujos:
     name: Recorridos de uso (portada, aventuras, panel, regresión, 15 habilidades)
     runs-on: ubuntu-latest

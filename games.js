@@ -15,7 +15,7 @@ const shuffle=(a)=>C.h.shuffle(a);
 
 /* ---------- sonidos suaves (WebAudio, sin archivos) ---------- */
 let ac=null;
-function tone(f,d,type,vol){if(!S().sound)return;try{ac=ac||new (root.AudioContext||root.webkitAudioContext)();if(ac.state==='suspended')ac.resume();const o=ac.createOscillator(),g=ac.createGain(),t=ac.currentTime,v=vol||.06;o.type=type||'sine';o.frequency.value=f;o.connect(g);g.connect(ac.destination);g.gain.setValueAtTime(v,t);g.gain.exponentialRampToValueAtTime(.0001,t+(d||.14));o.start(t);o.stop(t+(d||.14)+.03)}catch(e){}}
+function tone(f,d,type,vol){if(K.audio)K.audio.tone(f,d,type,vol)}
 const sGood=()=>{tone(660,.12);setTimeout(()=>tone(880,.16),110)},sBad=()=>tone(220,.2,'triangle'),sTap=()=>tone(520,.05,'sine',.04);
 
 /* ---------- dibujo de arte ---------- */
@@ -117,7 +117,7 @@ M.choose=(q,box,ctl)=>{
  box.innerHTML=model+'<div class="gopts '+cls+'">'+q.options.map(o=>'<button class="gopt'+(o.art.k==='t'?' txt':'')+'" data-id="'+esc(o.id)+'" aria-label="'+esc(o.art.label)+'">'+A(o.art)+'</button>').join('')+'</div>'+(q.listen?'<div class="row center"><button class="soft" id="glisten">♫ Escuchar las opciones</button></div>':'');
  const btns=qa('.gopt',box);
  qa('.tapc',box).forEach(b=>b.onclick=()=>{if(b.classList.contains('counted'))return;b.classList.add('counted');counted++;sTap();K.speak(NW[Math.min(counted,10)])});
- const gl=q1('#glisten',box);if(gl)gl.onclick=()=>K.speak(q.listen.join('. '));
+ const gl=q1('#glisten',box);if(gl)gl.onclick=()=>K.speakTap(q.listen.join('. '));
  btns.forEach(b=>b.onclick=()=>{if(ctl.st.done)return;if(b.dataset.id===q.answer){b.classList.add('good');btns.forEach(x=>x.disabled=true);ctl.ok()}else{b.classList.add('try');b.disabled=true;ctl.err(pickOf(TRIES))}});
  return{hint(){const g=btns.find(b=>b.dataset.id===q.answer);if(g)g.classList.add('ghint');ctl.fb('Mira este.');K.speak(q.explain)}}};
 
@@ -180,7 +180,7 @@ M.place=(q,box,ctl)=>{
 M.follow=(q,box,ctl)=>{
  let k=0;
  box.innerHTML='<div class="gopts c3 board">'+q.board.map(o=>'<button class="gopt" data-id="'+esc(o.id)+'" aria-label="'+esc(o.art.label)+'">'+A(o.art)+'</button>').join('')+'</div><div class="row center"><button class="soft" id="grep">♫ Escuchar la instrucción</button></div>';
- const btns=qa('.gopt',box);q1('#grep',box).onclick=()=>K.speak(q.prompt);
+ const btns=qa('.gopt',box);q1('#grep',box).onclick=()=>K.speakTap(q.prompt);
  btns.forEach(b=>b.onclick=()=>{if(ctl.st.done||b.classList.contains('good'))return;if(b.dataset.id===q.targets[k]){b.classList.add('good');k++;sGood();if(k===q.targets.length)ctl.ok();else ctl.fb('¡Sí! Ahora lo que sigue.')}else{b.classList.add('try');setTimeout(()=>b.classList.remove('try'),600);ctl.err(k===0?pickOf(TRIES):'Casi. Escucha la instrucción otra vez.')}});
  return{hint(){const g=btns.find(b=>b.dataset.id===q.targets[k]);if(g)g.classList.add('ghint');ctl.fb('Mira este.');K.speak(q.explain)}}};
 
@@ -272,16 +272,18 @@ const solved={
 function gdata(){const s=S();s.games=s.games||{skills:{},mixed:null};s.games.skills=s.games.skills||{};return s.games}
 function saveResult(id,res){const g=gdata(),o=g.skills[id]||{runs:0,best:0,ind:0,sup:0,last:null},now=Date.now();
  /* Progress.record recorta el historial a las últimas sesiones pero conserva las pruebas permanentes (días y formas con comprobación buena). */
- root.Progress.record(o,{d:root.Progress.day(now),ts:now,ok:res.ok,of:res.of,pi:res.pi||0,ps:res.ps||0,er:res.er||0,hn:res.hn||0,ty:res.ty||[],bad:res.bad||[],mode:res.mode||'full'});
+ root.Progress.record(o,{d:root.Progress.day(now),ts:now,ok:res.ok,of:res.of,pi:res.pi||0,ps:res.ps||0,er:res.er||0,hn:res.hn||0,ty:res.ty||[],bad:res.bad||[],mode:res.mode||'full',src:res.src||'libre'});
  o.runs++;o.ind+=res.ind;o.sup+=res.sup;o.last={ok:res.ok,of:res.of};o.best=Math.max(o.best,res.ok);o.ts=now;g.skills[id]=o;K.save()}
 /* Guardado para reanudar la última actividad (JSON sencillo; las preguntas ya generadas se conservan). */
-function snap(){if(!run||run.kind!=='skill')return;const s=S(),sess=Object.assign({},run.sess);delete sess.skill;delete sess.more;s.resume={k:'skill',id:run.sk.id,mode:run.mode||'full',phase:run.phase,i:run.i,res:run.res,more:run.more,streak:run.streak||0,data:sess,ts:Date.now()};K.save()}
+function snapObj(){const sess=Object.assign({},run.sess);delete sess.skill;delete sess.more;return{k:'skill',id:run.sk.id,mode:run.mode||'full',phase:run.phase,i:run.i,res:run.res,more:run.more,streak:run.streak||0,data:sess,ts:Date.now()}}
+/* En una clase guiada el avance se guarda dentro del curso (s.course.cur.snap); el juego libre sigue usando s.resume. Así una cosa nunca pisa a la otra. */
+function snap(){if(!run||run.kind!=='skill')return;if(run.course){const c=root.Curriculum.ensure(S());if(c.cur&&c.cur.l===run.course.l){c.cur.snap=snapObj();c.cur.ts=Date.now();K.save()}return}S().resume=snapObj();K.save()}
 
 /* ---------- corredor de 5 fases ---------- */
 const PH=[['learn','💡','Aprendo'],['examples','👀','Ejemplos'],['practice','✋','Practico'],['reinforce','🔁','Refuerzo'],['check','⭐','Compruebo']];
 function stepper(cur){const ci=PH.findIndex(x=>x[0]===cur);return '<ol class="phases" aria-label="Pasos de la actividad">'+PH.map(([k,e,l],i)=>'<li class="'+(i===ci?'on':i<ci?'done':'')+'"'+(i===ci?' aria-current="step"':'')+'><i aria-hidden="true">'+e+'</i><span>'+l+'</span></li>').join('')+'</ol>'}
 let run=null;
-const view=(mod)=>'g:'+mod;
+const view=(mod)=>(run&&run.course?'cls:':'g:')+mod;
 function ctxNow(){return C.ctxFrom(E,S(),new Date())}
 
 function openModule(id){
@@ -289,40 +291,45 @@ function openModule(id){
  K.page(K.head(mod.title,K.home,'Ruta')+'<div class="gmodhead" style="--bg:'+mod.bg+'"><span class="gmodicon" aria-hidden="true">'+mod.icon+'</span><p>'+esc(mod.blurb)+'. Cada juego tiene cinco pasos: aprendo, veo ejemplos, practico, refuerzo y compruebo.</p></div><div class="routebar" aria-label="Estado de las habilidades de esta ruta">'+sk.map(s=>'<i class="pip s-'+root.Progress.skillState(g[s.id],Date.now()).state+'" title="'+esc(s.title)+'"></i>').join('')+'</div><div class="gskills">'+sk.map(s=>{const r=g[s.id],ps=root.Progress.skillState(r,Date.now()),st='<small class="stat st-'+ps.state+'"><span aria-hidden="true">'+root.Progress.ICON[ps.state]+'</span> '+(s===first?'Empieza aquí':root.Progress.LABEL[ps.state])+(ps.repaso?' · conviene repasar':'')+'</small>'+(r?'<small class="sub">Última vez: '+r.last.ok+' de '+r.last.of+' sin ayuda</small>':'');return '<button class="gskill'+(s===first?' first':'')+'" data-skill="'+s.id+'"><span class="sk-i" aria-hidden="true">'+s.icon+'</span><span class="sk-t"><strong>'+esc(s.title)+'</strong><small>'+esc(s.blurb)+'</small>'+st+'</span></button>'}).join('')+'</div>','gm:'+id);
  K.bindBack(K.home);qa('[data-skill]').forEach(b=>b.onclick=()=>openSkill(b.dataset.skill))}
 
-function openSkill(id,mode){
- mode=mode||'full';const sk=C.byId[id],ctx=ctxNow();
+function openSkill(id,mode,opts){
+ mode=mode||'full';opts=opts||{};const sk=C.byId[id],ctx=ctxNow();
  if(sk.available&&!sk.available(ctx)){nameScreen(sk);return}
  const h=root.Progress.hist((gdata().skills||{})[id]),bad=h.length?(h[h.length-1].bad||[]):[];
- run={sk,ctx,sess:C.session(sk,ctx,Math.random,{extra:mode==='extra'?bad:[]}),phase:'learn',i:0,res:{practice:[],reinforce:[],check:[]},more:false,kind:'skill',mode,streak:0};
- if(mode==='review'){run.phase='check';run.sess.practice=[];run.sess.reinforce=[];showQuestion();return}
+ run={sk,ctx,sess:C.session(sk,ctx,Math.random,{extra:mode==='extra'?bad:[]}),phase:'learn',i:0,res:{practice:[],reinforce:[],check:[]},more:false,kind:'skill',mode,streak:0,course:opts.course||null};
+ if(mode==='review'){run.phase='check';run.sess.practice=[];run.sess.reinforce=[];if(opts.limit)run.sess.check=run.sess.check.slice(0,opts.limit);showQuestion();return}
  showLearn()}
 function resumeInfo(){const r=S().resume;if(!r||r.k!=='skill'||Date.now()-r.ts>72*3600e3)return null;const sk=C.byId[r.id];if(!sk)return null;return{title:sk.title,icon:sk.icon,label:({learn:'Aprendo',examples:'Ejemplos',practice:'Practico',reinforce:'Refuerzo',check:'Compruebo'})[r.phase],kind:'skill'}}
 function resume(){const s=S(),r=s.resume;if(!resumeInfo())return false;const sk=C.byId[r.id],ctx=ctxNow();
  run={sk,ctx,sess:C.rebuild(sk,ctx,r.data,Math.random),phase:r.phase,i:r.i,res:r.res,more:r.more,kind:'skill',mode:r.mode||'full',streak:r.streak||0};
  if(run.phase==='learn')showLearn();else if(run.phase==='examples')showExample();else showQuestion();return true}
+/* Reanuda una sesión guardada dentro de una clase (el orquestador pasa su descriptor). */
+function rebuildRun(r,course,quiet){const sk=C.byId[r.id],ctx=ctxNow();
+ run={sk,ctx,sess:C.rebuild(sk,ctx,r.data,Math.random),phase:r.phase,i:r.i,res:r.res,more:r.more,kind:'skill',mode:r.mode||'full',streak:r.streak||0,course:course||null};
+ if(quiet)return;
+ if(run.phase==='learn')showLearn();else if(run.phase==='examples')showExample();else showQuestion()}
 function nameScreen(sk){K.page(K.head(sk.title,()=>openModule(sk.mod),'Mi nombre')+'<div class="study"><div class="object">✏️</div><h2>¿Cómo se llama?</h2><p>Escribe el nombre del niño o de la niña para jugar con sus letras. Se guarda solo en este teléfono.</p><input id="gname" maxlength="24" aria-label="Nombre" autocomplete="off"><button class="primary" id="gnsave">Guardar y jugar</button></div>',view(sk.mod));K.bindBack(()=>openModule(sk.mod));q1('#gnsave').onclick=()=>{const v=q1('#gname').value.trim();if(v.length<2){K.notice('Escribe al menos dos letras.');return}S().name=v;K.save();openSkill(sk.id)}}
 
-function frame(inner,label){return K.head(run.sk?run.sk.title:'Reto variado',leave,label)+stepper(run.phase)+inner}
-function leave(){if(run&&run.kind==='mixed')K.home();else openModule(run.sk.mod)}
+function frame(inner,label){return K.head(run.sk?run.sk.title:'Reto variado',leave,label)+(run.course&&run.course.role==='probe'?'':stepper(run.phase))+inner}
+function leave(){if(run&&run.course&&K.course){K.course.pause();return}if(run&&run.kind==='mixed')K.home();else openModule(run.sk.mod)}
 
 function showLearn(){
  snap();const L=run.sess.learn;
  L.cards.forEach(c=>{if(c.observe&&!c._o){c._o=1;E.observe(S(),c.observe.area,c.observe.id)}});K.save();
  K.page(frame('<div class="study gl"><span class="eyebrow">Aprendo</span><h2>'+esc(L.title)+'</h2><p>'+esc(L.say)+'</p><div class="gcards">'+L.cards.map((c,i)=>'<button class="gcard" data-c="'+i+'" aria-label="'+esc(c.label)+'"><span class="gcarts">'+c.arts.map(a=>A(a)).join('')+'</span><small>'+esc(c.label)+'</small></button>').join('')+'</div>'+(L.adult?'<details class="gadult"><summary>Para el adulto</summary><p>'+esc(L.adult)+'</p></details>':'')+'</div><div class="row center"><button class="soft" id="ghear">♫ Escuchar</button><button class="primary" id="gnext">Ver ejemplos →</button></div>','Aprendo'),view(run.sk.mod));
  K.bindBack(leave);qa('.gcard').forEach(b=>b.onclick=()=>{const c=L.cards[+b.dataset.c];b.classList.add('on');K.speak(c.say||c.label)});
- q1('#ghear').onclick=()=>K.speak(L.say);q1('#gnext').onclick=()=>{run.phase='examples';run.i=0;showExample()};K.speak(L.say)}
+ q1('#ghear').onclick=()=>K.speakTap(L.say);q1('#gnext').onclick=()=>{run.phase='examples';run.i=0;showExample()};K.speak(L.say)}
 
 function showExample(){
  snap();const q=run.sess.examples[run.i],n=run.sess.examples.length;
  K.page(frame('<div class="gq"><span class="eyebrow">Mira cómo se hace</span><h2 class="gprompt">'+esc(q.prompt)+'</h2>'+(solved[q.type]?solved[q.type](q):'')+'<p class="gexplain" id="gex">'+esc(q.explain)+'</p></div><div class="row center"><button class="soft" id="ghear">♫ Escuchar el ejemplo</button><button class="primary" id="gnext">'+(run.i+1<n?'Otro ejemplo →':'Ahora yo →')+'</button></div>','Ejemplo '+(run.i+1)+' de '+n),view(run.sk.mod));
- K.bindBack(leave);q1('#ghear').onclick=()=>K.speak(q.explain);q1('#gnext').onclick=()=>{if(run.i+1<n){run.i++;showExample()}else{run.phase='practice';run.i=0;showQuestion()}};K.speak(q.prompt+' '+q.explain)}
+ K.bindBack(leave);q1('#ghear').onclick=()=>K.speakTap(q.explain);q1('#gnext').onclick=()=>{if(run.i+1<n){run.i++;showExample()}else{run.phase='practice';run.i=0;showQuestion()}};K.speak(q.prompt+' '+q.explain)}
 
 function listFor(ph){return run.sess[ph]}
 function showQuestion(){
- snap();const ph=run.phase,list=listFor(ph),q=list[run.i],label=({practice:'Practico',reinforce:'Refuerzo',check:'Compruebo'})[ph]+' '+(run.i+1)+' de '+list.length;
- K.page(frame('<div class="gq"><h2 class="gprompt" id="gprompt">'+esc(q.prompt)+'</h2><div class="row center"><button class="soft" id="ghear">♫ Escuchar</button></div><div id="gbox"></div><div class="feedback" id="gfb" aria-live="polite"></div><div class="row center">'+(ph!=='check'?'<button class="soft" id="ghint">Ver una pista</button>':'')+'<button class="primary" id="gnext" hidden>Siguiente →</button></div></div>',label),view(run.sk?run.sk.mod:'mixed'));
- window.__gq=q;K.bindBack(leave);
- const hearText=q.say||q.prompt;q1('#ghear').onclick=()=>K.speak(hearText);
+ snap();const ph=run.phase,list=listFor(ph),q=list[run.i],label=run.course&&run.course.role==='probe'?'La mochila · '+(run.course.idx+1)+' de '+run.course.n:({practice:'Practico',reinforce:'Refuerzo',check:'Compruebo'})[ph]+' '+(run.i+1)+' de '+list.length;
+ K.page(frame('<div class="gq"><h2 class="gprompt" id="gprompt">'+esc(q.prompt)+'</h2><div class="row center"><button class="soft" id="ghear">♫ Escuchar</button></div><div id="gbox"></div><div class="feedback" id="gfb" aria-live="polite"></div><div class="row center">'+(ph!=='check'?'<button class="soft" id="ghint">Ver una pista</button>':'')+(run.course&&run.course.role==='probe'?'<button class="soft" id="gskip">Todavía no lo sé</button>':'')+'<button class="primary" id="gnext" hidden>Siguiente →</button></div></div>',label),view(run.sk?run.sk.mod:'mixed'));
+ window.__gq=q;K.bindBack(leave);if(K.audio)K.audio.attention(ph==='check'||q.type==='simon'||q.type==='recall');
+ const hearText=q.say||q.prompt;q1('#ghear').onclick=()=>K.speakTap(hearText);
  const st={errors:0,hinted:false,done:false};
  const ctl={st,fb:h=>{const f=q1('#gfb');if(f)f.innerHTML=h},
   err(m){st.errors++;sBad();if(m){ctl.fb(m);K.speak(plain(m))}},
@@ -331,6 +338,7 @@ function showQuestion(){
  const h=M[q.type](q,q1('#gbox'),ctl);
  if(ph!=='check'){q1('#ghint').onclick=()=>{if(st.done)return;st.hinted=true;h.hint()}}
  q1('#gnext').onclick=()=>advance();
+ const sk_=q1('#gskip');if(sk_)sk_.onclick=()=>{if(st.done)return;st.done=true;(run.res[ph]=run.res[ph]||[]).push({ok:false,fmt:q.fmt,ty:q.type,er:0,hn:0,skip:1});advance()};
  if(q.type!=='recall'&&q.type!=='simon')K.speak(hearText)}
 
 function advance(){
@@ -340,7 +348,7 @@ function advance(){
   const miss=run.res.practice.filter(r=>!r.ok);
   if(miss.length&&!run.more){run.more=true;run.sess.reinforce.push(run.sess.more(miss[0].fmt))}
   run.phase='reinforce';run.i=0;showQuestion();return}
- if(ph==='reinforce'){run.phase='check';run.i=0;showQuestion();return}
+ if(ph==='reinforce'){run.phase='check';run.i=0;if(run.course&&K.course&&K.course.beforeCheck(run))return;showQuestion();return}
  if(ph==='check'){finish()}}
 
 function finish(){
@@ -348,8 +356,10 @@ function finish(){
  if(run.kind==='mixed'){const g=gdata();g.mixed={ok,of,ts:Date.now()};K.save();mixedResult(ok,of);return}
  const all=[...run.res.practice,...run.res.reinforce],ind=all.filter(r=>r.ok).length+ok,sup=all.filter(r=>!r.ok).length+(of-ok);
  const every=[...run.res.practice,...run.res.reinforce,...ck];
- saveResult(run.sk.id,{ok,of,ind,sup,pi:run.res.practice.concat(run.res.reinforce).filter(r=>r.ok).length,ps:run.res.practice.concat(run.res.reinforce).filter(r=>!r.ok).length,er:every.reduce((a,r)=>a+(r.er||0),0),hn:every.reduce((a,r)=>a+(r.hn||0),0),ty:[...new Set(ck.filter(r=>r.ok).map(r=>r.ty))],bad:[...new Set(every.filter(r=>!r.ok).map(r=>r.fmt))],mode:run.mode});
- S().sessions=(S().sessions||0)+1;delete S().resume;K.save();const news=K.shell?K.shell.evaluate():null;
+ const probe=run.course&&run.course.role==='probe';/* una sola pregunta de la exploración inicial no es evidencia de dominio: no entra al historial */
+ if(!probe)saveResult(run.sk.id,{ok,of,ind,sup,pi:run.res.practice.concat(run.res.reinforce).filter(r=>r.ok).length,ps:run.res.practice.concat(run.res.reinforce).filter(r=>!r.ok).length,er:every.reduce((a,r)=>a+(r.er||0),0),hn:every.reduce((a,r)=>a+(r.hn||0),0),ty:[...new Set(ck.filter(r=>r.ok).map(r=>r.ty))],bad:[...new Set(every.filter(r=>!r.ok).map(r=>r.fmt))],mode:run.mode,src:run.course?'clase':'libre'});
+ if(!probe)S().sessions=(S().sessions||0)+1;if(!run.course)delete S().resume;K.save();const news=K.shell?K.shell.evaluate():null;
+ if(run.course&&K.course){K.course.skillFinished(run,{ok,of,ind,sup,er:every.reduce((a,r)=>a+(r.er||0),0),hn:every.reduce((a,r)=>a+(r.hn||0),0),bad:[...new Set(every.filter(r=>!r.ok).map(r=>r.fmt))]},news);return}
  const msg=ok===of?'¡Lo lograste sin ayuda!':ok*2>=of?'¡Vas muy bien! Con otro rato de práctica saldrá aún mejor.':'Esto se aprende poco a poco. Repítanlo con ayuda otro día.';
  K.page(K.head(run.sk.title,leave,'Resultado')+stepper('check')+'<div class="center"><div class="result-icon">'+(ok===of?'🌟':'🌱')+'</div><span class="eyebrow">Un paso más</span><h1>'+esc(msg)+'</h1><div class="study" style="min-height:150px"><h3>Comprobación: '+ok+' de '+of+' sin ayuda</h3><p>Practicamos: '+all.filter(r=>r.ok).length+' sin ayuda y '+all.filter(r=>!r.ok).length+' con ayuda.</p><p><b>Para hacer en casa:</b> '+esc(run.sk.home)+'</p><p class="small">Esto es solo una muestra de hoy; no es una nota ni un diagnóstico.</p></div><div class="row center"><button class="primary" id="gagain">Repetir con otras preguntas</button><button class="soft" id="gmod">Otra habilidad</button></div></div>',view(run.sk.mod));
  K.bindBack(leave);q1('#gagain').onclick=()=>openSkill(run.sk.id);q1('#gmod').onclick=()=>openModule(run.sk.mod);K.speak(msg);if(news&&K.shell)K.shell.showNew(news)}
@@ -371,7 +381,7 @@ function report(){
 const OFF=[['Plastilina o barro','Modelar su cuerpo, un animal o una fruta (MINED p. 8).'],['Rasgado y arrugado','Rasgar papel y pegar bolitas en una tortuga o en las ventanas de un bus (MINED pp. 16–17).'],['Recortar y pegar','Buscar en revistas imágenes de la familia, de comida o de objetos y pegarlas (MINED pp. 12–13).'],['Dactilopintura','Pintar con las manos y dibujar lo que ve (MINED p. 29).'],['Canto y movimiento','Cantar los buenos días, las vocales y villancicos; bailar con música (MINED pp. 5, 12, 19 y 30).'],['Huerto o maceta','Sembrar una semilla y regarla cada día (MINED p. 30).'],['Cuentos y conversación','Comentar láminas, celebraciones familiares, normas de seguridad y derechos y deberes (MINED pp. 17, 25, 26 y 31).'],['Trazos en papel','Líneas rectas, curvas, ondas, zigzag y bucles con crayón (MINED pp. 19–20).'],['Reloj y moneda','Mirar un reloj real y monedas del país; comentar su valor (MINED pp. 28–29). Aún no está en la aplicación.'],['Símbolos patrios y nacionales','La bandera, el escudo, la flor, el ave y el árbol nacionales, con imágenes reales (MINED p. 24). Aún no está en la aplicación.']];
 function offscreen(){return '<h3>Para hacer fuera de la pantalla</h3><p>Lo que más enseña a esta edad es manipular, hablar y moverse. Estas ideas siguen el Cuadernillo MINED de III Nivel:</p><div class="reports">'+OFF.map(o=>'<div class="report"><b>'+esc(o[0])+'</b><p>'+esc(o[1])+'</p></div>').join('')+'</div>'}
 
-return{openModule,openSkill,mixed,report,offscreen,resume,resumeInfo,parts:{M,A,drag,tapOnly,tone,sGood,sBad,sTap,hue,PAINTSVG,bodySvg,faceSvg,TAPIDS,qa,q1,pickOf,GOODS,TRIES,shuffle,plain,SG,sceneInner,objText,SKY,PCOLS,solved,zoneDraw},moduleOf:v=>String(v).startsWith('g:')?String(v).slice(2):null,modules:C.modules,skillCount:C.skills.length,
+return{openModule,openSkill,rebuildRun,continueRun:()=>showQuestion(),snapNow:()=>snap(),runInfo:()=>run&&{skill:run.sk&&run.sk.id,phase:run.phase,i:run.i,course:run.course},mixed,report,offscreen,resume,resumeInfo,parts:{M,A,drag,tapOnly,tone,sGood,sBad,sTap,hue,PAINTSVG,bodySvg,faceSvg,TAPIDS,qa,q1,pickOf,GOODS,TRIES,shuffle,plain,SG,sceneInner,objText,SKY,PCOLS,solved,zoneDraw},moduleOf:v=>/^(g|cls):/.test(String(v))?String(v).replace(/^(g|cls):/,''):null,modules:C.modules,skillCount:C.skills.length,
  skillMeta:id=>C.byId[id]};
 };
 })(typeof globalThis!=='undefined'?globalThis:this);

@@ -1,4 +1,4 @@
-# Centro de Estudios Carlos José · 5.0
+# Centro de Estudios Carlos José · 5.1
 *Aprendo, juego y descubro · By Carlos Tijerino*
 
 Continuación del ZIP aportado, conservando HTML/CSS/JavaScript y los juegos existentes. Sin dependencias de ejecución ni cuenta infantil.
@@ -65,6 +65,14 @@ Auditoría completa y matriz de cobertura del Cuadernillo MINED en [`docs/AUDITO
 
 Limitaciones conocidas: ver §7 de la auditoría (voz española, pruebas en teléfonos reales, emojis como ilustraciones, contenido nacional pendiente, Registro de valoración no recibido).
 
+
+## Versión 5.1 · Mi camino de aprendizaje (clases guiadas) y audio
+Diseño y decisiones: [`docs/CURSO_GUIADO.md`](docs/CURSO_GUIADO.md). Sobre la v5.0 aprobada (portada, imágenes, niveles, aventuras), sin rediseñarla:
+- **Mi camino**: 9 unidades en espiral y 59 lecciones (40 habilidades, 10 de símbolos y 9 de repaso) que *reutilizan* las cinco fases, las rondas de símbolos y los retos de aventura. Una clase: bienvenida por voz, recordamos, aprendemos, practicamos, jugamos, comprobamos y celebramos.
+- **Portada**: el botón principal es la clase («Empezar mi primera clase», «Continuar mi clase», «Mi siguiente clase»); el juego libre interrumpido se recupera con una opción secundaria. Nueva pestaña **Camino**.
+- **Exploración inicial** «La mochila misteriosa» (sin nota; solo ajusta el punto de partida), **repasos espaciados**, refuerzo tras una comprobación floja y **reanudación exacta** aunque se cierre la aplicación.
+- **El juego libre nunca mueve el camino**; su evidencia se registra aparte (`libre`/`clase`).
+- **Panel adulto → Mi camino** y **Ajustes → Sonido**: voz, música ambiental (composición original generada por la app, sin archivos ni servicios externos) y efectos, independientes y persistentes; se quitó el botón de sonido de la cabecera.
 
 ## Versión 5.0 · Centro de Estudios Carlos José
 Evaluación, visión y decisiones: [`docs/V5_EVALUACION_Y_VISION.md`](docs/V5_EVALUACION_Y_VISION.md).
