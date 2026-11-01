@@ -42,7 +42,7 @@ function showNew(n){if(!n)return;if(n.levelUp)queue.push({kind:'level',lv:n.leve
 function celebrate(o){if(o.kind==='streak')cheer()}
 
 /* ---------- identidad: logo y personaje ---------- */
-const LOGO='<svg class="logo" viewBox="0 0 64 64" aria-hidden="true"><defs><linearGradient id="lgS" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#3b3f86"/><stop offset=".55" stop-color="#e4573f"/><stop offset="1" stop-color="#f5b13d"/></linearGradient></defs><rect width="64" height="64" rx="18" fill="url(#lgS)"/><circle cx="32" cy="40" r="13" fill="#ffe29a"/><g stroke="#ffe29a" stroke-width="3" stroke-linecap="round"><path d="M32 17v5M17 25l3.5 3.5M47 25l-3.5 3.5M11 38h5M48 38h5"/></g><path d="M0 46h64v18H0z" fill="#2f7d4f"/><g stroke="#8fd3a0" stroke-width="2.4" stroke-linecap="round"><path d="M6 64l12-18M20 64l8-18M32 64v-18M44 64l-8-18M58 64L46 46"/></g><path d="M50 12l1.6 3.4 3.6.5-2.6 2.5.6 3.6-3.2-1.7-3.2 1.7.6-3.6-2.6-2.5 3.6-.5z" fill="#fff"/></svg>';
+const LOGO='<img class="logo" src="logo-128.png" alt="" width="54" height="54" decoding="async">';   // medallón de Carlos José con su cubo (el mismo ícono de instalación)
 function character(o){o=o||{};const coat=o.coat!==false;
  return '<svg class="charsvg" viewBox="0 0 200 330" role="img" aria-label="'+esc(nm())+'">'+
  '<ellipse cx="100" cy="318" rx="58" ry="8" fill="#0002"/>'+

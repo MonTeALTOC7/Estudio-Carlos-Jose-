@@ -16,7 +16,7 @@ async function g(n,fn){try{const r=await fn();rec(n,r===true,r===true?'':String(
  const env=Object.assign({},process.env,{PREVIEW:'1',OUT:'dist'});delete env.GITHUB_SHA;delete env.BUILD_ID;
  let log='';await g('Compila con «PREVIEW=1 OUT=dist node build.cjs» en un clon limpio',async()=>{log=cp.execSync('node build.cjs',{cwd:clone,env}).toString();return /prueba/.test(log)||log});
  const dist=path.join(clone,'dist');
- await g('dist contiene index.html, sw.js, manifest, iconos y _headers',async()=>{const need=['index.html','sw.js','manifest.webmanifest','icon-192.png','icon-512.png','icon.svg','_headers'];const miss=need.filter(f=>!fs.existsSync(path.join(dist,f)));return miss.length===0||'faltan '+miss.join()});
+ await g('dist contiene index.html, sw.js, manifest, iconos y _headers',async()=>{const need=['index.html','sw.js','manifest.webmanifest','icon-192.png','icon-512.png','icon-maskable-192.png','icon-maskable-512.png','apple-touch-icon.png','favicon-48.png','logo-128.png','_headers'];const miss=need.filter(f=>!fs.existsSync(path.join(dist,f)));return miss.length===0||'faltan '+miss.join()});
  await g('No hay referencias absolutas que fallen en la raíz ni en subrutas (rutas relativas)',async()=>{const html=fs.readFileSync(path.join(dist,'index.html'),'utf8');const sw=fs.readFileSync(path.join(dist,'sw.js'),'utf8');const man=JSON.parse(fs.readFileSync(path.join(dist,'manifest.webmanifest'),'utf8'));
   if(man.start_url!=='./'||man.scope!=='./')return 'start_url/scope no relativos';if(/\.register\('\//.test(html))return 'sw con ruta absoluta';if(/'\/(index|sw|manifest|icon)/.test(sw))return 'sw con rutas absolutas';return true});
  const {srv,url}=await serve(0,{'/':dist});const b=await chromium.launch();

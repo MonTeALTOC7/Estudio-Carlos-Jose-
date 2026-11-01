@@ -90,7 +90,7 @@
    =================================================================== */
 :root{--ink:#1d2b4b;--muted:#5b6784;--green:#2c8052;--cream:#fff9ee;--line:#eadfc6;--purple:#6d5ba8;--orange:#e4573f;--gold:#f5b13d;--navy:#1f2a55;--rail:96px}
 body{font-family:ui-rounded,"SF Pro Rounded","Nunito","Baloo 2","Quicksand",system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;background:var(--cream)}
-.topbar{margin-bottom:12px}.brand{gap:10px}.brandmark{background:none;width:52px;height:52px;border-radius:16px;font-size:0;overflow:hidden;box-shadow:0 4px 10px #1f2a5533}.brandmark .logo{width:100%;height:100%;display:block}
+.topbar{margin-bottom:12px}.brand{gap:10px}.brandmark{background:none;width:54px;height:54px;border-radius:50%;font-size:0;overflow:hidden;box-shadow:0 3px 8px #1f2a5544}.brandmark .logo{width:100%;height:100%;display:block;object-fit:cover}
 .brandtxt{display:flex;flex-direction:column;line-height:1.1;text-align:left}.brandtxt small{font-size:12px;letter-spacing:.6px;text-transform:uppercase;color:var(--muted);font-weight:800}.brandtxt b{font-size:24px;color:var(--navy);letter-spacing:-.5px}
 .primary{background:var(--green);box-shadow:0 5px 0 #1d5e3b}.primary:active{box-shadow:0 2px 0 #1d5e3b}.primary.xl{padding:14px 22px;min-height:64px;font-size:19px}.primary.xl small{display:block;font-weight:600;opacity:.9;font-size:13px;margin-top:2px}
 .pagetitle{font-size:clamp(30px,6vw,44px);margin:6px 0 4px;color:var(--navy)}.lead{margin:0 0 6px;font-size:17px}.small{font-size:13px}.linkb{background:none;color:var(--purple);font-weight:800;padding:8px}

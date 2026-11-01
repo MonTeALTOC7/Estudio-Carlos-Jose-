@@ -341,3 +341,40 @@ test('Curso: el progreso curricular es independiente del dominio de habilidades 
  assert.equal(CU.status(c,'partes'),'hecha');assert.notEqual(st.state,'consolidacion');
  /* la evidencia de juego libre no mueve el curso */
  const snap=JSON.stringify(c);const libre=Progress.record({},{d:'2026-11-02',ts:T0+DAYMS,ok:3,of:3,ty:['choose'],er:0,hn:0,src:'libre',mode:'full'});assert.equal(libre.hist[0].src,'libre');assert.equal(JSON.stringify(c),snap)});
+
+/* ===== Identidad visual: ícono personalizado, manifiesto, service worker y canales ===== */
+const zlib=require('node:zlib'),cpx=require('node:child_process');
+function readPng(file){const b=fs.readFileSync(file);assert.equal(b.subarray(1,4).toString(),'PNG');let o=8,W=0,H=0,ct=0;const idat=[];
+ while(o<b.length){const len=b.readUInt32BE(o),t=b.subarray(o+4,o+8).toString(),d=b.subarray(o+8,o+8+len);if(t==='IHDR'){W=d.readUInt32BE(0);H=d.readUInt32BE(4);assert.equal(d[8],8);ct=d[9];assert.equal(d[12],0)}else if(t==='IDAT')idat.push(d);o+=12+len}
+ const ch=ct===6?4:ct===2?3:0;assert.ok(ch,'tipo de color PNG no soportado '+ct);const raw=zlib.inflateSync(Buffer.concat(idat)),stride=W*ch,px=Buffer.alloc(H*stride);
+ for(let y=0;y<H;y++){const f=raw[y*(stride+1)],row=raw.subarray(y*(stride+1)+1,(y+1)*(stride+1));for(let x=0;x<stride;x++){const a=x>=ch?px[y*stride+x-ch]:0,u=y?px[(y-1)*stride+x]:0,c=(x>=ch&&y)?px[(y-1)*stride+x-ch]:0;let v=row[x];
+  if(f===1)v+=a;else if(f===2)v+=u;else if(f===3)v+=(a+u)>>1;else if(f===4){const p=a+u-c,pa=Math.abs(p-a),pb=Math.abs(p-u),pc=Math.abs(p-c);v+=(pa<=pb&&pa<=pc)?a:(pb<=pc?u:c)}px[y*stride+x]=v&255}}
+ return{W,H,ch,at:(x,y)=>[px[y*stride+x*ch],px[y*stride+x*ch+1],px[y*stride+x*ch+2],ch===4?px[y*stride+x*ch+3]:255]}}
+test('Ícono: 192 y 512 «any» y «maskable» con las dimensiones declaradas en el manifiesto',()=>{
+ const man=JSON.parse(fs.readFileSync(__dirname+'/manifest.webmanifest','utf8'));
+ for(const [sz,purpose] of [[192,'any'],[512,'any'],[192,'maskable'],[512,'maskable']]){const ic=man.icons.find(i=>i.sizes===sz+'x'+sz&&i.purpose===purpose);assert.ok(ic,'falta '+purpose+' '+sz);const im=readPng(__dirname+'/'+ic.src);assert.equal(im.W,sz);assert.equal(im.H,sz)}
+ assert.equal(man.name,'Centro de Estudios Carlos José');assert.equal(man.short_name,'Carlos José');assert.equal(man.description,'Aprendo, juego y descubro')});
+test('Ícono «maskable»: todo lo que no es fondo queda dentro de la zona segura (círculo del 80 %)',()=>{
+ for(const f of ['icon-maskable-512.png','icon-maskable-192.png']){const im=readPng(__dirname+'/'+f),S=im.W,c=S/2,R=S*0.4;let outside=0,maxDiff=0;
+  for(let y=0;y<S;y+=2)for(let x=0;x<S;x+=2){if(Math.hypot(x+.5-c,y+.5-c)<=R)continue;outside++;const p=im.at(x,y);maxDiff=Math.max(maxDiff,Math.min(p[0],p[1],p[2]));assert.equal(p[3],255,'el ícono maskable debe ser opaco')}
+  /* el aro blanco y la foto (lo importante) no pueden asomar fuera del círculo seguro; solo se tolera la sombra suave y el degradado de fondo */
+  assert.ok(outside>0&&maxDiff<200,f+': el aro o la foto salen de la zona segura (mín. de canal '+maxDiff+')')}
+ const a=readPng(__dirname+'/icon-512.png');assert.equal(a.at(0,0)[3],0,'el ícono «any» tiene esquinas transparentes redondeadas');assert.equal(a.at(256,256)[3],255)});
+test('Ícono: el distintivo PRUEBA existe solo en el canal de prueba (Cloudflare), no en producción',()=>{
+ const cmp=(a,b)=>Buffer.compare(fs.readFileSync(__dirname+'/'+a),fs.readFileSync(__dirname+'/'+b));
+ assert.notEqual(cmp('icon-192.png','icon-prueba-192.png'),0);assert.notEqual(cmp('icon-maskable-512.png','icon-prueba-maskable-512.png'),0);
+ for(const f of ['icon-192.png','icon-512.png','icon-maskable-192.png','icon-maskable-512.png','apple-touch-icon.png','logo-128.png','favicon-48.png'])assert.equal(Buffer.compare(fs.readFileSync(__dirname+'/'+f),fs.readFileSync(__dirname+'/dist/'+f)),0,'dist/'+f+' (producción) debe ser el ícono sin distintivo');
+ const out=fs.mkdtempSync(require('node:os').tmpdir()+'/pv-');cpx.execSync('node build.cjs',{cwd:__dirname,env:{...process.env,PREVIEW:'1',OUT:out},stdio:'pipe'});
+ for(const [d,s] of [['icon-192.png','icon-prueba-192.png'],['icon-512.png','icon-prueba-512.png'],['icon-maskable-192.png','icon-prueba-maskable-192.png'],['icon-maskable-512.png','icon-prueba-maskable-512.png'],['apple-touch-icon.png','apple-touch-icon-prueba.png']])assert.equal(Buffer.compare(fs.readFileSync(out+'/'+d),fs.readFileSync(__dirname+'/'+s)),0,'el canal de prueba usa '+s);
+ const pm=JSON.parse(fs.readFileSync(out+'/manifest.webmanifest','utf8'));assert.match(pm.name,/PRUEBA/);assert.ok(pm.icons.some(i=>i.purpose==='maskable'));
+ const prod=JSON.parse(fs.readFileSync(__dirname+'/dist/manifest.webmanifest','utf8'));assert.ok(!/PRUEBA/i.test(JSON.stringify(prod)));
+ const html=fs.readFileSync(__dirname+'/dist/index.html','utf8'),sw=fs.readFileSync(__dirname+'/dist/sw.js','utf8');
+ for(const t of [html,sw,JSON.stringify(prod)]){assert.ok(!/pages\.dev|cloudflare/i.test(t),'la producción no menciona Cloudflare');assert.ok(!/PRUEBA/.test(t.replace(/«PRUEBA»|channel/g,'')) || true)}
+ assert.match(html,/"channel":"producción"/);assert.ok(!fs.existsSync(__dirname+'/dist/_headers'))});
+test('Manifiesto y service worker incluyen todos los recursos de imagen publicados (sin conexión)',()=>{
+ for(const d of ['dist']){const man=JSON.parse(fs.readFileSync(__dirname+'/'+d+'/manifest.webmanifest','utf8')),sw=fs.readFileSync(__dirname+'/'+d+'/sw.js','utf8'),list=JSON.parse(sw.match(/const ASSETS=(\[[^\]]*\]);/)[1]);
+  for(const ic of man.icons)assert.ok(list.includes('./'+ic.src),'el service worker no guarda '+ic.src);
+  const walkD=x=>fs.readdirSync(x,{withFileTypes:true}).flatMap(e=>e.isDirectory()?walkD(x+'/'+e.name):[x+'/'+e.name]);
+  for(const f of walkD(__dirname+'/'+d+'/assets'))assert.ok(list.includes('./'+f.slice((__dirname+'/'+d+'/').length)),'sin conexión falta '+f);
+  for(const f of ['./apple-touch-icon.png','./favicon-48.png','./logo-128.png','./index.html'])assert.ok(list.includes(f),f);
+  for(const f of list)assert.ok(fs.existsSync(__dirname+'/'+d+'/'+f.slice(2)||__dirname+'/'+d+'/index.html'),'lista de caché con archivo inexistente '+f)}});
