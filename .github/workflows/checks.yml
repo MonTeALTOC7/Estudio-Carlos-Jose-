@@ -61,6 +61,22 @@ jobs:
           path: qa-out
           retention-days: 14
           if-no-files-found: ignore
+  tablet:
+    name: Galaxy Tab A9 emulada (vertical y horizontal) y Partes del cuerpo (Playwright)
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+      - run: node build.cjs
+      - working-directory: qa
+        run: npm ci --no-audit --no-fund && npx playwright install --with-deps chromium
+      - name: "Partes de mi cuerpo en teléfono y tablet: zonas táctiles, fases y otras personas"
+        run: node qa/partes-smoke.cjs --viewport=390x844 && node qa/partes-smoke.cjs --viewport=1005x540 && node qa/partes-smoke.cjs --viewport=600x950
+      - name: "Tablet emulada: 6 viewports con diseño, objetivos táctiles, arrastre, trazado y toque con el dedo"
+        run: node qa/tablet-smoke.cjs
   flujos:
     name: Recorridos de uso (portada, aventuras, panel, regresión, 15 habilidades)
     runs-on: ubuntu-latest
