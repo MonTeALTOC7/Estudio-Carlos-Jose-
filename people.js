@@ -82,21 +82,36 @@ function bodyFig(s,o){o=o||{};const pl=o.ids==='plur',id=n=>pl?({brazo:'brazos',
  const inner=(s.adult?'':'')+legs+(s.skirt||!s.long?lowerCloth:'')+neck+trunk+barriga+brazos+manos+pies+head;
  return '<svg class="gscene pfig psvg pfull" viewBox="'+(s.adult?'0 0 200 392':'0 74 200 318')+'" role="group" aria-label="'+(o.aria||'Dibujo de una persona')+'"><g transform="translate(100 380) scale('+k+') translate(-100 -380)">'+inner+'</g></svg>'}
 /* cara grande: viewBox 0 0 200 200 */
+/* Expresiones de los rostros dibujados (solo dibujos: nunca se fabrican «fotos» de Carlos José con emociones). Devuelve ojos, boca, cejas y detalles. */
+const EXPR=['contento','triste','enojado','asustado','con sueño','sorprendido'];
+function exprParts(e,s,cx,cy){const brow=(d,w)=>'<path d="'+d+'" fill="none" stroke="'+((s.hair||'#4a3426').toLowerCase()==='#f1f1ec'?'#8a8a84':(s.hair||'#4a3426'))+'" stroke-width="'+(w||5)+'" stroke-linecap="round" pointer-events="none"/>',
+ ojo=(x,rx,ry,pr,dy)=>sh('ellipse','cx="'+x+'" cy="'+(cy-4)+'" rx="'+rx+'" ry="'+ry+'"','#ffffff')+'<circle cx="'+x+'" cy="'+(cy-4+(dy||0))+'" r="'+pr+'" fill="#3a2a20"/><circle cx="'+(x+2)+'" cy="'+(cy-6+(dy||0))+'" r="1.8" fill="#fff"/>',
+ shut=x=>'<path d="M'+(x-14)+' '+(cy-4)+' Q'+x+' '+(cy+8)+' '+(x+14)+' '+(cy-4)+'" fill="none" stroke="#3a2a20" stroke-width="3.4" stroke-linecap="round"/>',
+ mo=(d,fill)=>'<path d="'+d+'" fill="'+(fill||'none')+'" stroke="'+(fill?STK:'#8a3b3b')+'" stroke-width="'+(fill?2.2:4)+'" stroke-linecap="round" stroke-linejoin="round"/>',
+ L=cx-27,R=cx+27;let eyes,mouth,extra='';
+ if(e==='contento'){eyes=ojo(L,14,10,6)+ojo(R,14,10,6)+brow('M'+(L-12)+' '+(cy-26)+' Q'+L+' '+(cy-34)+' '+(L+12)+' '+(cy-26))+brow('M'+(R-12)+' '+(cy-26)+' Q'+R+' '+(cy-34)+' '+(R+12)+' '+(cy-26));mouth=mo('M'+(cx-32)+' '+(cy+44)+' Q'+cx+' '+(cy+90)+' '+(cx+32)+' '+(cy+44)+' Q'+cx+' '+(cy+52)+' '+(cx-32)+' '+(cy+44)+'Z','#c8504f')}
+ else if(e==='triste'){eyes=ojo(L,14,10,6,3)+ojo(R,14,10,6,3)+brow('M'+(L-14)+' '+(cy-20)+' L'+(L+12)+' '+(cy-30))+brow('M'+(R+14)+' '+(cy-20)+' L'+(R-12)+' '+(cy-30));mouth=mo('M'+(cx-24)+' '+(cy+66)+' Q'+cx+' '+(cy+46)+' '+(cx+24)+' '+(cy+66));extra='<path d="M'+(L-6)+' '+(cy+14)+' q-6 12 0 16 q6 -4 0 -16z" fill="#6bb6ee" stroke="#2f7fc0" stroke-width="1.6" pointer-events="none"/>'}
+ else if(e==='enojado'){eyes=ojo(L,13,8,5)+ojo(R,13,8,5)+brow('M'+(L-14)+' '+(cy-34)+' L'+(L+14)+' '+(cy-20),6)+brow('M'+(R+14)+' '+(cy-34)+' L'+(R-14)+' '+(cy-20),6);mouth=mo('M'+(cx-26)+' '+(cy+64)+' Q'+cx+' '+(cy+48)+' '+(cx+26)+' '+(cy+64));extra=''}
+ else if(e==='asustado'){eyes=ojo(L,17,15,3.6)+ojo(R,17,15,3.6)+brow('M'+(L-14)+' '+(cy-32)+' Q'+L+' '+(cy-46)+' '+(L+14)+' '+(cy-32))+brow('M'+(R-14)+' '+(cy-32)+' Q'+R+' '+(cy-46)+' '+(R+14)+' '+(cy-32));mouth=mo('M'+(cx-15)+' '+(cy+52)+' Q'+cx+' '+(cy+44)+' '+(cx+15)+' '+(cy+52)+' Q'+(cx+14)+' '+(cy+70)+' '+cx+' '+(cy+70)+' Q'+(cx-14)+' '+(cy+70)+' '+(cx-15)+' '+(cy+52)+'Z','#7a2a2f');extra='<path d="M'+(cx+58)+' '+(cy-50)+' q8 10 0 16 q-8 -6 0 -16z" fill="#6bb6ee" stroke="#2f7fc0" stroke-width="1.6" pointer-events="none"/>'}
+ else if(e==='con sueño'){eyes=shut(L)+shut(R);mouth=mo('M'+(cx-11)+' '+(cy+56)+' Q'+cx+' '+(cy+48)+' '+(cx+11)+' '+(cy+56)+' Q'+(cx+10)+' '+(cy+70)+' '+cx+' '+(cy+70)+' Q'+(cx-10)+' '+(cy+70)+' '+(cx-11)+' '+(cy+56)+'Z','#7a2a2f');extra='<text x="'+(cx+56)+'" y="'+(cy-44)+'" font-size="26" font-weight="800" fill="#4a5a9a" pointer-events="none" aria-hidden="true">z</text><text x="'+(cx+76)+'" y="'+(cy-64)+'" font-size="20" font-weight="800" fill="#6a7ab5" pointer-events="none" aria-hidden="true">z</text>'}
+ else{eyes=ojo(L,16,16,5)+ojo(R,16,16,5)+brow('M'+(L-13)+' '+(cy-30)+' Q'+L+' '+(cy-44)+' '+(L+13)+' '+(cy-30))+brow('M'+(R-13)+' '+(cy-30)+' Q'+R+' '+(cy-44)+' '+(R+13)+' '+(cy-30));mouth=mo('M'+cx+' '+(cy+50)+' Q'+(cx+13)+' '+(cy+50)+' '+(cx+13)+' '+(cy+60)+' Q'+(cx+13)+' '+(cy+72)+' '+cx+' '+(cy+72)+' Q'+(cx-13)+' '+(cy+72)+' '+(cx-13)+' '+(cy+60)+' Q'+(cx-13)+' '+(cy+50)+' '+cx+' '+(cy+50)+'Z','#7a2a2f')}
+ return{eyes,mouth,extra}}
 function faceFig(s,o){o=o||{};const F=o.fill||null,hl=r=>o.hl===r?' hl':'',cx=100,cy=104,rx=60,ry=72,[hb,hf]=hairParts(s,cx,cy,rx,ry);
  const ears=grp('orejas',sh('ellipse','cx="'+(cx-rx-6)+'" cy="'+(cy+10)+'" rx="12" ry="19"',s.skin)+sh('ellipse','cx="'+(cx+rx+6)+'" cy="'+(cy+10)+'" rx="12" ry="19"',s.skin),hl('orejas'));
  const ojo=(x)=>sh('ellipse','cx="'+x+'" cy="'+(cy-4)+'" rx="14" ry="10"','#ffffff')+'<circle cx="'+x+'" cy="'+(cy-4)+'" r="6" fill="#3a2a20"/><circle cx="'+(x+2)+'" cy="'+(cy-6)+'" r="1.8" fill="#fff"/>';
- const eyes=grp('ojos',ojo(cx-27)+ojo(cx+27)+padE(cx-27,cy-4,22,13)+padE(cx+27,cy-4,22,13),hl('ojos'));
+ const X=o.expr?exprParts(o.expr,s,cx,cy):null;
+ const eyes=grp('ojos',(X?X.eyes:ojo(cx-27)+ojo(cx+27))+padE(cx-27,cy-4,22,13)+padE(cx+27,cy-4,22,13),hl('ojos'));
  const nose=grp('nariz','<path d="M'+cx+' '+(cy+4)+' L'+(cx-11)+' '+(cy+32)+' Q'+cx+' '+(cy+40)+' '+(cx+11)+' '+(cy+32)+'Z" fill="'+(s.skin)+'" stroke="'+STK+'" stroke-width="2.2" stroke-linejoin="round"/><path d="M'+(cx-9)+' '+(cy+34)+' Q'+cx+' '+(cy+40)+' '+(cx+9)+' '+(cy+34)+'" fill="none" stroke="#9a6a50" stroke-width="2"/>'+padE(cx,cy+23,17,15),hl('nariz'));
- const mouth=grp('boca','<path d="M'+(cx-28)+' '+(cy+48)+' Q'+cx+' '+(cy+74)+' '+(cx+28)+' '+(cy+48)+' Q'+cx+' '+(cy+56)+' '+(cx-28)+' '+(cy+48)+'Z" fill="#c8504f" stroke="'+STK+'" stroke-width="2.2" stroke-linejoin="round"/>'+padE(cx,cy+57,34,15),hl('boca'));
+ const mouth=grp('boca',(X?X.mouth:'<path d="M'+(cx-28)+' '+(cy+48)+' Q'+cx+' '+(cy+74)+' '+(cx+28)+' '+(cy+48)+' Q'+cx+' '+(cy+56)+' '+(cx-28)+' '+(cy+48)+'Z" fill="#c8504f" stroke="'+STK+'" stroke-width="2.2" stroke-linejoin="round"/>')+padE(cx,cy+57,34,15),hl('boca'));
  const hair=grp('cabello',hf,hl('cabello'));
  const extra=(s.glasses?'<g pointer-events="none"><circle cx="'+(cx-27)+'" cy="'+(cy-4)+'" r="17" fill="none" stroke="#5a5a5a" stroke-width="2.4"/><circle cx="'+(cx+27)+'" cy="'+(cy-4)+'" r="17" fill="none" stroke="#5a5a5a" stroke-width="2.4"/><path d="M'+(cx-10)+' '+(cy-4)+'h20" stroke="#5a5a5a" stroke-width="2.4"/></g>':'')+(s.who==='el abuelo'?'<path pointer-events="none" d="M'+(cx-24)+' '+(cy+44)+' Q'+cx+' '+(cy+36)+' '+(cx+24)+' '+(cy+44)+'" fill="none" stroke="#e7e7e0" stroke-width="5" stroke-linecap="round"/>':'');
- return '<svg class="gscene pfig psvg pface" viewBox="0 0 200 200" role="group" aria-label="'+(o.aria||'Dibujo de una cara')+'">'+hb+ears+sh('ellipse','cx="'+cx+'" cy="'+cy+'" rx="'+rx+'" ry="'+ry+'"',s.skin,'pointer-events="none"')+eyes+nose+mouth+hair+extra+'</svg>'}
+ return '<svg class="gscene pfig psvg pface" viewBox="0 0 200 200" role="group" aria-label="'+(o.aria||'Dibujo de una cara')+'">'+hb+ears+sh('ellipse','cx="'+cx+'" cy="'+cy+'" rx="'+rx+'" ry="'+ry+'"',s.skin,'pointer-events="none"')+eyes+nose+mouth+hair+extra+(X?X.extra:'')+'</svg>'}
 const BODY_PARTS=['cabeza','brazo','mano','barriga','pierna','pie'],FACE_PARTS=['cabello','orejas','ojos','nariz','boca'];
 const FIGS={};
 for(const k of Object.keys(IMG)){const f=IMG[k];FIGS[k]=Object.assign({id:k,kind:'carlos',parts_:Object.keys(f.parts)},f);FIGS[k].partList=Object.keys(f.parts)}
 for(const k of Object.keys(SPEC)){const s=SPEC[k];FIGS[k+'-cuerpo']={id:k+'-cuerpo',who:s.who,de:s.de,art:'dibujo',scene:'body',kind:'otra',spec:s,partList:BODY_PARTS.slice(),aria:'Dibujo de '+s.who};
  FIGS[k+'-cara']={id:k+'-cara',who:s.who,de:s.de,art:'dibujo',scene:'face',kind:'otra',spec:s,partList:FACE_PARTS.slice(),aria:'Dibujo de la cara de '+s.who}}
-P.FIGS=FIGS;
+P.FIGS=FIGS;P.EXPR=EXPR;
 const shapeSvg=(sp,cls)=>sp.e?'<ellipse cx="'+sp.e[0]+'" cy="'+sp.e[1]+'" rx="'+sp.e[2]+'" ry="'+sp.e[3]+'" class="'+cls+'"/>':'<polygon points="'+sp.p.map(q=>q.join(',')).join(' ')+'" class="'+cls+'"/>';
 /* Dibujo de una figura. opts: hl (parte resaltada, solo para enseñar), ids ('plur' para pintar), fill, line (contorno para colorear) */
 P.svg=(figId,o)=>{o=o||{};const f=typeof figId==='string'?FIGS[figId]:figId;if(!f)throw new Error('figura inexistente '+figId);

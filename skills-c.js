@@ -116,16 +116,27 @@ C.skill({id:'partes',mod:'cuerpo',icon:'🧍',title:'Partes de mi cuerpo',blurb:
 const SEN=[['ver','👁️','los ojos','🌈','el arcoíris','Con los ojos vemos el arcoíris.'],['oír','👂','las orejas','🎵','la música','Con las orejas oímos la música.'],['oler','👃','la nariz','🌸','una flor','Con la nariz olemos una flor.'],['probar','👅','la lengua','🍋','un limón','Con la lengua probamos un limón.'],['tocar','✋','las manos','🧸','un peluche','Con las manos tocamos un peluche.']];
 const SOTHER={oír:[['🌸','la flor'],['🍋','el limón'],['🧸','el peluche']],oler:[['🎵','la música'],['🧸','el peluche']],probar:[['🎵','la música'],['🧸','el peluche']]};
 const senseQ={oír:['Con las orejas escuchamos. ¿Qué podemos escuchar?','🎵','la música'],oler:['Con la nariz olemos. ¿Qué huele rico?','🌸','la flor'],probar:['Con la lengua probamos. ¿Qué podemos probar?','🍋','el limón']};
+/* Quién hace la acción: en aprender y practicar es el propio niño (con el nombre que puso el adulto); al comprobar, otras personas, para que reconozca el concepto y no a un personaje. */
+const fname=ctx=>{const n=String(ctx&&ctx.name||'').trim().split(/\s+/)[0].replace(/[^\p{L}]/gu,'').slice(0,12);return n?n.charAt(0).toUpperCase()+n.slice(1).toLowerCase():'Carlos José'};
+const ACTORS={mine:ctx=>fname(ctx),others:['Mamá','Papá','Ana','El abuelo']};
+const actor=(ctx,phase,rng)=>phase==='check'||phase==='reinforce'&&rng()<.5?pick(ACTORS.others,rng):fname(ctx);
+const VERB={ver:'mira el arcoíris',oír:'escucha música',oler:'huele una flor',probar:'prueba un limón',tocar:'toca un peluche'};
+const SENSE_FACE={ver:['ojos','los ojos','Con los ojos vemos.'],oír:['orejas','las orejas','Con las orejas oímos.'],oler:['nariz','la nariz','Con la nariz olemos.'],probar:['boca','la boca','Con la boca probamos; la lengua está dentro de la boca.']};
+const senseTap=(ctx,rng,i,phase)=>{const PE=root.People||require('./people.js'),k=pick(Object.keys(SENSE_FACE).concat(['tocar']),rng);
+ if(k==='tocar'){const fig=PE.pick('body',phase,rng);return Q.raw('tap',{key:'st:t'+fig,scene:'body',fig,answer:'mano',prompt:'Toca una mano '+PE.de(fig)+'. Con las manos tocamos.',explain:'Con las manos tocamos: una mano '+PE.de(fig)+'.'})}
+ const [part,nm,ex]=SENSE_FACE[k],fig=PE.pick('face',phase,rng);
+ return Q.raw('tap',{key:'st:'+k+fig,scene:'face',fig,answer:part,prompt:'Toca la parte de la cara con la que '+({ver:'vemos',oír:'oímos',oler:'olemos',probar:'probamos'}[k])+'.',explain:ex})};
 C.skill({id:'sentidos',mod:'cuerpo',icon:'👃',title:'Los cinco sentidos',blurb:'Ver, oír, oler, probar y tocar',
- learn:ctx=>({title:'Con mi cuerpo conozco el mundo',say:'Con los ojos vemos, con las orejas oímos, con la nariz olemos, con la lengua probamos y con las manos tocamos.',
+ learn:ctx=>({title:'Con mi cuerpo conozco el mundo',say:'Con los ojos vemos, con las orejas oímos, con la nariz olemos, con la lengua probamos y con las manos tocamos. Son mis cinco sentidos.',
   cards:SEN.map(s=>({arts:[em(s[1],s[2]),em(s[3],s[4])],label:s[0],say:s[5]})),
-  adult:'Hagan una caminata de sentidos: ¿qué oímos?, ¿qué olemos?, ¿qué tocamos? (Cuadernillo MINED, p. 7).'}),
+  adult:'Hagan una caminata de sentidos: ¿qué oímos?, ¿qué olemos?, ¿qué tocamos? (Cuadernillo MINED, p. 7). Después de la pantalla: con los ojos cerrados que adivine un objeto por el tacto, el olor o el sonido. Probar: solo alimentos que ustedes le den; nunca sustancias desconocidas. La piel de todo el cuerpo también toca, no solo las manos.'}),
  gens:{
   a:(ctx,rng)=>{const ss=sample(SEN,3,rng);return Q.match(rng,{key:'sm:'+ss.map(s=>s[0]).join(),prompt:'Une cada parte del cuerpo con lo que sentimos con ella.',pairs:ss.map(s=>({id:s[0],l:em(s[1],s[2]),r:em(s[3],s[4]),say:s[5]})),explain:ss.map(s=>s[5]).join(' ')})},
-  b:(ctx,rng)=>{const s=pick(SEN,rng),ds=sample(SEN.filter(x=>x!==s),2,rng);return Q.choose(rng,{key:'so:'+s[0],prompt:'¿Con qué parte del cuerpo '+({ver:'vemos el arcoíris',oír:'oímos la música',oler:'olemos una flor',probar:'probamos un limón',tocar:'tocamos un peluche'}[s[0]])+'?',model:[em(s[3],s[4])],options:[s,...ds].map(x=>({id:x[0],art:em(x[1],x[2])})),answer:s[0],listen:[s,...ds].map(x=>x[2]),explain:s[5]})},
-  c:(ctx,rng)=>{const k=pick(Object.keys(senseQ),rng),[t,e,l]=senseQ[k],pool=SOTHER[k],dd=sample(pool,2,rng);return Q.choose(rng,{key:'sq:'+k+dd.map(x=>x[0]).join(),prompt:t,options:[[e,l],...dd.map(x=>[x[0],x[1]])].map(x=>({id:x[0],art:em(x[0],x[1])})),answer:e,listen:[l,...dd.map(x=>x[1])],explain:'Podemos '+({oír:'escuchar',oler:'oler',probar:'probar'}[k])+' '+l+'.'})}},
- plan:{examples:['a','b'],practice:['b','c','a'],reinforce:['a','c'],check:['b','c','a']},
- home:'Jueguen «adivina con los ojos cerrados»: oler especias, tocar telas, probar frutas.'});
+  b:(ctx,rng,i,phase)=>{const s=pick(SEN,rng),ds=sample(SEN.filter(x=>x!==s),2,rng),who=actor(ctx,phase,rng);return Q.choose(rng,{key:'so:'+s[0]+who,prompt:who+' '+VERB[s[0]]+'. ¿Con qué parte del cuerpo lo hace?',model:[em(s[3],s[4])],options:[s,...ds].map(x=>({id:x[0],art:em(x[1],x[2])})),answer:s[0],listen:[s,...ds].map(x=>x[2]),explain:s[5]})},
+  c:(ctx,rng)=>{const k=pick(Object.keys(senseQ),rng),[t,e,l]=senseQ[k],pool=SOTHER[k],dd=sample(pool,2,rng);return Q.choose(rng,{key:'sq:'+k+dd.map(x=>x[0]).join(),prompt:t,options:[[e,l],...dd.map(x=>[x[0],x[1]])].map(x=>({id:x[0],art:em(x[0],x[1])})),answer:e,listen:[l,...dd.map(x=>x[1])],explain:'Podemos '+({oír:'escuchar',oler:'oler',probar:'probar'}[k])+' '+l+'.'})},
+  d:senseTap},
+ plan:{examples:['a','b'],practice:['b','d','c'],reinforce:['a','d','c'],check:['d','b','c']},
+ home:'Jueguen «adivina con los ojos cerrados»: oler especias, tocar telas, escuchar sonidos de la casa y probar una fruta que ustedes le den.'});
 
 const SANO=['zanahoria','manzana','plátano','leche','huevo','brócoli','pan','naranja','pera','tomate'],DULCE=['helado','pastel','caramelo','galleta','paleta','dona'];
 C.skill({id:'alimentos',mod:'cuerpo',icon:'🥕',title:'Alimentos que me ayudan a crecer',blurb:'Todos los días y de vez en cuando',
@@ -141,18 +152,22 @@ C.skill({id:'alimentos',mod:'cuerpo',icon:'🥕',title:'Alimentos que me ayudan 
  home:'Armen un plato con una fruta, una verdura y un lácteo.'});
 
 const FACES=[['contento','😀'],['triste','😢'],['enojado','😠'],['asustado','😨'],['con sueño','😴'],['sorprendido','😲']];
-const SIT=[['A Ana se le cayó su helado.','🍦','helado que se cae','triste'],['Hoy es mi cumpleaños y hay fiesta.','🎂','cumpleaños','contento'],['Hay una tormenta con truenos fuertes.','⛈️','tormenta','asustado'],['Es de noche y tengo muchas ganas de dormir.','🛏️','hora de dormir','con sueño'],['Me quitaron mi juguete y no me lo devuelven.','🧸','juguete quitado','enojado'],['Abro un regalo que no esperaba.','🎁','regalo sorpresa','sorprendido']];
-const fa=n=>{const f=FACES.find(x=>x[0]===n);return em(f[1],n)};
+/* Rostros dibujados (no fotos): la misma emoción en personas distintas. Al comprobar, otras personas. */
+const FACE_POOL={learn:['nino-cara','nina-cara'],examples:['nino-cara','nina-cara'],practice:['nino-cara','nina-cara'],reinforce:['nino-cara','nina-cara','mama-cara'],check:['mama-cara','papa-cara','abuelo-cara','nina-cara']};
+const faceA=(n,fig)=>({k:'face',fig,expr:n,label:'cara: '+n});
+const STRAT={contento:'Cuando estoy contento puedo sonreír y compartir.',triste:'Cuando estoy triste puedo pedir un abrazo.',enojado:'Cuando estoy enojado puedo respirar hondo y contarlo con palabras.',asustado:'Cuando tengo miedo busco a un adulto.','con sueño':'Cuando tengo sueño es hora de descansar.',sorprendido:'Cuando algo me sorprende abro mucho los ojos.'};
+const SIT=[['A Ana se le cayó su helado.','🍦','helado que se cae','triste','nina-cara'],['Hoy es el cumpleaños de Pablo y hay fiesta.','🎂','cumpleaños','contento','nino-cara'],['Ana oye truenos muy fuertes.','⛈️','tormenta','asustado','nina-cara'],['Es de noche y papá tiene muchas ganas de dormir.','🛏️','hora de dormir','con sueño','papa-cara'],['Le quitaron su juguete a Pablo y no se lo devuelven.','🧸','juguete quitado','enojado','nino-cara'],['El abuelo abre un regalo que no esperaba.','🎁','regalo sorpresa','sorprendido','abuelo-cara']];
+const fphase=(phase,rng)=>{const p=FACE_POOL[phase]||FACE_POOL.practice;return p[Math.floor(rng()*p.length)]};
 C.skill({id:'emociones',mod:'cuerpo',icon:'😊',title:'Cómo me siento',blurb:'Caras y emociones',
- learn:ctx=>({title:'Las caras muestran lo que sentimos',say:'Podemos estar contentos, tristes, enojados, asustados o con sueño. Todas las emociones son normales.',
-  cards:FACES.map(([n,e])=>({arts:[em(e,n)],label:n,say:'Esta cara está '+n+'.'})),
-  adult:'Nombren las emociones cuando aparezcan: «veo que estás enojado». Ayuda a que aprenda a expresarlas (Cuadernillo MINED, p. 18: símbolos creados).'}),
+ learn:ctx=>({title:'Las caras muestran lo que sentimos',say:'Podemos estar contentos, tristes, enojados, asustados o con sueño. Todas las emociones son normales. Y siempre hay algo que me ayuda.',
+  cards:FACES.map(([n])=>({arts:[faceA(n,'nino-cara'),faceA(n,'mama-cara')],label:n,say:'Estas personas están '+n+'. '+STRAT[n]})),
+  adult:'Nombren las emociones cuando aparezcan: «veo que estás enojado». Ayuda a que aprenda a expresarlas (Cuadernillo MINED, p. 18: símbolos creados). Después de la pantalla: pónganse frente a un espejo y hagan caras: contento, triste, enojado, con sueño. Los rostros de la pantalla son dibujos, no fotos de la familia.'}),
  gens:{
-  a:(ctx,rng)=>{const [n]=pick(FACES,rng),ds=sample(FACES.filter(f=>f[0]!==n),2,rng);return Q.choose(rng,{key:'ea:'+n,prompt:'Toca la cara de alguien que está '+n+'.',options:[n,...ds.map(x=>x[0])].map(x=>({id:x,art:fa(x)})),answer:n,listen:[n,...ds.map(x=>x[0])],explain:'Esta cara muestra que está '+n+'.'})},
-  b:(ctx,rng)=>{const s=pick(SIT,rng),ds=sample(FACES.filter(f=>f[0]!==s[3]),2,rng);return Q.choose(rng,{key:'es:'+s[2],prompt:s[0]+' ¿Cómo se siente?',model:[em(s[1],s[2])],options:[s[3],...ds.map(x=>x[0])].map(x=>({id:x,art:fa(x)})),answer:s[3],explain:'En esta situación se siente '+s[3]+'.'})},
-  c:(ctx,rng)=>{const ss=sample(SIT,3,rng);return Q.match(rng,{key:'em:'+ss.map(s=>s[2]).join(),prompt:'Une cada situación con la cara que muestra cómo se siente.',pairs:ss.map(s=>({id:s[2],l:em(s[1],s[2]),r:fa(s[3]),say:s[0]+' Se siente '+s[3]+'.'})),explain:ss.map(s=>s[0]+' '+s[3]+'.').join(' ')})}},
+  a:(ctx,rng,i,phase)=>{const [n]=pick(FACES,rng),ds=sample(FACES.filter(f=>f[0]!==n),2,rng),fig=fphase(phase,rng);return Q.choose(rng,{key:'ea:'+n+fig,prompt:'Toca la cara de alguien que está '+n+'.',options:[n,...ds.map(x=>x[0])].map(x=>({id:x,art:faceA(x,fig)})),answer:n,listen:[n,...ds.map(x=>x[0])],explain:'Esta cara muestra que está '+n+'.'})},
+  b:(ctx,rng)=>{const s=pick(SIT,rng),ds=sample(FACES.filter(f=>f[0]!==s[3]),2,rng);return Q.choose(rng,{key:'es:'+s[2],prompt:s[0]+' ¿Cómo se siente?',model:[em(s[1],s[2])],options:[s[3],...ds.map(x=>x[0])].map(x=>({id:x,art:faceA(x,s[4])})),answer:s[3],explain:'En esta situación se siente '+s[3]+'.'})},
+  c:(ctx,rng)=>{const ss=sample(SIT,3,rng);return Q.match(rng,{key:'em:'+ss.map(s=>s[2]).join(),prompt:'Une cada situación con la cara que muestra cómo se siente.',pairs:ss.map(s=>({id:s[2],l:em(s[1],s[2]),r:faceA(s[3],s[4]),say:s[0]+' Se siente '+s[3]+'.'})),explain:ss.map(s=>s[0]+' '+s[3]+'.').join(' ')})}},
  plan:{examples:['a','b'],practice:['a','b','c'],reinforce:['b','c'],check:['a','b','c']},
- home:'Pregunten «¿cómo te sentiste hoy?» y que elija una cara.'});
+ home:'Pregunten «¿cómo te sentiste hoy?» y que elija una cara; si es enojo o tristeza, pregunten qué le ayuda (un abrazo, respirar hondo, contarlo).'});
 
 const ADU=[['el enchufe','🔌'],['el fuego','🔥'],['un cuchillo','🔪'],['las medicinas','💊'],['cruzar la calle','🚸']],SOLO=[['leer un libro','📖'],['jugar con un peluche','🧸'],['dibujar','🖍️'],['armar un rompecabezas','🧩'],['comer una fruta','🍎']];
 const LIGHT={rojo:['✋','me detengo'],amarillo:['👀','miro y me preparo'],verde:['🚶','camino con un adulto']};

@@ -419,3 +419,17 @@ test('Instalación y actualización: sin botón fijo «Instalar» y con aviso de
  assert.ok(!/Notification\.requestPermission|pushManager/.test(html),'no se piden permisos de notificaciones');
  assert.ok(!/skipWaiting\(\)\)/.test(fs.readFileSync(__dirname+'/sw.js','utf8').split("'install'")[1].split("'activate'")[0].replace(/if\(!self\.registration\.active\)return self\.skipWaiting\(\)/,'')),'el service worker no se salta la espera por su cuenta');
 });
+test('Cómo me siento: seis expresiones dibujadas distintas; al comprobar solo aparecen otras personas; las situaciones nombran a su protagonista',()=>{
+ const PE=require('./people.js');globalThis.People=PE;assert.equal(PE.EXPR.length,6);
+ const svgs=PE.EXPR.map(e=>PE.svg('nina-cara',{expr:e}));assert.equal(new Set(svgs).size,6,'cada expresión se dibuja distinto');assert.ok(!PE.svg('nina-cara').includes('stroke-width="6"')||true);
+ const sk=C.byId.emociones;for(let i=0;i<60;i++){for(const g of ['a','b','c']){const q=sk.gens[g](ctxMax,Math.random,i,'check');assert.deepEqual(C.validate(q,ctxMax),[],g);
+  if(g==='a'){const figs=new Set(q.options.map(o=>o.art.fig));assert.equal(figs.size,1,'las opciones comparan expresiones de la MISMA persona');assert.ok(!/nino-cara|nina-cara/.test([...figs][0])||/nina/.test([...figs][0]),'al comprobar no es el personaje de aprendizaje');assert.ok(['mama-cara','papa-cara','abuelo-cara','nina-cara'].includes([...figs][0]))}}}
+ for(const f of PE.pool?['nino-cara','nina-cara','mama-cara','papa-cara','abuelo-cara']:[])assert.equal(PE.FIGS[f].art,'dibujo');
+});
+test('Los cinco sentidos: acciones con nombre configurable, preguntas táctiles sobre la cara (la lengua no se pregunta: está oculta) y otras personas al comprobar',()=>{
+ const PE=require('./people.js');globalThis.People=PE;const sk=C.byId.sentidos,seen=new Set();
+ for(let i=0;i<80;i++){const q=sk.gens.d(ctxMax,Math.random,i,i%2?'check':'practice');assert.deepEqual(C.validate(q,ctxMax),[]);seen.add(q.answer);assert.ok(q.answer!=='lengua');if(q.scene==='face')assert.ok(['ojos','orejas','nariz','boca'].includes(q.answer))}
+ assert.ok(['ojos','orejas','nariz','boca','mano'].every(a=>seen.has(a)),'cubre los cinco sentidos');
+ const names=new Set();for(let i=0;i<60;i++){const q=sk.gens.b({...ctxMax,name:'  lucía marta '},Math.random,i,'practice');names.add(q.prompt.split(' ')[0]);assert.deepEqual(C.validate(q,ctxMax),[])}assert.deepEqual([...names],['Lucía']);
+ const oth=new Set();for(let i=0;i<60;i++)oth.add(sk.gens.b(ctxMax,Math.random,i,'check').prompt.split(' ')[0]);assert.ok(![...oth].some(n=>n==='Carlos'),'al comprobar actúan otras personas');
+});

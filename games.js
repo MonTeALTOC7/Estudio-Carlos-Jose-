@@ -47,6 +47,7 @@ function A(a,opt){
   case'obj':inner=objArt(a);break;
   case'grp':return grpArt(a,opt.tap);
   case'scene':return sceneArt(a);
+  case'face':inner='<span class="gface" role="img" aria-label="'+esc(a.label)+'">'+root.People.svg(a.fig,{expr:a.expr,aria:a.label})+'</span>';break;
   default:inner='';}
  const sc=a.scale&&a.scale!==1?' style="--sc:'+a.scale+'"':'';
  return '<span class="gart'+(a.k==='t'?' text':'')+'"'+sc+'>'+inner+'</span>'}

@@ -264,3 +264,7 @@ input[type=checkbox]{width:28px;height:28px;flex:0 0 auto;margin:0;accent-color:
 .pwacard .pc-b{display:flex;gap:8px;flex-wrap:wrap}.pwacard button{min-height:44px;padding:8px 16px}
 .pwapanel{background:#f6f8f2;border-radius:16px;padding:10px 14px}.pwapanel .row{display:flex;gap:8px;flex-wrap:wrap;margin:6px 0}.pwapanel button{min-height:44px}
 #updbar button[disabled]{opacity:.7}
+
+/* Rostros dibujados con expresión (Cómo me siento) */
+.gface{display:inline-block;width:calc(var(--u)*.92*var(--sc,1));height:calc(var(--u)*.92*var(--sc,1))}.gface svg.pfig{width:100%;height:100%;max-height:none;margin:0;padding:0;background:transparent;display:block}
+.gface .rg{pointer-events:none}
