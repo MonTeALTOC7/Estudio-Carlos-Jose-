@@ -268,7 +268,12 @@ input[type=checkbox]{width:28px;height:28px;flex:0 0 auto;margin:0;accent-color:
 /* Rostros dibujados con expresión (Cómo me siento) */
 .gface{display:inline-block;width:calc(var(--u)*.92*var(--sc,1));height:calc(var(--u)*.92*var(--sc,1))}.gface svg.pfig{width:100%;height:100%;max-height:none;margin:0;padding:0;background:transparent;display:block}
 .gface .rg{pointer-events:none}
-</style></head><body><div class="app" id="app" data-mode="hub"><header class="topbar"><button class="brand" id="home" aria-label="Ir a Hoy"><span class="brandmark" id="logo" aria-hidden="true"></span><span class="brandtxt"><small>Centro de Estudios</small><b>Carlos José</b></span></button><div class="header-actions"><button id="parents" class="icon" aria-label="Zona de adultos">⚙</button></div></header><nav class="modulebar" aria-label="Navegación de juegos"><div class="modrow"><button id="directHome" class="soft">⌂ Inicio</button><button id="modules" class="primary" aria-haspopup="dialog">▦ <span class="lg">Cambiar módulo</span><span class="sm">Módulos</span></button></div><div class="chips" id="chips" aria-label="Ir directo a un módulo"></div></nav><main id="main"></main><footer><span>Aprendo, juego y descubro · <b>By Carlos Tijerino</b></span><span>Versión 5.3.0</span></footer></div><nav class="tabbar" id="tabbar" aria-label="Secciones"><button data-tab="hoy"><svg viewBox="0 0 32 32" aria-hidden="true"><circle cx="16" cy="16" r="6"/><path d="M16 3v4M16 25v4M3 16h4M25 16h4M7 7l3 3M22 22l3 3M25 7l-3 3M10 22l-3 3"/></svg><span>Hoy</span></button><button data-tab="camino"><svg viewBox="0 0 32 32" aria-hidden="true"><path d="M7 28c0-6 18-6 18-12S7 12 7 6"/><circle cx="7" cy="5" r="2.6"/><circle cx="25" cy="27" r="2.6"/></svg><span>Camino</span></button><button data-tab="aprender"><svg viewBox="0 0 32 32" aria-hidden="true"><path d="M4 7q6-2 12 2 6-4 12-2v18q-6-2-12 2-6-4-12-2z"/><path d="M16 9v18"/></svg><span>Aprender</span></button><button data-tab="jugar"><svg viewBox="0 0 32 32" aria-hidden="true"><path d="M16 3l3.4 8.4 9 .7-6.9 5.8 2.2 8.8L16 21.9l-7.7 4.8 2.2-8.8-6.9-5.8 9-.7z"/></svg><span>Jugar</span></button><button data-tab="logros"><svg viewBox="0 0 32 32" aria-hidden="true"><circle cx="16" cy="13" r="8"/><path d="M11 20l-3 9 8-4 8 4-3-9"/></svg><span>Logros</span></button></nav><div id="updbar" role="status" aria-live="polite" hidden><span id="updtxt">Hay una nueva versión de Carlos José.</span><button class="primary" id="updgo">Actualizar ahora</button><button class="soft" id="updlater">Después de mi clase</button></div><div id="cheer" role="status" aria-live="polite"></div><div id="celebrate" aria-live="polite"></div><canvas id="confetti" aria-hidden="true"></canvas><dialog id="dialog"><div id="dialogContent"></div><button id="closeDialog" class="soft">Cerrar</button></dialog><dialog id="moduleDialog" aria-labelledby="moduleTitle"><h2 id="moduleTitle">¿A qué jugamos?</h2><p>Elige directamente. Tu progreso se conserva.</p><div id="moduleChoices" class="module-grid"></div><button id="closeModules" class="soft">Seguir jugando</button></dialog><div id="notice" role="status"></div><script>window.APP={"channel":"producción","key":"primerosPasos3","version":"5.3.0","build":"1b338ab8","commit":""};window.CJ_ASSETS=window.CJ_ASSETS||{hero:'assets/hero.webp',face:'assets/avatar.webp'};</script><script>(function(root){
+
+/* Insignia de quién hace la acción y manos dibujadas (lateralidad) */
+.gart:has(.gwho){position:relative}.gwho{position:absolute;left:-2px;bottom:-2px;width:34px;height:34px;border-radius:50%;overflow:hidden;border:2px solid #fff;box-shadow:0 1px 4px #0004;background:#fff}
+.gwho svg.pfig{width:100%;height:100%;max-height:none;margin:0;padding:0;border-radius:0}.gwho .rg{pointer-events:none}.gwho svg.pimg{width:100%;height:100%}
+.ghand{width:calc(var(--u)*.9*var(--sc,1));height:calc(var(--u)*1.1*var(--sc,1));display:block}
+</style></head><body><div class="app" id="app" data-mode="hub"><header class="topbar"><button class="brand" id="home" aria-label="Ir a Hoy"><span class="brandmark" id="logo" aria-hidden="true"></span><span class="brandtxt"><small>Centro de Estudios</small><b>Carlos José</b></span></button><div class="header-actions"><button id="parents" class="icon" aria-label="Zona de adultos">⚙</button></div></header><nav class="modulebar" aria-label="Navegación de juegos"><div class="modrow"><button id="directHome" class="soft">⌂ Inicio</button><button id="modules" class="primary" aria-haspopup="dialog">▦ <span class="lg">Cambiar módulo</span><span class="sm">Módulos</span></button></div><div class="chips" id="chips" aria-label="Ir directo a un módulo"></div></nav><main id="main"></main><footer><span>Aprendo, juego y descubro · <b>By Carlos Tijerino</b></span><span>Versión 5.3.0</span></footer></div><nav class="tabbar" id="tabbar" aria-label="Secciones"><button data-tab="hoy"><svg viewBox="0 0 32 32" aria-hidden="true"><circle cx="16" cy="16" r="6"/><path d="M16 3v4M16 25v4M3 16h4M25 16h4M7 7l3 3M22 22l3 3M25 7l-3 3M10 22l-3 3"/></svg><span>Hoy</span></button><button data-tab="camino"><svg viewBox="0 0 32 32" aria-hidden="true"><path d="M7 28c0-6 18-6 18-12S7 12 7 6"/><circle cx="7" cy="5" r="2.6"/><circle cx="25" cy="27" r="2.6"/></svg><span>Camino</span></button><button data-tab="aprender"><svg viewBox="0 0 32 32" aria-hidden="true"><path d="M4 7q6-2 12 2 6-4 12-2v18q-6-2-12 2-6-4-12-2z"/><path d="M16 9v18"/></svg><span>Aprender</span></button><button data-tab="jugar"><svg viewBox="0 0 32 32" aria-hidden="true"><path d="M16 3l3.4 8.4 9 .7-6.9 5.8 2.2 8.8L16 21.9l-7.7 4.8 2.2-8.8-6.9-5.8 9-.7z"/></svg><span>Jugar</span></button><button data-tab="logros"><svg viewBox="0 0 32 32" aria-hidden="true"><circle cx="16" cy="13" r="8"/><path d="M11 20l-3 9 8-4 8 4-3-9"/></svg><span>Logros</span></button></nav><div id="updbar" role="status" aria-live="polite" hidden><span id="updtxt">Hay una nueva versión de Carlos José.</span><button class="primary" id="updgo">Actualizar ahora</button><button class="soft" id="updlater">Después de mi clase</button></div><div id="cheer" role="status" aria-live="polite"></div><div id="celebrate" aria-live="polite"></div><canvas id="confetti" aria-hidden="true"></canvas><dialog id="dialog"><div id="dialogContent"></div><button id="closeDialog" class="soft">Cerrar</button></dialog><dialog id="moduleDialog" aria-labelledby="moduleTitle"><h2 id="moduleTitle">¿A qué jugamos?</h2><p>Elige directamente. Tu progreso se conserva.</p><div id="moduleChoices" class="module-grid"></div><button id="closeModules" class="soft">Seguir jugando</button></dialog><div id="notice" role="status"></div><script>window.APP={"channel":"producción","key":"primerosPasos3","version":"5.3.0","build":"2e5f998a","commit":""};window.CJ_ASSETS=window.CJ_ASSETS||{hero:'assets/hero.webp',face:'assets/avatar.webp'};</script><script>(function(root){
  'use strict';
  const groups={numbers:['1','2','3','4','5','6','7','8','9','10'],vowels:['a','e','i','o','u'],colors:['rojo','azul','amarillo','verde','naranja','morado','rosado','café'],shapes:['círculo','X','cuadrado','triángulo','rectángulo','óvalo','rombo']};
  function fresh(){return{version:3,name:'',sound:true,voice:'',rate:.85,unlocked:{},records:{},sessions:0,drawings:0}}
@@ -534,9 +539,11 @@ C.SPACE={mesa:{encima:'encima de la mesa',debajo:'debajo de la mesa','al lado':'
 /* ---------- validador: usado por las pruebas y por la interfaz en desarrollo ---------- */
 function checkArt(a,ctx,errs,where){
  if(!a||typeof a!=='object'){errs.push(where+': arte vacío');return}
- if(!['e','t','sw','obj','grp','scene','face'].includes(a.k))errs.push(where+': tipo de arte '+a.k);
+ if(!['e','t','sw','obj','grp','scene','face','hand'].includes(a.k))errs.push(where+': tipo de arte '+a.k);
  if(!a.label||typeof a.label!=='string')errs.push(where+': sin etiqueta');
  if(a.k==='e'&&!a.e)errs.push(where+': emoji vacío');
+ if(a.who&&globalThis.People&&!globalThis.People.FIGS[a.who])errs.push(where+': persona de la insignia inexistente '+a.who);
+ if(a.k==='hand'&&!['izq','der'].includes(a.side))errs.push(where+': mano sin lado');
  if(a.k==='face'){const PE=globalThis.People;if(PE&&(!PE.FIGS[a.fig]||PE.FIGS[a.fig].art!=='dibujo'||PE.FIGS[a.fig].scene!=='face'))errs.push(where+': rostro dibujado inexistente '+a.fig);if(PE&&!PE.EXPR.includes(a.expr))errs.push(where+': expresión desconocida '+a.expr)}
  if(a.k==='t'){if(a.t==='')errs.push(where+': texto vacío');if(a.sym==='n'&&!ctx.numbers.includes(+a.t))errs.push(where+': número no presentado '+a.t);if(a.sym==='v'&&!ctx.vowels.includes(a.t))errs.push(where+': vocal no presentada '+a.t)}
  if(a.k==='grp'&&(a.pos.length!==a.n||a.n>10))errs.push(where+': grupo mal formado')}
@@ -729,22 +736,28 @@ C.skill({id:'adivinanzas',mod:'lenguaje',icon:'❓',title:'Adivinanzas y sonidos
  plan:{examples:['a','b'],practice:['a','b','c'],reinforce:['c','a'],check:['a','b','c']},
  home:'Hagan una adivinanza por día con objetos de la casa: «es redondo, se come y es naranja».'});
 
-const nm=ctx=>{const n=String(ctx.name||'').trim().split(/\s+/)[0].replace(/[^\p{L}]/gu,'').slice(0,10);return n?n.charAt(0).toUpperCase()+n.slice(1).toLowerCase():''};
+/* El nombre lo escribe el adulto: se respeta completo (acentos incluidos). Si es demasiado largo para armarse en pantalla, la habilidad no se ofrece en vez de mostrar un nombre cortado. */
+const nm=ctx=>{const n=String(ctx.name||'').trim().split(/\s+/)[0].replace(/[^\p{L}]/gu,'');return n&&n.length<=12?n.charAt(0).toUpperCase()+n.slice(1).toLowerCase():''};
+const fullNm=ctx=>{const w=String(ctx.name||'').trim().split(/\s+/).map(x=>x.replace(/[^\p{L}]/gu,'')).filter(Boolean).slice(0,3).map(x=>x.charAt(0).toUpperCase()+x.slice(1).toLowerCase());const f=w.join(' ');return w.length>1&&f.length<=18&&nm(ctx)?f:''};
 const DECOY=['Ana','Luis','Sofía','Mateo','Camila','José','Valeria','Daniel','Lucía','Pedro','María','Diego','Elena','Pablo'];
 const ALPHA='ABCDEFGHIJLMNOPRSTUV'.split('');
 C.skill({id:'mi-nombre',mod:'lenguaje',icon:'✏️',title:'Mi nombre',blurb:'Reconocer y armar mi nombre',needsName:true,
  available:ctx=>nm(ctx).length>=2,
  learn:ctx=>{const n=nm(ctx);return{title:'Este es mi nombre',say:'Este es tu nombre: '+n+'. Tiene '+n.length+' letras. Empieza con la '+n[0]+'.',
-  cards:[{arts:[tx(n,'name',n)],label:n,say:n+'. Así se escribe tu nombre.'},...[...n].slice(0,6).map(ch=>({arts:[tx(ch,'name',ch)],label:ch,say:'La letra '+ch}))],
-  adult:'Escriban su nombre en papel con letras grandes. Primero que lo mire y lo siga con el dedo (Cuadernillo MINED, pp. 14 y 28: nombre propio).'}},
+  cards:[{arts:[tx(n,'name',n)],label:n,say:n+'. Así se escribe tu nombre.'},{arts:[tx(n,'name',n),tx(n.toUpperCase(),'name',n.toUpperCase())],label:'chicas y grandes',say:'Tu nombre con letras chicas y con letras grandes. Dice lo mismo.'},...(fullNm(ctx)?[{arts:[tx(fullNm(ctx),'name',fullNm(ctx))],label:fullNm(ctx),say:'Tu nombre completo: '+fullNm(ctx)+'.'}]:[]),...[...n].slice(0,6).map(ch=>({arts:[tx(ch,'name',ch)],label:ch,say:'La letra '+ch}))],
+  adult:'Escriban su nombre en papel con letras grandes. Primero que lo mire y lo siga con el dedo (Cuadernillo MINED, pp. 14 y 28: nombre propio). El nombre que se usa es el que ustedes escribieron en Ajustes (se puede cambiar cuando quieran). Pueden pegar su foto junto al nombre en una tarjeta. Trazar las letras con el dedo en la pantalla aún no está disponible para cualquier nombre; hágalo en papel.'}},
  gens:{
   a:(ctx,rng)=>{const n=nm(ctx),v=Math.floor(rng()*3),up=v===2,L=[...(up?n.toUpperCase():n)],used=n.toUpperCase(),extra=v===1?sample(ALPHA.filter(x=>!used.includes(x)),2,rng).map((ch,i)=>({id:'x'+i,v:ch.toLowerCase(),art:tx(ch.toLowerCase(),'name',ch.toLowerCase()),say:ch})):[];
    return Q.order({key:'nb:'+n+v,prompt:up?'Pon las letras grandes de tu nombre en orden.':v===1?'Pon las letras de tu nombre en orden. Sobran dos letras.':'Pon las letras de tu nombre en orden.',items:L.map((ch,i)=>({id:String(i),v:ch,art:tx(ch,'name',ch),say:ch})),extra,explain:'Tu nombre se escribe '+L.join(' - ')+'.'})},
   b:(ctx,rng)=>{const n=nm(ctx),ini=n[0],ds=sample(ALPHA.filter(x=>x!==ini),2,rng);
    return Q.choose(rng,{key:'ni:'+n+ds.join(''),prompt:'¿Con qué letra empieza tu nombre?',say:'¿Con qué letra empieza '+n+'?',model:[tx(n,'name',n)],options:[ini,...ds].map(x=>({id:x,art:tx(x,'name',x)})),answer:ini,explain:n+' empieza con la '+ini+'.'})},
   c:(ctx,rng)=>{const n=nm(ctx),ds=sample(DECOY.filter(x=>x!==n),2,rng);
-   return Q.choose(rng,{key:'nf:'+n+ds.join(''),prompt:'Busca tu nombre escrito.',say:'Busca tu nombre escrito: '+n+'.',options:[n,...ds].map(x=>({id:x,art:tx(x,'name',x)})),answer:n,explain:'Este dice '+n+'. Es tu nombre.'})}},
- plan:{examples:['a','c'],practice:['c','b','b'],reinforce:['a','c'],check:['c','b','a']},
+   return Q.choose(rng,{key:'nf:'+n+ds.join(''),prompt:'Busca tu nombre escrito.',say:'Busca tu nombre escrito: '+n+'.',options:[n,...ds].map(x=>({id:x,art:tx(x,'name',x)})),answer:n,explain:'Este dice '+n+'. Es tu nombre.'})},
+  d:(ctx,rng)=>{const n=nm(ctx),ds=sample(DECOY.filter(x=>x!==n),2,rng);const ids=[n,...ds];
+   return Q.match(rng,{key:'nd:'+n+ds.join(''),prompt:'Une cada nombre con el mismo nombre escrito con letras grandes.',pairs:ids.map(x=>({id:x,l:tx(x,'name',x),r:tx(x.toUpperCase(),'name',x.toUpperCase()),say:x+' y '+x.toUpperCase()+' dicen lo mismo.'})),explain:ids.map(x=>x+' = '+x.toUpperCase()).join('. ')+'. Son iguales aunque cambie el tamaño de las letras.'})},
+  e:(ctx,rng)=>{const f=fullNm(ctx);if(!f)return C.byId['mi-nombre'].gens.c(ctx,rng);const w=f.split(' '),last=w[w.length-1],ds=sample(DECOY.filter(x=>x!==last&&x!==w[0]),2,rng),wrong=[w.slice(0,-1).concat(ds[0]).join(' '),[ds[1]].concat(w.slice(1)).join(' ')];
+   return Q.choose(rng,{key:'nc:'+f+wrong.join(),prompt:'Busca tu nombre completo.',say:'Busca tu nombre completo: '+f+'.',options:[f,...wrong].map(x=>({id:x,art:tx(x,'name',x)})),answer:f,explain:'Tu nombre completo dice '+f+'.'})}},
+ plan:{examples:['a','c'],practice:['c','b','e'],reinforce:['a','d','c'],check:['c','b','e']},
  home:'Pongan su nombre en sus dibujos y busquen su inicial en carteles y envases.'});
 })(typeof globalThis!=='undefined'?globalThis:this);
 
@@ -1092,17 +1105,30 @@ C.skill({id:'posiciones2',mod:'espacio',icon:'↔️',title:'Al lado, delante, d
  home:'Jueguen a esconder un juguete: «detrás de la silla», «entre los cojines», «cerca de la puerta».'});
 
 const LR=['izquierda','derecha'];
+/* ---- personas protagonistas (compartido por «Los cinco sentidos», secuencias y lateralidad) ---- */
+const fname=ctx=>{const n=String(ctx&&ctx.name||'').trim().split(/\s+/)[0].replace(/[^\p{L}]/gu,'').slice(0,12);return n?n.charAt(0).toUpperCase()+n.slice(1).toLowerCase():'Carlos José'};
+const cap=s=>s.charAt(0).toUpperCase()+s.slice(1);
+const OTHERS=[['mamá','mama-cara'],['papá','papa-cara'],['Ana','nina-cara'],['el abuelo','abuelo-cara']];
+/* La foto de Carlos solo acompaña su propio nombre; si el adulto pone otro nombre, se usa un dibujo de niño. */
+const selfBadge=ctx=>/^carlos( josé)?$/i.test(fname(ctx))||fname(ctx)==='Carlos'?'carlos-cara':'nino-cara';
+const protag=(ctx,phase,rng,pOther)=>{const o=phase==='check'||(pOther&&rng()<pOther);if(o){const [n,f]=pick(OTHERS,rng);return{who:n,badge:f,other:true}}return{who:fname(ctx),badge:selfBadge(ctx),other:false}};
+/* Manos dibujadas como las ve su dueño (izquierda a la izquierda). La pulsera va siempre en la derecha, como la que se pone el adulto. */
+const handA=(side,brace)=>({k:'hand',side,bracelet:!!brace,label:'mano '+(side==='izq'?'izquierda':'derecha')});
+const handQ=(ctx,rng,i,phase)=>{const der=rng()<.5,brace=phase!=='check',pro=phase==='learn'||phase==='examples';
+ const ask=der?'derecha':'izquierda',hint=brace&&der?' Es la que tiene la pulsera.':'';
+ return Q.raw('choose',{key:'lh:'+ask+brace,prompt:'Toca tu mano '+ask+'.'+(pro?hint:''),say:'Toca tu mano '+ask+'.'+(pro?hint:''),options:[{id:'izq',art:handA('izq',brace)},{id:'der',art:handA('der',brace)}],answer:der?'der':'izq',row:true,explain:'Esta es tu mano '+ask+(brace&&der?', la que lleva la pulsera.':'.')+' Las ves igual que cuando miras tus manos.'})};
 C.skill({id:'izq-der',mod:'espacio',icon:'👈',title:'Izquierda y derecha',blurb:'Mi izquierda, mi derecha',
- learn:ctx=>({title:'Tengo una mano izquierda y una derecha',say:'Levanta tu mano derecha. Esa es tu derecha. Ahora levanta la izquierda. Aquí en la pantalla, izquierda es el lado de la mano izquierda.',
-  cards:[{arts:[scene('lado','izquierda',OB[0])],label:'izquierda',say:'La pelota está a la izquierda de la caja.'},{arts:[scene('lado','derecha',OB[0])],label:'derecha',say:'La pelota está a la derecha de la caja.'}],
-  adult:'Ponga una pulsera o cinta en su mano derecha unos días. A esta edad es normal que aún confunda izquierda y derecha (Cuadernillo MINED, p. 12).'}),
+ learn:ctx=>({title:'Tengo una mano izquierda y una derecha',say:'Levanta tu mano derecha: esa es tu derecha. Ahora levanta la izquierda. En la pantalla, mira tus manos como las ves tú: la izquierda de este lado y la derecha, con la pulsera, del otro.',
+  cards:[{arts:[handA('izq',true),handA('der',true)],label:'mis manos',say:'Estas son tus manos como las ves tú. La izquierda está de este lado. La derecha lleva la pulsera.'},{arts:[scene('lado','izquierda',OB[0])],label:'izquierda',say:'La pelota está a la izquierda de la caja.'},{arts:[scene('lado','derecha',OB[0])],label:'derecha',say:'La pelota está a la derecha de la caja.'}],
+  adult:'Pongan una pulsera o cinta en su mano derecha unos días: es la misma que verá dibujada en la pantalla. Antes y después de jugar, pídanle que levante su mano derecha, luego la izquierda, mirando hacia el mismo lado que ustedes (no frente a frente: de frente se invierten). A esta edad es normal que aún confunda izquierda y derecha (Cuadernillo MINED, p. 12). Las preguntas de la pantalla hablan de «tu» izquierda y «tu» derecha y nunca usan personas de frente.'}),
  gens:{
-  a:(ctx,rng)=>{const es=sample(['🐱','🐶','🐰','🐥','⚽','🍎'],3,rng),side=pick(['izq','med','der'],rng),name={izq:'a la izquierda',med:'en el medio',der:'a la derecha'}[side],ix={izq:0,med:1,der:2}[side];
+  a:(ctx,rng)=>{const es=sample(['🐱','🐶','🐰','🐥','⚽','🍎'],3,rng),side=pick(['izq','med','der'],rng),name={izq:'a tu izquierda',med:'en el medio',der:'a tu derecha'}[side],ix={izq:0,med:1,der:2}[side];
    return Q.raw('choose',{key:'lr:'+es.join('')+side,prompt:'Toca el que está '+name+'.',options:es.map((e,i)=>({id:String(i),art:em(e,'dibujo '+(i+1))})),answer:String(ix),row:true,explain:'Este es el que está '+name+'.'})},
   b:(ctx,rng)=>{const o=pick(OB,rng),rel=pick(LR,rng);return Q.raw('place',{key:'lp:'+o[0]+rel,landmark:'lado',rel,zones:LR,obj:objOf(o),prompt:'Pon '+o[1]+' '+C.SPACE.lado[rel]+'.',explain:'Aquí: '+o[1]+' está '+C.SPACE.lado[rel]+'.'})},
-  c:sceneGen(LR.map(r=>['lado',r]))},
- plan:{examples:['a','b'],practice:['a','b','a'],reinforce:['c','a'],check:['a','b','c']},
- home:'«Dame la cuchara con la mano derecha». Marquen su derecha con una pulsera.'});
+  c:sceneGen(LR.map(r=>['lado',r])),
+  d:handQ},
+ plan:{examples:['d','a'],practice:['d','a','b'],reinforce:['c','d'],check:['d','a','b']},
+ home:'«Dame la cuchara con la mano derecha». Marquen su derecha con una pulsera y repitan fuera de la pantalla: «levanta tu mano izquierda», «da un paso con el pie derecho».'});
 
 const DAY=[['☀️','el sol'],['🌈','el arcoíris'],['🏫','la escuela'],['🐓','el gallo'],['🚌','el bus'],['🦋','la mariposa']];
 const NIGHT=[['🌙','la luna'],['⭐','las estrellas'],['🛏️','la cama'],['🦉','el búho'],['😴','dormir'],['🌌','el cielo de noche']];
@@ -1119,18 +1145,22 @@ C.skill({id:'dia-noche',mod:'espacio',icon:'🌗',title:'Día y noche',blurb:'Ma
  plan:{examples:['a','b'],practice:['a','b','c'],reinforce:['c','b'],check:['a','b','c']},
  home:'Hablen de la rutina por partes del día: «en la mañana desayunamos, en la tarde jugamos».'});
 
-const SEQ=[[['🥚','el huevo'],['🐣','el huevo se rompe'],['🐥','sale el pollito']],[['🛏️','me levanto'],['🍽️','desayuno'],['🏫','voy a la escuela']],[['🏠','llego a casa'],['🧼','me lavo las manos'],['🍽️','como']],[['☁️','se nubla'],['🌧️','llueve'],['🌈','sale el arcoíris']],[['🎁','recibo un regalo'],['🎂','soplo las velas'],['🍰','como pastel']],[['🧦','me pongo los calcetines'],['👟','me pongo los zapatos'],['🏃','salgo a jugar']]];
-const sa=s=>s.map(([e,l])=>({id:l,art:em(e,l),say:l}));
+const SEQ=[[['🥚','el huevo'],['🐣','el huevo se rompe'],['🐥','sale el pollito']],[['☁️','se nubla'],['🌧️','llueve'],['🌈','sale el arcoíris']],[['🌱','se siembra la semilla'],['🌿','brota'],['🌻','florece']]];
+/* Rutinas con una persona: en aprender y practicar es el propio niño; al comprobar, otras personas. Se conservan las secuencias de cosas para generalizar. */
+const SEQH=[[['🛏️','se levanta'],['🍽️','desayuna'],['🏫','va a la escuela']],[['🏠','llega a casa'],['🧼','se lava las manos'],['🍽️','come']],[['🧦','se pone los calcetines'],['👟','se pone los zapatos'],['🏃','sale a jugar']],[['🍽️','cena'],['🪥','se cepilla los dientes'],['😴','se duerme']],[['🎁','recibe un regalo'],['🎂','sopla las velas'],['🍰','come pastel']]];
+const sa=(s,who)=>s.map(([e,l])=>({id:l,art:em(e,l,who?{who}:null),say:l}));
+const seqPick=(ctx,rng,phase)=>{const human=rng()<(phase==='check'?.55:phase==='reinforce'?.5:.7);if(!human)return{s:pick(SEQ,rng),human:false};const pr=protag(ctx,phase,rng,phase==='reinforce'?.5:0);return{s:pick(SEQH,rng),human:true,who:pr.who,badge:pr.badge}};
+const wh=x=>x.human?x.who:'';
 C.skill({id:'orden-eventos',mod:'espacio',icon:'⏭️',title:'Primero, después y al final',blurb:'El orden de las cosas que pasan',
- learn:ctx=>({title:'Las cosas pasan en orden',say:'Primero se rompe el huevo, después sale el pollito. Todo pasa en un orden: primero, después y al final.',
-  cards:[{arts:SEQ[0].map(([e,l])=>em(e,l)),label:'primero, después, al final',say:'Primero el huevo, después se rompe, al final sale el pollito.'}],
-  adult:'Cuenten el día en tres pasos: «primero… después… al final». Es la base para contar cuentos (Cuadernillo MINED, p. 9: antes, durante y después).'}),
+ learn:ctx=>{const pr=protag(ctx,'learn',Math.random,0);return{title:'Las cosas pasan en orden',say:'Primero me levanto, después desayuno y al final voy a la escuela. Todo pasa en un orden: primero, después y al final.',
+  cards:[{arts:sa(SEQH[0],pr.badge),label:'mi mañana: primero, después, al final',say:'Primero '+pr.who+' se levanta, después desayuna y al final va a la escuela.'},{arts:SEQ[0].map(([e,l])=>em(e,l)),label:'el huevo: primero, después, al final',say:'Primero el huevo, después se rompe, al final sale el pollito.'}],
+  adult:'Cuenten el día en tres pasos: «primero… después… al final». Es la base para contar cuentos (Cuadernillo MINED, p. 9: antes, durante y después). Después de la pantalla: que cuente con sus palabras su propia mañana o su paseo de hoy.'}},
  gens:{
-  a:(ctx,rng)=>{const s=pick(SEQ,rng);return Q.order({key:'oe:'+s[0][1],prompt:'Pon las imágenes en orden: primero, después y al final.',items:sa(s),explain:s.map(x=>x[1]).join(', después ')+'.'})},
-  b:(ctx,rng)=>{const s=pick(SEQ,rng),first=rng()<.5,x=first?s[0]:s[2],y=first?s[2]:s[0];return Q.choose(rng,{key:'ob:'+s[0][1]+first,prompt:first?'¿Qué pasa primero?':'¿Qué pasa al final?',options:[{id:'x',art:em(x[0],x[1])},{id:'y',art:em(y[0],y[1])}],answer:'x',listen:[x[1],y[1]],explain:first?'Primero: '+s[0][1]+'. Al final: '+s[2][1]+'.':'Al final: '+s[2][1]+'. Primero: '+s[0][1]+'.'})},
-  c:(ctx,rng)=>{const s=pick(SEQ,rng),o=pick(SEQ.filter(x=>x!==s),rng);return Q.choose(rng,{key:'oa:'+s[0][1],prompt:'Primero: '+s[0][1]+'. ¿Qué pasa después?',model:[em(s[0][0],s[0][1])],options:[s[1],s[2],o[1]].map(x=>({id:x[1],art:em(x[0],x[1])})),answer:s[1][1],listen:[s[1][1],s[2][1],o[1][1]],explain:'Después de '+s[0][1]+' pasa: '+s[1][1]+'.'})}},
+  a:(ctx,rng,i,phase)=>{const x=seqPick(ctx,rng,phase),s=x.s;return Q.order({key:'oe:'+s[0][1]+wh(x),prompt:x.human?'Pon en orden lo que hace '+x.who+': primero, después y al final.':'Pon las imágenes en orden: primero, después y al final.',items:sa(s,x.badge),explain:(x.human?cap(x.who)+' ':'')+s.map(x=>x[1]).join(', después ')+'.'})},
+  b:(ctx,rng,i,phase)=>{const x=seqPick(ctx,rng,phase),s=x.s,first=rng()<.5,p=first?s[0]:s[2],y=first?s[2]:s[0],bd=x.badge?{who:x.badge}:null;return Q.choose(rng,{key:'ob:'+s[0][1]+first+wh(x),prompt:(x.human?(first?'¿Qué hace '+x.who+' primero?':'¿Qué hace '+x.who+' al final?'):(first?'¿Qué pasa primero?':'¿Qué pasa al final?')),options:[{id:'x',art:em(p[0],p[1],bd)},{id:'y',art:em(y[0],y[1],bd)}],answer:'x',listen:[p[1],y[1]],explain:first?'Primero: '+s[0][1]+'. Al final: '+s[2][1]+'.':'Al final: '+s[2][1]+'. Primero: '+s[0][1]+'.'})},
+  c:(ctx,rng,i,phase)=>{const x=seqPick(ctx,rng,phase),s=x.s,pool=x.human?SEQH:SEQ,o=pick(pool.filter(z=>z!==s),rng),bd=x.badge?{who:x.badge}:null;return Q.choose(rng,{key:'oa:'+s[0][1]+wh(x),prompt:(x.human?x.who.charAt(0).toUpperCase()+x.who.slice(1)+' '+s[0][1]+' primero':'Primero: '+s[0][1])+'. ¿Qué pasa después?',model:[em(s[0][0],s[0][1],bd)],options:[s[1],s[2],o[1]].map(z=>({id:z[1],art:em(z[0],z[1],bd)})),answer:s[1][1],listen:[s[1][1],s[2][1],o[1][1]],explain:'Después de «'+s[0][1]+'» pasa: '+s[1][1]+'.'})}},
  plan:{examples:['a','c'],practice:['a','b','c'],reinforce:['c','a'],check:['a','b','c']},
- home:'Después de cada paseo: «¿qué hicimos primero, después y al final?».'});
+ home:'Después de cada paseo: «¿qué hicimos primero, después y al final?». Por la noche, que cuente en tres pasos qué hizo en la mañana.'});
 
 const WEEK=['lunes','martes','miércoles','jueves','viernes','sábado','domingo'];
 const dayArt=d=>tx(d,'w',d);
@@ -1164,9 +1194,6 @@ const SEN=[['ver','👁️','los ojos','🌈','el arcoíris','Con los ojos vemos
 const SOTHER={oír:[['🌸','la flor'],['🍋','el limón'],['🧸','el peluche']],oler:[['🎵','la música'],['🧸','el peluche']],probar:[['🎵','la música'],['🧸','el peluche']]};
 const senseQ={oír:['Con las orejas escuchamos. ¿Qué podemos escuchar?','🎵','la música'],oler:['Con la nariz olemos. ¿Qué huele rico?','🌸','la flor'],probar:['Con la lengua probamos. ¿Qué podemos probar?','🍋','el limón']};
 /* Quién hace la acción: en aprender y practicar es el propio niño (con el nombre que puso el adulto); al comprobar, otras personas, para que reconozca el concepto y no a un personaje. */
-const fname=ctx=>{const n=String(ctx&&ctx.name||'').trim().split(/\s+/)[0].replace(/[^\p{L}]/gu,'').slice(0,12);return n?n.charAt(0).toUpperCase()+n.slice(1).toLowerCase():'Carlos José'};
-const ACTORS={mine:ctx=>fname(ctx),others:['Mamá','Papá','Ana','El abuelo']};
-const actor=(ctx,phase,rng)=>phase==='check'||phase==='reinforce'&&rng()<.5?pick(ACTORS.others,rng):fname(ctx);
 const VERB={ver:'mira el arcoíris',oír:'escucha música',oler:'huele una flor',probar:'prueba un limón',tocar:'toca un peluche'};
 const SENSE_FACE={ver:['ojos','los ojos','Con los ojos vemos.'],oír:['orejas','las orejas','Con las orejas oímos.'],oler:['nariz','la nariz','Con la nariz olemos.'],probar:['boca','la boca','Con la boca probamos; la lengua está dentro de la boca.']};
 const senseTap=(ctx,rng,i,phase)=>{const PE=root.People||require('./people.js'),k=pick(Object.keys(SENSE_FACE).concat(['tocar']),rng);
@@ -1179,7 +1206,7 @@ C.skill({id:'sentidos',mod:'cuerpo',icon:'👃',title:'Los cinco sentidos',blurb
   adult:'Hagan una caminata de sentidos: ¿qué oímos?, ¿qué olemos?, ¿qué tocamos? (Cuadernillo MINED, p. 7). Después de la pantalla: con los ojos cerrados que adivine un objeto por el tacto, el olor o el sonido. Probar: solo alimentos que ustedes le den; nunca sustancias desconocidas. La piel de todo el cuerpo también toca, no solo las manos.'}),
  gens:{
   a:(ctx,rng)=>{const ss=sample(SEN,3,rng);return Q.match(rng,{key:'sm:'+ss.map(s=>s[0]).join(),prompt:'Une cada parte del cuerpo con lo que sentimos con ella.',pairs:ss.map(s=>({id:s[0],l:em(s[1],s[2]),r:em(s[3],s[4]),say:s[5]})),explain:ss.map(s=>s[5]).join(' ')})},
-  b:(ctx,rng,i,phase)=>{const s=pick(SEN,rng),ds=sample(SEN.filter(x=>x!==s),2,rng),who=actor(ctx,phase,rng);return Q.choose(rng,{key:'so:'+s[0]+who,prompt:who+' '+VERB[s[0]]+'. ¿Con qué parte del cuerpo lo hace?',model:[em(s[3],s[4])],options:[s,...ds].map(x=>({id:x[0],art:em(x[1],x[2])})),answer:s[0],listen:[s,...ds].map(x=>x[2]),explain:s[5]})},
+  b:(ctx,rng,i,phase)=>{const s=pick(SEN,rng),ds=sample(SEN.filter(x=>x!==s),2,rng),who=cap(protag(ctx,phase,rng,phase==='reinforce'?.5:0).who);return Q.choose(rng,{key:'so:'+s[0]+who,prompt:who+' '+VERB[s[0]]+'. ¿Con qué parte del cuerpo lo hace?',model:[em(s[3],s[4])],options:[s,...ds].map(x=>({id:x[0],art:em(x[1],x[2])})),answer:s[0],listen:[s,...ds].map(x=>x[2]),explain:s[5]})},
   c:(ctx,rng)=>{const k=pick(Object.keys(senseQ),rng),[t,e,l]=senseQ[k],pool=SOTHER[k],dd=sample(pool,2,rng);return Q.choose(rng,{key:'sq:'+k+dd.map(x=>x[0]).join(),prompt:t,options:[[e,l],...dd.map(x=>[x[0],x[1]])].map(x=>({id:x[0],art:em(x[0],x[1])})),answer:e,listen:[l,...dd.map(x=>x[1])],explain:'Podemos '+({oír:'escuchar',oler:'oler',probar:'probar'}[k])+' '+l+'.'})},
   d:senseTap},
  plan:{examples:['a','b'],practice:['b','d','c'],reinforce:['a','d','c'],check:['d','b','c']},
@@ -1881,10 +1908,19 @@ function objArt(a){
  const f=OBJS[a.type];return '<svg class="gsvg" viewBox="0 0 120 120" role="img" aria-label="'+esc(a.label)+'">'+(f?f(a):'')+'</svg>'}
 function grpArt(a,tap){
  return '<span class="grp'+(a.frame?' frame':'')+(a.n<=3?' few':'')+'" role="img" aria-label="'+esc(a.label)+'">'+a.pos.map((p,i)=>{const g=a.gone&&a.gone.includes(i),st='style="left:'+p[0]+'%;top:'+p[1]+'%"';return tap?'<button class="gi tapc" data-ci="'+i+'" '+st+' aria-label="Contar uno">'+a.e+'</button>':'<span class="gi'+(g?' gone':'')+'" '+st+'>'+a.e+'</span>'}).join('')+'</span>'}
+/* Manos dibujadas como las ve su dueño: la izquierda a la izquierda (el pulgar hacia el centro). La pulsera es de la derecha. */
+function handSvg(a){const L=a.side==='izq',m=L?1:-1,X=x=>L?x:100-x,sk='#f1c9a8',st='#4a3a30';
+ const fin=(x,top,w)=>'<rect x="'+X(x+(L?0:-w))+'" y="'+top+'" width="'+w+'" height="'+(66-top)+'" rx="'+(w/2)+'" fill="'+sk+'" stroke="'+st+'" stroke-width="2.2"/>';
+ return '<svg class="ghand" viewBox="0 0 100 124" role="img" aria-label="'+esc(a.label)+'"><rect x="36" y="92" width="28" height="30" rx="6" fill="'+sk+'" stroke="'+st+'" stroke-width="2.2"/>'
+  +fin(24,18,12)+fin(37,8,12)+fin(50,10,12)+fin(63,22,11)
+  +'<path d="M'+X(66)+' 78 Q'+X(92)+' 66 '+X(90)+' 48 Q'+X(88)+' 40 '+X(80)+' 46 Q'+X(72)+' 58 '+X(64)+' 64Z" fill="'+sk+'" stroke="'+st+'" stroke-width="2.2" stroke-linejoin="round"/>'
+  +'<rect x="22" y="56" width="56" height="42" rx="14" fill="'+sk+'" stroke="'+st+'" stroke-width="2.2"/>'
+  +(a.bracelet?'<rect x="33" y="96" width="34" height="12" rx="5" fill="#e4577e" stroke="'+st+'" stroke-width="2"/><circle cx="42" cy="102" r="2.2" fill="#fff"/><circle cx="50" cy="102" r="2.2" fill="#fff"/><circle cx="58" cy="102" r="2.2" fill="#fff"/>':'')+'</svg>'}
 function A(a,opt){
  opt=opt||{};let inner;
  switch(a.k){
-  case'e':inner='<span class="ge" role="img" aria-label="'+esc(a.label)+'">'+a.e+'</span>';break;
+  case'e':inner='<span class="ge" role="img" aria-label="'+esc(a.label)+'">'+a.e+'</span>'+(a.who&&root.People&&root.People.FIGS[a.who]?'<span class="gwho" aria-hidden="true">'+root.People.svg(a.who)+'</span>':'');break;
+  case'hand':inner=handSvg(a);break;
   case't':inner='<span class="gt'+(a.sym==='name'||a.sym==='w'?' gname':'')+(a.t.length>3?' long':'')+'" aria-label="'+esc(a.label)+'">'+esc(a.t)+'</span>';break;
   case'sw':inner='<span class="gsw" style="--c:'+hue(a.color)+'" role="img" aria-label="'+esc(a.label)+'"></span>';break;
   case'obj':inner=objArt(a);break;

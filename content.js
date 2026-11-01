@@ -210,9 +210,11 @@ C.SPACE={mesa:{encima:'encima de la mesa',debajo:'debajo de la mesa','al lado':'
 /* ---------- validador: usado por las pruebas y por la interfaz en desarrollo ---------- */
 function checkArt(a,ctx,errs,where){
  if(!a||typeof a!=='object'){errs.push(where+': arte vacío');return}
- if(!['e','t','sw','obj','grp','scene','face'].includes(a.k))errs.push(where+': tipo de arte '+a.k);
+ if(!['e','t','sw','obj','grp','scene','face','hand'].includes(a.k))errs.push(where+': tipo de arte '+a.k);
  if(!a.label||typeof a.label!=='string')errs.push(where+': sin etiqueta');
  if(a.k==='e'&&!a.e)errs.push(where+': emoji vacío');
+ if(a.who&&globalThis.People&&!globalThis.People.FIGS[a.who])errs.push(where+': persona de la insignia inexistente '+a.who);
+ if(a.k==='hand'&&!['izq','der'].includes(a.side))errs.push(where+': mano sin lado');
  if(a.k==='face'){const PE=globalThis.People;if(PE&&(!PE.FIGS[a.fig]||PE.FIGS[a.fig].art!=='dibujo'||PE.FIGS[a.fig].scene!=='face'))errs.push(where+': rostro dibujado inexistente '+a.fig);if(PE&&!PE.EXPR.includes(a.expr))errs.push(where+': expresión desconocida '+a.expr)}
  if(a.k==='t'){if(a.t==='')errs.push(where+': texto vacío');if(a.sym==='n'&&!ctx.numbers.includes(+a.t))errs.push(where+': número no presentado '+a.t);if(a.sym==='v'&&!ctx.vowels.includes(a.t))errs.push(where+': vocal no presentada '+a.t)}
  if(a.k==='grp'&&(a.pos.length!==a.n||a.n>10))errs.push(where+': grupo mal formado')}

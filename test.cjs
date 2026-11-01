@@ -433,3 +433,27 @@ test('Los cinco sentidos: acciones con nombre configurable, preguntas táctiles 
  const names=new Set();for(let i=0;i<60;i++){const q=sk.gens.b({...ctxMax,name:'  lucía marta '},Math.random,i,'practice');names.add(q.prompt.split(' ')[0]);assert.deepEqual(C.validate(q,ctxMax),[])}assert.deepEqual([...names],['Lucía']);
  const oth=new Set();for(let i=0;i<60;i++)oth.add(sk.gens.b(ctxMax,Math.random,i,'check').prompt.split(' ')[0]);assert.ok(![...oth].some(n=>n==='Carlos'),'al comprobar actúan otras personas');
 });
+test('Mi nombre: respeta el nombre del adulto (acentos, nombre largo no se corta, nombre completo, mayúsculas) y la foto de Carlos solo acompaña su propio nombre',()=>{
+ const sk=C.byId['mi-nombre'];const c=n=>({...ctxMax,name:n});
+ assert.equal(sk.available(c('Maximiliano')),true);assert.equal(sk.available(c('Maximilianoalberto')),false,'un nombre demasiado largo no se muestra cortado');
+ for(const n of ['José','Ángela María','carlos josé','ÑANDÚ']){const first=n.split(' ')[0],cap=first.charAt(0).toUpperCase()+first.slice(1).toLowerCase();
+  for(let i=0;i<20;i++)for(const g of ['a','b','c','d','e']){const q=sk.gens[g](c(n),Math.random,i,'check');assert.deepEqual(C.validate(q,c(n)),[],n+' '+g);if(g==='c')assert.equal(q.answer,cap);if(g==='b')assert.equal(q.answer,cap[0])}}
+ const q=sk.gens.e(c('carlos josé'),Math.random);assert.equal(q.answer,'Carlos José');assert.equal(new Set(q.options.map(o=>o.id)).size,3);
+ const q1=sk.gens.e(c('Ana'),Math.random);assert.equal(q1.answer,'Ana','con una sola palabra pregunta por el nombre');
+ const d=sk.gens.d(c('Luis'),Math.random);assert.ok(d.pairs.some(p=>p.id==='Luis'&&p.r.t==='LUIS'));
+ assert.ok(sk.learn(c('Carlos José')).cards.some(x=>x.label==='Carlos José'),'tarjeta de nombre completo');
+});
+test('Izquierda y derecha: las preguntas son desde el propio cuerpo («tu» izquierda), sin personas de frente; la pulsera solo en la derecha',()=>{
+ const sk=C.byId['izq-der'];for(let i=0;i<80;i++)for(const g of ['a','b','c','d']){const ph=['examples','practice','check','reinforce'][i%4],q=sk.gens[g](ctxMax,Math.random,i,ph);assert.deepEqual(C.validate(q,ctxMax),[],g);
+  const arts=JSON.stringify(q);assert.ok(!/"k":"face"|People|-cara|-cuerpo/.test(arts),'sin figuras humanas de frente');
+  if(g==='a')assert.ok(/a tu (izquierda|derecha)|en el medio/.test(q.prompt));
+  if(g==='d'){const [l,r]=q.options;assert.equal(l.art.side,'izq');assert.equal(r.art.side,'der');assert.ok(!l.art.bracelet||r.art.bracelet,'la pulsera nunca está solo en la izquierda');assert.equal(q.answer,/derecha/.test(q.prompt)?'der':'izq');if(ph==='check')assert.ok(!l.art.bracelet&&!r.art.bracelet,'al comprobar no hay pista visual')}}
+});
+test('Primero, después y al final: rutinas humanas con insignia; la foto de Carlos solo con su nombre; al comprobar actúan otras personas',()=>{
+ const PE=require('./people.js');globalThis.People=PE;const sk=C.byId['orden-eventos'];let human=0,obj=0;
+ for(let i=0;i<200;i++)for(const g of ['a','b','c']){const ph=['examples','practice','check','reinforce'][i%4],q=sk.gens[g](ctxMax,Math.random,i,ph);assert.deepEqual(C.validate(q,ctxMax),[],g);
+  const j=JSON.stringify(q);if(/"who":/.test(j)){human++;if(ph==='check')assert.ok(!/carlos-cara|nino-cara/.test(j),'al comprobar no actúa el protagonista')}else obj++;
+  if(ph==='practice'&&/"who":/.test(j))assert.ok(/carlos-cara/.test(j))}
+ assert.ok(human>100&&obj>30,'mezcla de rutinas humanas y secuencias de cosas');
+ const o=sk.gens.a({...ctxMax,name:'Lucía'},()=>0.1,0,'practice');assert.ok(!/carlos-cara/.test(JSON.stringify(o)),'con otro nombre no se usa la foto de Carlos');
+});

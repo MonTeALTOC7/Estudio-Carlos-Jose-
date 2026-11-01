@@ -38,10 +38,19 @@ function objArt(a){
  const f=OBJS[a.type];return '<svg class="gsvg" viewBox="0 0 120 120" role="img" aria-label="'+esc(a.label)+'">'+(f?f(a):'')+'</svg>'}
 function grpArt(a,tap){
  return '<span class="grp'+(a.frame?' frame':'')+(a.n<=3?' few':'')+'" role="img" aria-label="'+esc(a.label)+'">'+a.pos.map((p,i)=>{const g=a.gone&&a.gone.includes(i),st='style="left:'+p[0]+'%;top:'+p[1]+'%"';return tap?'<button class="gi tapc" data-ci="'+i+'" '+st+' aria-label="Contar uno">'+a.e+'</button>':'<span class="gi'+(g?' gone':'')+'" '+st+'>'+a.e+'</span>'}).join('')+'</span>'}
+/* Manos dibujadas como las ve su dueño: la izquierda a la izquierda (el pulgar hacia el centro). La pulsera es de la derecha. */
+function handSvg(a){const L=a.side==='izq',m=L?1:-1,X=x=>L?x:100-x,sk='#f1c9a8',st='#4a3a30';
+ const fin=(x,top,w)=>'<rect x="'+X(x+(L?0:-w))+'" y="'+top+'" width="'+w+'" height="'+(66-top)+'" rx="'+(w/2)+'" fill="'+sk+'" stroke="'+st+'" stroke-width="2.2"/>';
+ return '<svg class="ghand" viewBox="0 0 100 124" role="img" aria-label="'+esc(a.label)+'"><rect x="36" y="92" width="28" height="30" rx="6" fill="'+sk+'" stroke="'+st+'" stroke-width="2.2"/>'
+  +fin(24,18,12)+fin(37,8,12)+fin(50,10,12)+fin(63,22,11)
+  +'<path d="M'+X(66)+' 78 Q'+X(92)+' 66 '+X(90)+' 48 Q'+X(88)+' 40 '+X(80)+' 46 Q'+X(72)+' 58 '+X(64)+' 64Z" fill="'+sk+'" stroke="'+st+'" stroke-width="2.2" stroke-linejoin="round"/>'
+  +'<rect x="22" y="56" width="56" height="42" rx="14" fill="'+sk+'" stroke="'+st+'" stroke-width="2.2"/>'
+  +(a.bracelet?'<rect x="33" y="96" width="34" height="12" rx="5" fill="#e4577e" stroke="'+st+'" stroke-width="2"/><circle cx="42" cy="102" r="2.2" fill="#fff"/><circle cx="50" cy="102" r="2.2" fill="#fff"/><circle cx="58" cy="102" r="2.2" fill="#fff"/>':'')+'</svg>'}
 function A(a,opt){
  opt=opt||{};let inner;
  switch(a.k){
-  case'e':inner='<span class="ge" role="img" aria-label="'+esc(a.label)+'">'+a.e+'</span>';break;
+  case'e':inner='<span class="ge" role="img" aria-label="'+esc(a.label)+'">'+a.e+'</span>'+(a.who&&root.People&&root.People.FIGS[a.who]?'<span class="gwho" aria-hidden="true">'+root.People.svg(a.who)+'</span>':'');break;
+  case'hand':inner=handSvg(a);break;
   case't':inner='<span class="gt'+(a.sym==='name'||a.sym==='w'?' gname':'')+(a.t.length>3?' long':'')+'" aria-label="'+esc(a.label)+'">'+esc(a.t)+'</span>';break;
   case'sw':inner='<span class="gsw" style="--c:'+hue(a.color)+'" role="img" aria-label="'+esc(a.label)+'"></span>';break;
   case'obj':inner=objArt(a);break;

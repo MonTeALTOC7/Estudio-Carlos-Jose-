@@ -45,17 +45,30 @@ C.skill({id:'posiciones2',mod:'espacio',icon:'↔️',title:'Al lado, delante, d
  home:'Jueguen a esconder un juguete: «detrás de la silla», «entre los cojines», «cerca de la puerta».'});
 
 const LR=['izquierda','derecha'];
+/* ---- personas protagonistas (compartido por «Los cinco sentidos», secuencias y lateralidad) ---- */
+const fname=ctx=>{const n=String(ctx&&ctx.name||'').trim().split(/\s+/)[0].replace(/[^\p{L}]/gu,'').slice(0,12);return n?n.charAt(0).toUpperCase()+n.slice(1).toLowerCase():'Carlos José'};
+const cap=s=>s.charAt(0).toUpperCase()+s.slice(1);
+const OTHERS=[['mamá','mama-cara'],['papá','papa-cara'],['Ana','nina-cara'],['el abuelo','abuelo-cara']];
+/* La foto de Carlos solo acompaña su propio nombre; si el adulto pone otro nombre, se usa un dibujo de niño. */
+const selfBadge=ctx=>/^carlos( josé)?$/i.test(fname(ctx))||fname(ctx)==='Carlos'?'carlos-cara':'nino-cara';
+const protag=(ctx,phase,rng,pOther)=>{const o=phase==='check'||(pOther&&rng()<pOther);if(o){const [n,f]=pick(OTHERS,rng);return{who:n,badge:f,other:true}}return{who:fname(ctx),badge:selfBadge(ctx),other:false}};
+/* Manos dibujadas como las ve su dueño (izquierda a la izquierda). La pulsera va siempre en la derecha, como la que se pone el adulto. */
+const handA=(side,brace)=>({k:'hand',side,bracelet:!!brace,label:'mano '+(side==='izq'?'izquierda':'derecha')});
+const handQ=(ctx,rng,i,phase)=>{const der=rng()<.5,brace=phase!=='check',pro=phase==='learn'||phase==='examples';
+ const ask=der?'derecha':'izquierda',hint=brace&&der?' Es la que tiene la pulsera.':'';
+ return Q.raw('choose',{key:'lh:'+ask+brace,prompt:'Toca tu mano '+ask+'.'+(pro?hint:''),say:'Toca tu mano '+ask+'.'+(pro?hint:''),options:[{id:'izq',art:handA('izq',brace)},{id:'der',art:handA('der',brace)}],answer:der?'der':'izq',row:true,explain:'Esta es tu mano '+ask+(brace&&der?', la que lleva la pulsera.':'.')+' Las ves igual que cuando miras tus manos.'})};
 C.skill({id:'izq-der',mod:'espacio',icon:'👈',title:'Izquierda y derecha',blurb:'Mi izquierda, mi derecha',
- learn:ctx=>({title:'Tengo una mano izquierda y una derecha',say:'Levanta tu mano derecha. Esa es tu derecha. Ahora levanta la izquierda. Aquí en la pantalla, izquierda es el lado de la mano izquierda.',
-  cards:[{arts:[scene('lado','izquierda',OB[0])],label:'izquierda',say:'La pelota está a la izquierda de la caja.'},{arts:[scene('lado','derecha',OB[0])],label:'derecha',say:'La pelota está a la derecha de la caja.'}],
-  adult:'Ponga una pulsera o cinta en su mano derecha unos días. A esta edad es normal que aún confunda izquierda y derecha (Cuadernillo MINED, p. 12).'}),
+ learn:ctx=>({title:'Tengo una mano izquierda y una derecha',say:'Levanta tu mano derecha: esa es tu derecha. Ahora levanta la izquierda. En la pantalla, mira tus manos como las ves tú: la izquierda de este lado y la derecha, con la pulsera, del otro.',
+  cards:[{arts:[handA('izq',true),handA('der',true)],label:'mis manos',say:'Estas son tus manos como las ves tú. La izquierda está de este lado. La derecha lleva la pulsera.'},{arts:[scene('lado','izquierda',OB[0])],label:'izquierda',say:'La pelota está a la izquierda de la caja.'},{arts:[scene('lado','derecha',OB[0])],label:'derecha',say:'La pelota está a la derecha de la caja.'}],
+  adult:'Pongan una pulsera o cinta en su mano derecha unos días: es la misma que verá dibujada en la pantalla. Antes y después de jugar, pídanle que levante su mano derecha, luego la izquierda, mirando hacia el mismo lado que ustedes (no frente a frente: de frente se invierten). A esta edad es normal que aún confunda izquierda y derecha (Cuadernillo MINED, p. 12). Las preguntas de la pantalla hablan de «tu» izquierda y «tu» derecha y nunca usan personas de frente.'}),
  gens:{
-  a:(ctx,rng)=>{const es=sample(['🐱','🐶','🐰','🐥','⚽','🍎'],3,rng),side=pick(['izq','med','der'],rng),name={izq:'a la izquierda',med:'en el medio',der:'a la derecha'}[side],ix={izq:0,med:1,der:2}[side];
+  a:(ctx,rng)=>{const es=sample(['🐱','🐶','🐰','🐥','⚽','🍎'],3,rng),side=pick(['izq','med','der'],rng),name={izq:'a tu izquierda',med:'en el medio',der:'a tu derecha'}[side],ix={izq:0,med:1,der:2}[side];
    return Q.raw('choose',{key:'lr:'+es.join('')+side,prompt:'Toca el que está '+name+'.',options:es.map((e,i)=>({id:String(i),art:em(e,'dibujo '+(i+1))})),answer:String(ix),row:true,explain:'Este es el que está '+name+'.'})},
   b:(ctx,rng)=>{const o=pick(OB,rng),rel=pick(LR,rng);return Q.raw('place',{key:'lp:'+o[0]+rel,landmark:'lado',rel,zones:LR,obj:objOf(o),prompt:'Pon '+o[1]+' '+C.SPACE.lado[rel]+'.',explain:'Aquí: '+o[1]+' está '+C.SPACE.lado[rel]+'.'})},
-  c:sceneGen(LR.map(r=>['lado',r]))},
- plan:{examples:['a','b'],practice:['a','b','a'],reinforce:['c','a'],check:['a','b','c']},
- home:'«Dame la cuchara con la mano derecha». Marquen su derecha con una pulsera.'});
+  c:sceneGen(LR.map(r=>['lado',r])),
+  d:handQ},
+ plan:{examples:['d','a'],practice:['d','a','b'],reinforce:['c','d'],check:['d','a','b']},
+ home:'«Dame la cuchara con la mano derecha». Marquen su derecha con una pulsera y repitan fuera de la pantalla: «levanta tu mano izquierda», «da un paso con el pie derecho».'});
 
 const DAY=[['☀️','el sol'],['🌈','el arcoíris'],['🏫','la escuela'],['🐓','el gallo'],['🚌','el bus'],['🦋','la mariposa']];
 const NIGHT=[['🌙','la luna'],['⭐','las estrellas'],['🛏️','la cama'],['🦉','el búho'],['😴','dormir'],['🌌','el cielo de noche']];
@@ -72,18 +85,22 @@ C.skill({id:'dia-noche',mod:'espacio',icon:'🌗',title:'Día y noche',blurb:'Ma
  plan:{examples:['a','b'],practice:['a','b','c'],reinforce:['c','b'],check:['a','b','c']},
  home:'Hablen de la rutina por partes del día: «en la mañana desayunamos, en la tarde jugamos».'});
 
-const SEQ=[[['🥚','el huevo'],['🐣','el huevo se rompe'],['🐥','sale el pollito']],[['🛏️','me levanto'],['🍽️','desayuno'],['🏫','voy a la escuela']],[['🏠','llego a casa'],['🧼','me lavo las manos'],['🍽️','como']],[['☁️','se nubla'],['🌧️','llueve'],['🌈','sale el arcoíris']],[['🎁','recibo un regalo'],['🎂','soplo las velas'],['🍰','como pastel']],[['🧦','me pongo los calcetines'],['👟','me pongo los zapatos'],['🏃','salgo a jugar']]];
-const sa=s=>s.map(([e,l])=>({id:l,art:em(e,l),say:l}));
+const SEQ=[[['🥚','el huevo'],['🐣','el huevo se rompe'],['🐥','sale el pollito']],[['☁️','se nubla'],['🌧️','llueve'],['🌈','sale el arcoíris']],[['🌱','se siembra la semilla'],['🌿','brota'],['🌻','florece']]];
+/* Rutinas con una persona: en aprender y practicar es el propio niño; al comprobar, otras personas. Se conservan las secuencias de cosas para generalizar. */
+const SEQH=[[['🛏️','se levanta'],['🍽️','desayuna'],['🏫','va a la escuela']],[['🏠','llega a casa'],['🧼','se lava las manos'],['🍽️','come']],[['🧦','se pone los calcetines'],['👟','se pone los zapatos'],['🏃','sale a jugar']],[['🍽️','cena'],['🪥','se cepilla los dientes'],['😴','se duerme']],[['🎁','recibe un regalo'],['🎂','sopla las velas'],['🍰','come pastel']]];
+const sa=(s,who)=>s.map(([e,l])=>({id:l,art:em(e,l,who?{who}:null),say:l}));
+const seqPick=(ctx,rng,phase)=>{const human=rng()<(phase==='check'?.55:phase==='reinforce'?.5:.7);if(!human)return{s:pick(SEQ,rng),human:false};const pr=protag(ctx,phase,rng,phase==='reinforce'?.5:0);return{s:pick(SEQH,rng),human:true,who:pr.who,badge:pr.badge}};
+const wh=x=>x.human?x.who:'';
 C.skill({id:'orden-eventos',mod:'espacio',icon:'⏭️',title:'Primero, después y al final',blurb:'El orden de las cosas que pasan',
- learn:ctx=>({title:'Las cosas pasan en orden',say:'Primero se rompe el huevo, después sale el pollito. Todo pasa en un orden: primero, después y al final.',
-  cards:[{arts:SEQ[0].map(([e,l])=>em(e,l)),label:'primero, después, al final',say:'Primero el huevo, después se rompe, al final sale el pollito.'}],
-  adult:'Cuenten el día en tres pasos: «primero… después… al final». Es la base para contar cuentos (Cuadernillo MINED, p. 9: antes, durante y después).'}),
+ learn:ctx=>{const pr=protag(ctx,'learn',Math.random,0);return{title:'Las cosas pasan en orden',say:'Primero me levanto, después desayuno y al final voy a la escuela. Todo pasa en un orden: primero, después y al final.',
+  cards:[{arts:sa(SEQH[0],pr.badge),label:'mi mañana: primero, después, al final',say:'Primero '+pr.who+' se levanta, después desayuna y al final va a la escuela.'},{arts:SEQ[0].map(([e,l])=>em(e,l)),label:'el huevo: primero, después, al final',say:'Primero el huevo, después se rompe, al final sale el pollito.'}],
+  adult:'Cuenten el día en tres pasos: «primero… después… al final». Es la base para contar cuentos (Cuadernillo MINED, p. 9: antes, durante y después). Después de la pantalla: que cuente con sus palabras su propia mañana o su paseo de hoy.'}},
  gens:{
-  a:(ctx,rng)=>{const s=pick(SEQ,rng);return Q.order({key:'oe:'+s[0][1],prompt:'Pon las imágenes en orden: primero, después y al final.',items:sa(s),explain:s.map(x=>x[1]).join(', después ')+'.'})},
-  b:(ctx,rng)=>{const s=pick(SEQ,rng),first=rng()<.5,x=first?s[0]:s[2],y=first?s[2]:s[0];return Q.choose(rng,{key:'ob:'+s[0][1]+first,prompt:first?'¿Qué pasa primero?':'¿Qué pasa al final?',options:[{id:'x',art:em(x[0],x[1])},{id:'y',art:em(y[0],y[1])}],answer:'x',listen:[x[1],y[1]],explain:first?'Primero: '+s[0][1]+'. Al final: '+s[2][1]+'.':'Al final: '+s[2][1]+'. Primero: '+s[0][1]+'.'})},
-  c:(ctx,rng)=>{const s=pick(SEQ,rng),o=pick(SEQ.filter(x=>x!==s),rng);return Q.choose(rng,{key:'oa:'+s[0][1],prompt:'Primero: '+s[0][1]+'. ¿Qué pasa después?',model:[em(s[0][0],s[0][1])],options:[s[1],s[2],o[1]].map(x=>({id:x[1],art:em(x[0],x[1])})),answer:s[1][1],listen:[s[1][1],s[2][1],o[1][1]],explain:'Después de '+s[0][1]+' pasa: '+s[1][1]+'.'})}},
+  a:(ctx,rng,i,phase)=>{const x=seqPick(ctx,rng,phase),s=x.s;return Q.order({key:'oe:'+s[0][1]+wh(x),prompt:x.human?'Pon en orden lo que hace '+x.who+': primero, después y al final.':'Pon las imágenes en orden: primero, después y al final.',items:sa(s,x.badge),explain:(x.human?cap(x.who)+' ':'')+s.map(x=>x[1]).join(', después ')+'.'})},
+  b:(ctx,rng,i,phase)=>{const x=seqPick(ctx,rng,phase),s=x.s,first=rng()<.5,p=first?s[0]:s[2],y=first?s[2]:s[0],bd=x.badge?{who:x.badge}:null;return Q.choose(rng,{key:'ob:'+s[0][1]+first+wh(x),prompt:(x.human?(first?'¿Qué hace '+x.who+' primero?':'¿Qué hace '+x.who+' al final?'):(first?'¿Qué pasa primero?':'¿Qué pasa al final?')),options:[{id:'x',art:em(p[0],p[1],bd)},{id:'y',art:em(y[0],y[1],bd)}],answer:'x',listen:[p[1],y[1]],explain:first?'Primero: '+s[0][1]+'. Al final: '+s[2][1]+'.':'Al final: '+s[2][1]+'. Primero: '+s[0][1]+'.'})},
+  c:(ctx,rng,i,phase)=>{const x=seqPick(ctx,rng,phase),s=x.s,pool=x.human?SEQH:SEQ,o=pick(pool.filter(z=>z!==s),rng),bd=x.badge?{who:x.badge}:null;return Q.choose(rng,{key:'oa:'+s[0][1]+wh(x),prompt:(x.human?x.who.charAt(0).toUpperCase()+x.who.slice(1)+' '+s[0][1]+' primero':'Primero: '+s[0][1])+'. ¿Qué pasa después?',model:[em(s[0][0],s[0][1],bd)],options:[s[1],s[2],o[1]].map(z=>({id:z[1],art:em(z[0],z[1],bd)})),answer:s[1][1],listen:[s[1][1],s[2][1],o[1][1]],explain:'Después de «'+s[0][1]+'» pasa: '+s[1][1]+'.'})}},
  plan:{examples:['a','c'],practice:['a','b','c'],reinforce:['c','a'],check:['a','b','c']},
- home:'Después de cada paseo: «¿qué hicimos primero, después y al final?».'});
+ home:'Después de cada paseo: «¿qué hicimos primero, después y al final?». Por la noche, que cuente en tres pasos qué hizo en la mañana.'});
 
 const WEEK=['lunes','martes','miércoles','jueves','viernes','sábado','domingo'];
 const dayArt=d=>tx(d,'w',d);
@@ -117,9 +134,6 @@ const SEN=[['ver','👁️','los ojos','🌈','el arcoíris','Con los ojos vemos
 const SOTHER={oír:[['🌸','la flor'],['🍋','el limón'],['🧸','el peluche']],oler:[['🎵','la música'],['🧸','el peluche']],probar:[['🎵','la música'],['🧸','el peluche']]};
 const senseQ={oír:['Con las orejas escuchamos. ¿Qué podemos escuchar?','🎵','la música'],oler:['Con la nariz olemos. ¿Qué huele rico?','🌸','la flor'],probar:['Con la lengua probamos. ¿Qué podemos probar?','🍋','el limón']};
 /* Quién hace la acción: en aprender y practicar es el propio niño (con el nombre que puso el adulto); al comprobar, otras personas, para que reconozca el concepto y no a un personaje. */
-const fname=ctx=>{const n=String(ctx&&ctx.name||'').trim().split(/\s+/)[0].replace(/[^\p{L}]/gu,'').slice(0,12);return n?n.charAt(0).toUpperCase()+n.slice(1).toLowerCase():'Carlos José'};
-const ACTORS={mine:ctx=>fname(ctx),others:['Mamá','Papá','Ana','El abuelo']};
-const actor=(ctx,phase,rng)=>phase==='check'||phase==='reinforce'&&rng()<.5?pick(ACTORS.others,rng):fname(ctx);
 const VERB={ver:'mira el arcoíris',oír:'escucha música',oler:'huele una flor',probar:'prueba un limón',tocar:'toca un peluche'};
 const SENSE_FACE={ver:['ojos','los ojos','Con los ojos vemos.'],oír:['orejas','las orejas','Con las orejas oímos.'],oler:['nariz','la nariz','Con la nariz olemos.'],probar:['boca','la boca','Con la boca probamos; la lengua está dentro de la boca.']};
 const senseTap=(ctx,rng,i,phase)=>{const PE=root.People||require('./people.js'),k=pick(Object.keys(SENSE_FACE).concat(['tocar']),rng);
@@ -132,7 +146,7 @@ C.skill({id:'sentidos',mod:'cuerpo',icon:'👃',title:'Los cinco sentidos',blurb
   adult:'Hagan una caminata de sentidos: ¿qué oímos?, ¿qué olemos?, ¿qué tocamos? (Cuadernillo MINED, p. 7). Después de la pantalla: con los ojos cerrados que adivine un objeto por el tacto, el olor o el sonido. Probar: solo alimentos que ustedes le den; nunca sustancias desconocidas. La piel de todo el cuerpo también toca, no solo las manos.'}),
  gens:{
   a:(ctx,rng)=>{const ss=sample(SEN,3,rng);return Q.match(rng,{key:'sm:'+ss.map(s=>s[0]).join(),prompt:'Une cada parte del cuerpo con lo que sentimos con ella.',pairs:ss.map(s=>({id:s[0],l:em(s[1],s[2]),r:em(s[3],s[4]),say:s[5]})),explain:ss.map(s=>s[5]).join(' ')})},
-  b:(ctx,rng,i,phase)=>{const s=pick(SEN,rng),ds=sample(SEN.filter(x=>x!==s),2,rng),who=actor(ctx,phase,rng);return Q.choose(rng,{key:'so:'+s[0]+who,prompt:who+' '+VERB[s[0]]+'. ¿Con qué parte del cuerpo lo hace?',model:[em(s[3],s[4])],options:[s,...ds].map(x=>({id:x[0],art:em(x[1],x[2])})),answer:s[0],listen:[s,...ds].map(x=>x[2]),explain:s[5]})},
+  b:(ctx,rng,i,phase)=>{const s=pick(SEN,rng),ds=sample(SEN.filter(x=>x!==s),2,rng),who=cap(protag(ctx,phase,rng,phase==='reinforce'?.5:0).who);return Q.choose(rng,{key:'so:'+s[0]+who,prompt:who+' '+VERB[s[0]]+'. ¿Con qué parte del cuerpo lo hace?',model:[em(s[3],s[4])],options:[s,...ds].map(x=>({id:x[0],art:em(x[1],x[2])})),answer:s[0],listen:[s,...ds].map(x=>x[2]),explain:s[5]})},
   c:(ctx,rng)=>{const k=pick(Object.keys(senseQ),rng),[t,e,l]=senseQ[k],pool=SOTHER[k],dd=sample(pool,2,rng);return Q.choose(rng,{key:'sq:'+k+dd.map(x=>x[0]).join(),prompt:t,options:[[e,l],...dd.map(x=>[x[0],x[1]])].map(x=>({id:x[0],art:em(x[0],x[1])})),answer:e,listen:[l,...dd.map(x=>x[1])],explain:'Podemos '+({oír:'escuchar',oler:'oler',probar:'probar'}[k])+' '+l+'.'})},
   d:senseTap},
  plan:{examples:['a','b'],practice:['b','d','c'],reinforce:['a','d','c'],check:['d','b','c']},

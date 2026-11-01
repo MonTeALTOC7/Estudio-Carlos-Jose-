@@ -157,21 +157,27 @@ C.skill({id:'adivinanzas',mod:'lenguaje',icon:'❓',title:'Adivinanzas y sonidos
  plan:{examples:['a','b'],practice:['a','b','c'],reinforce:['c','a'],check:['a','b','c']},
  home:'Hagan una adivinanza por día con objetos de la casa: «es redondo, se come y es naranja».'});
 
-const nm=ctx=>{const n=String(ctx.name||'').trim().split(/\s+/)[0].replace(/[^\p{L}]/gu,'').slice(0,10);return n?n.charAt(0).toUpperCase()+n.slice(1).toLowerCase():''};
+/* El nombre lo escribe el adulto: se respeta completo (acentos incluidos). Si es demasiado largo para armarse en pantalla, la habilidad no se ofrece en vez de mostrar un nombre cortado. */
+const nm=ctx=>{const n=String(ctx.name||'').trim().split(/\s+/)[0].replace(/[^\p{L}]/gu,'');return n&&n.length<=12?n.charAt(0).toUpperCase()+n.slice(1).toLowerCase():''};
+const fullNm=ctx=>{const w=String(ctx.name||'').trim().split(/\s+/).map(x=>x.replace(/[^\p{L}]/gu,'')).filter(Boolean).slice(0,3).map(x=>x.charAt(0).toUpperCase()+x.slice(1).toLowerCase());const f=w.join(' ');return w.length>1&&f.length<=18&&nm(ctx)?f:''};
 const DECOY=['Ana','Luis','Sofía','Mateo','Camila','José','Valeria','Daniel','Lucía','Pedro','María','Diego','Elena','Pablo'];
 const ALPHA='ABCDEFGHIJLMNOPRSTUV'.split('');
 C.skill({id:'mi-nombre',mod:'lenguaje',icon:'✏️',title:'Mi nombre',blurb:'Reconocer y armar mi nombre',needsName:true,
  available:ctx=>nm(ctx).length>=2,
  learn:ctx=>{const n=nm(ctx);return{title:'Este es mi nombre',say:'Este es tu nombre: '+n+'. Tiene '+n.length+' letras. Empieza con la '+n[0]+'.',
-  cards:[{arts:[tx(n,'name',n)],label:n,say:n+'. Así se escribe tu nombre.'},...[...n].slice(0,6).map(ch=>({arts:[tx(ch,'name',ch)],label:ch,say:'La letra '+ch}))],
-  adult:'Escriban su nombre en papel con letras grandes. Primero que lo mire y lo siga con el dedo (Cuadernillo MINED, pp. 14 y 28: nombre propio).'}},
+  cards:[{arts:[tx(n,'name',n)],label:n,say:n+'. Así se escribe tu nombre.'},{arts:[tx(n,'name',n),tx(n.toUpperCase(),'name',n.toUpperCase())],label:'chicas y grandes',say:'Tu nombre con letras chicas y con letras grandes. Dice lo mismo.'},...(fullNm(ctx)?[{arts:[tx(fullNm(ctx),'name',fullNm(ctx))],label:fullNm(ctx),say:'Tu nombre completo: '+fullNm(ctx)+'.'}]:[]),...[...n].slice(0,6).map(ch=>({arts:[tx(ch,'name',ch)],label:ch,say:'La letra '+ch}))],
+  adult:'Escriban su nombre en papel con letras grandes. Primero que lo mire y lo siga con el dedo (Cuadernillo MINED, pp. 14 y 28: nombre propio). El nombre que se usa es el que ustedes escribieron en Ajustes (se puede cambiar cuando quieran). Pueden pegar su foto junto al nombre en una tarjeta. Trazar las letras con el dedo en la pantalla aún no está disponible para cualquier nombre; hágalo en papel.'}},
  gens:{
   a:(ctx,rng)=>{const n=nm(ctx),v=Math.floor(rng()*3),up=v===2,L=[...(up?n.toUpperCase():n)],used=n.toUpperCase(),extra=v===1?sample(ALPHA.filter(x=>!used.includes(x)),2,rng).map((ch,i)=>({id:'x'+i,v:ch.toLowerCase(),art:tx(ch.toLowerCase(),'name',ch.toLowerCase()),say:ch})):[];
    return Q.order({key:'nb:'+n+v,prompt:up?'Pon las letras grandes de tu nombre en orden.':v===1?'Pon las letras de tu nombre en orden. Sobran dos letras.':'Pon las letras de tu nombre en orden.',items:L.map((ch,i)=>({id:String(i),v:ch,art:tx(ch,'name',ch),say:ch})),extra,explain:'Tu nombre se escribe '+L.join(' - ')+'.'})},
   b:(ctx,rng)=>{const n=nm(ctx),ini=n[0],ds=sample(ALPHA.filter(x=>x!==ini),2,rng);
    return Q.choose(rng,{key:'ni:'+n+ds.join(''),prompt:'¿Con qué letra empieza tu nombre?',say:'¿Con qué letra empieza '+n+'?',model:[tx(n,'name',n)],options:[ini,...ds].map(x=>({id:x,art:tx(x,'name',x)})),answer:ini,explain:n+' empieza con la '+ini+'.'})},
   c:(ctx,rng)=>{const n=nm(ctx),ds=sample(DECOY.filter(x=>x!==n),2,rng);
-   return Q.choose(rng,{key:'nf:'+n+ds.join(''),prompt:'Busca tu nombre escrito.',say:'Busca tu nombre escrito: '+n+'.',options:[n,...ds].map(x=>({id:x,art:tx(x,'name',x)})),answer:n,explain:'Este dice '+n+'. Es tu nombre.'})}},
- plan:{examples:['a','c'],practice:['c','b','b'],reinforce:['a','c'],check:['c','b','a']},
+   return Q.choose(rng,{key:'nf:'+n+ds.join(''),prompt:'Busca tu nombre escrito.',say:'Busca tu nombre escrito: '+n+'.',options:[n,...ds].map(x=>({id:x,art:tx(x,'name',x)})),answer:n,explain:'Este dice '+n+'. Es tu nombre.'})},
+  d:(ctx,rng)=>{const n=nm(ctx),ds=sample(DECOY.filter(x=>x!==n),2,rng);const ids=[n,...ds];
+   return Q.match(rng,{key:'nd:'+n+ds.join(''),prompt:'Une cada nombre con el mismo nombre escrito con letras grandes.',pairs:ids.map(x=>({id:x,l:tx(x,'name',x),r:tx(x.toUpperCase(),'name',x.toUpperCase()),say:x+' y '+x.toUpperCase()+' dicen lo mismo.'})),explain:ids.map(x=>x+' = '+x.toUpperCase()).join('. ')+'. Son iguales aunque cambie el tamaño de las letras.'})},
+  e:(ctx,rng)=>{const f=fullNm(ctx);if(!f)return C.byId['mi-nombre'].gens.c(ctx,rng);const w=f.split(' '),last=w[w.length-1],ds=sample(DECOY.filter(x=>x!==last&&x!==w[0]),2,rng),wrong=[w.slice(0,-1).concat(ds[0]).join(' '),[ds[1]].concat(w.slice(1)).join(' ')];
+   return Q.choose(rng,{key:'nc:'+f+wrong.join(),prompt:'Busca tu nombre completo.',say:'Busca tu nombre completo: '+f+'.',options:[f,...wrong].map(x=>({id:x,art:tx(x,'name',x)})),answer:f,explain:'Tu nombre completo dice '+f+'.'})}},
+ plan:{examples:['a','c'],practice:['c','b','e'],reinforce:['a','d','c'],check:['c','b','e']},
  home:'Pongan su nombre en sus dibujos y busquen su inicial en carteles y envases.'});
 })(typeof globalThis!=='undefined'?globalThis:this);
