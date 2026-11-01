@@ -246,3 +246,14 @@ input[type=checkbox]{width:28px;height:28px;flex:0 0 auto;margin:0;accent-color:
  .gq:has(.pfig)>.row,.gq:has(.pfig) .row.center{justify-content:flex-start}.gq:has(.pfig) .gprompt{text-align:left}
  .pfig.pfull{height:clamp(240px,calc(100svh - 150px),440px)}.pfig.pface{height:clamp(220px,calc(100svh - 150px),400px)}
  .modulebar .chips{display:none}.modulebar{padding-bottom:0}}
+
+/* Tablet apaisada baja: toda pregunta con zona de juego (clasificar, unir, ordenar…) pone el enunciado a la izquierda y el juego a la derecha,
+   para que origen y destino de un arrastre quepan juntos en pantalla sin desplazar la página */
+@media (orientation:landscape) and (max-height:620px){
+ .modulebar{padding-top:0;margin-bottom:4px}.modulebar .modrow button{min-height:40px;padding:4px 12px}
+ .gq:has(#gbox){display:grid;grid-template-columns:minmax(0,.72fr) minmax(0,1.28fr);column-gap:16px;align-items:start;text-align:left}
+ .gq:has(#gbox)>*{grid-column:1}.gq:has(#gbox)>#gbox{grid-column:2;grid-row:1/span 7}
+ .gq:has(#gbox) .gprompt{text-align:left}.gq:has(#gbox) .row{justify-content:flex-start;margin:6px 0}.gq:has(#gbox) .feedback{text-align:left}
+ .gbin{min-height:96px;padding:4px}.gbins{margin:4px auto;gap:8px}.gtray{margin:6px auto;padding:6px;min-height:64px;--u:clamp(44px,10vh,62px)}
+ .gmatch{margin:4px auto;max-width:560px;gap:28px;--u:46px}.gcol{gap:6px}.gm{min-height:56px;padding:2px 6px;--u:clamp(36px,9vh,46px)}
+}
