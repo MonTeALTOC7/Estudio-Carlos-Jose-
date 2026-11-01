@@ -70,13 +70,17 @@ async function advanceUntil(p,type){for(let i=0;i<12;i++){await p.waitForSelecto
    for(const r of ch.parts){const {a,b:bb}=await both(p,'#bandage','.teddy .rg[data-r="'+r+'"]',true);await touchDrag(p,a,bb);await sleep(150)}
    await p.waitForSelector('#gnext:not([hidden])',{timeout:4000});return true});
   await p.click('#directHome');
-  await guard('táctil','Aventura: arrastrar las piezas del rompecabezas',async()=>{await p.click('[data-tab="jugar"]');await p.click('.advgrid [data-adv="laboratorio"]');await p.click('#astart');await p.waitForSelector('.pot');
+  for(const [fg,rv] of [['casa',0.01],['cohete',0.45],['robot',0.9]]){
+  await guard('táctil','Aventura: arrastrar las piezas del rompecabezas ('+fg+')',async()=>{await p.click('[data-tab="jugar"]');await p.click('.advgrid [data-adv="laboratorio"]');await p.evaluate(v=>{window.__rnd=Math.random;Math.random=()=>v},rv);await p.click('#astart');await p.waitForSelector('.pot');await p.evaluate(()=>{Math.random=window.__rnd});
    const R={naranja:['rojo','amarillo'],verde:['azul','amarillo'],morado:['rojo','azul']},ch=await p.evaluate(()=>window.__gch);for(const t of ch.targets){for(const c of R[t])await p.click('.pot[data-c="'+c+'"]');await p.click('#mmix')}
    await p.click('#gnext');await p.waitForSelector('.piece');let guardN=0;
    while(await p.locator('.piece').count()&&guardN++<20){const before=await p.locator('.piece').count(),idx=await p.$$eval('.pslot',els=>els.map(e=>e.dataset.i));
-    for(const j of idx){const {a,b:bb}=await both(p,'.piece','.pslot[data-i="'+j+'"]',true);await touchDrag(p,a,bb);await sleep(120);if(await p.locator('.piece').count()<before)break}}
+    for(const j of idx){const {a,b:b0}=await both(p,'.piece','.pslot[data-i="'+j+'"]',true);
+     /* En figuras con huecos que se solapan (p. ej. la puerta dentro de la casa) el centro geométrico puede caer sobre otro hueco: se busca un punto que de verdad pertenezca a este hueco, como haría un niño al soltar sobre su parte visible. */
+     const bb=await p.evaluate(([j,c])=>{const g=document.querySelector('.pslot[data-i="'+j+'"]'),r=g.getBoundingClientRect();let best=null,bd=1e9;for(let y=r.top+2;y<r.bottom-2;y+=2)for(let x=r.left+2;x<r.right-2;x+=2){const e=document.elementFromPoint(x,y),h=e&&e.closest&&e.closest('.pslot');if(h&&h.dataset.i===j){const d=(x-c.x)**2+(y-c.y)**2;if(d<bd){bd=d;best={x,y}}}}return best},[j,b0]);
+     if(!bb)continue;await touchDrag(p,a,bb);await sleep(120);if(await p.locator('.piece').count()<before)break}}
    await p.waitForSelector('#gnext:not([hidden])',{timeout:4000});return true});
-  await p.click('#directHome');
+  await p.click('#directHome');}
   await guard('táctil','Diagnóstico: la prueba de arrastre registra un dedo',async()=>{await p.click('#parents');await p.fill('#gate','7');await p.click('#enter');await p.waitForSelector('[data-atab]');await p.click('[data-atab="ajustes"]');await p.waitForSelector('#dgball');
    const a=await center(p,'#dgball'),bb=await center(p,'#dgbox');await touchDrag(p,a,bb);await sleep(200);const t=await p.textContent('#dgres');return /dedo/.test(t)?true:t});
   rec('táctil','Sin errores de consola durante los arrastres',p._errs.length===0,p._errs[0]||'');await p.context().close()}
