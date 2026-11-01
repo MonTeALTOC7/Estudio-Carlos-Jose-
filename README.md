@@ -1,4 +1,4 @@
-# Centro de Estudios Carlos José · 5.1
+# Centro de Estudios Carlos José
 *Aprendo, juego y descubro · By Carlos Tijerino*
 
 Continuación del ZIP aportado, conservando HTML/CSS/JavaScript y los juegos existentes. Sin dependencias de ejecución ni cuenta infantil.
@@ -65,6 +65,9 @@ Auditoría completa y matriz de cobertura del Cuadernillo MINED en [`docs/AUDITO
 
 Limitaciones conocidas: ver §7 de la auditoría (voz española, pruebas en teléfonos reales, emojis como ilustraciones, contenido nacional pendiente, Registro de valoración no recibido).
 
+
+## Versión 5.3 · Cinco habilidades humanas, instalación y actualización PWA
+La versión vive en el archivo `VERSION` (única fuente). Detalle: `docs/MATRIZ_MEJORAS_FINAL.md`, `docs/AUDITORIA_PEDAGOGICA_FINAL.md`, `docs/PWA_INSTALACION_ACTUALIZACION.md`. Pruebas: `node test.cjs`, `node qa/audit-pedagogica.cjs`, `node qa/pwa-smoke.cjs`.
 
 ## Versión 5.2 · Identidad personalizada, Galaxy Tab A9 y Partes de mi cuerpo
 Documentos: [`docs/PERSONALIZACION_HUMANA.md`](docs/PERSONALIZACION_HUMANA.md), [`docs/TABLET_GALAXY_TAB_A9.md`](docs/TABLET_GALAXY_TAB_A9.md). Portada y navegación sin cambios.

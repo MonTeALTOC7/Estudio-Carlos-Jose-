@@ -1,4 +1,4 @@
-# Personalización con Carlos José: auditoría, criterio y sistema visual (v5.2)
+# Personalización con Carlos José: auditoría, criterio y sistema visual (v5.2 · actualizado en v5.3)
 
 Objetivo: que Carlos José se reconozca en la aplicación **sin** convertirla en un collage de fotos y **sin** perder la capacidad de generalizar (reconocer lo aprendido en otras personas y contextos).
 
@@ -85,3 +85,6 @@ Todas con permiso del adulto responsable. Fondo sencillo, buena luz, cuerpo comp
 | Didáctico | Números, formas, lógica, objetos | Dibujos claros y precisos (sin cambios) |
 
 **Para agregar una foto nueva**: copiar la imagen (WebP, sin textos) a `assets/people/`, añadir una entrada en `people.js` con el tamaño y las zonas de cada parte visible (elipses o polígonos en coordenadas de la imagen), dibujar el contorno con `node qa/overlay-zonas.cjs ids salida.png` y revisarlo, y ejecutar `node test.cjs` y `node qa/partes-smoke.cjs`. El manifiesto del service worker incluye automáticamente todo lo que haya en `assets/`.
+
+## 7. Actualización v5.3.0
+Se implementaron las cinco habilidades marcadas **A**: Los cinco sentidos, Cómo me siento, Primero/después/al final, Izquierda y derecha y Mi nombre; ver `docs/MATRIZ_MEJORAS_FINAL.md`. Las filas **B** que dependían de fotos nuevas (alimentos, posiciones, lugares, planta, instrucciones) se conservan: **no se fabricaron fotografías** y los lugares identificables requieren autorización. Cambio de criterio respecto al §3: «Cómo me siento» usa **rostros dibujados** (no fotos de Carlos) porque no hay fotos suyas con esas emociones.

@@ -24,3 +24,8 @@ La aplicación incluye **⚙ → Ajustes → Diagnóstico del dispositivo** con 
 - Aspecto de los emojis, rendimiento y duración de batería.
 - **Clases guiadas y audio (v5.1)**: oír la voz y la música por el altavoz del teléfono y juzgar si la música es agradable y no estorba a la voz; que la música no suene al bloquear la pantalla ni al cambiar de aplicación; instalar y abrir sin conexión una clase completa; si 8/10/12 minutos es la duración adecuada; si el niño entiende «Recordamos», «Jugamos» y «Comprobamos».
 - **Con Carlos José**: si entiende las consignas, si disfruta y cuánto dura su atención.
+
+## Etapa final (v5.3.0): añadidos
+**Automatizado (CI):** `qa/pwa-smoke.cjs` (instalación contextual y actualización segura, 61 comprobaciones), `qa/audit-pedagogica.cjs`, nuevos grupos de `test.cjs` (versión única, emociones, sentidos, nombre, lateralidad, secuencias, seguridad, mañana/tarde/noche).
+**Simulado:** `beforeinstallprompt` fabricado; versión «publicada» reescribiendo build en una copia de `dist/`; iPhone por *user agent*.
+**Físico pendiente:** instalación y diálogo del sistema en la Tab A9 y en iPhone/iPad; actualización real desde GitHub Pages; voz; pulsera real frente a la dibujada; legibilidad de las expresiones; ritmo con el niño.

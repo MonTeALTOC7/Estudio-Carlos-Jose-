@@ -156,3 +156,7 @@ Defectos reales encontrados y corregidos en esta ronda:
 - La simulación de Cloudflare detectó íconos aún no versionados (el clon limpio solo copia archivos versionados).
 
 **No verificado (tablet física):** valores reales de área visible y densidad (el diagnóstico de la app los muestra), tamaño percibido con los dedos de Carlos José, aspecto del ícono en el lanzador de Samsung, giro de pantalla en plena clase, voz y música por el altavoz.
+
+
+## Etapa final v5.3.0 (31-10-2026 → 01-11-2026)
+Ejecutado en Chromium emulado (no en tablet física): `node test.cjs`, `node qa/audit-pedagogica.cjs`, `node qa/pwa-smoke.cjs` (61), `qa/ui-smoke.cjs`, `qa/course-smoke.cjs`, `qa/ci-visual.cjs`, `qa/cloudflare-check.cjs`. Matriz por mejora: `docs/MATRIZ_MEJORAS_FINAL.md`.
