@@ -76,7 +76,7 @@ const FIGS={
  casa:{name:'una casa',slots:[{s:'cuadrado',x:50,y:90,w:100,h:90,c:'amarillo'},{s:'triángulo',x:40,y:30,w:120,h:62,c:'rojo'},{s:'rectángulo',x:90,y:128,w:30,h:52,c:'café'},{s:'círculo',x:60,y:106,w:24,h:24,c:'azul'}]},
  cohete:{name:'un cohete',slots:[{s:'rectángulo',x:78,y:66,w:44,h:96,c:'azul'},{s:'triángulo',x:78,y:30,w:44,h:40,c:'rojo'},{s:'triángulo',x:50,y:122,w:30,h:42,c:'rojo'},{s:'triángulo',x:120,y:122,w:30,h:42,c:'rojo'},{s:'círculo',x:90,y:84,w:20,h:20,c:'amarillo'}]},
  robot:{name:'un robot',slots:[{s:'cuadrado',x:66,y:26,w:68,h:68,c:'azul'},{s:'rectángulo',x:56,y:98,w:88,h:70,c:'verde'},{s:'círculo',x:80,y:48,w:16,h:16,c:'amarillo'},{s:'círculo',x:104,y:48,w:16,h:16,c:'amarillo'},{s:'triángulo',x:90,y:6,w:20,h:22,c:'rojo'}]}};
-const shpSvg=(s,x,y,w,hh,f,stroke,extra)=>{const a=(stroke?'fill="none" stroke="'+stroke+'" stroke-width="2.4" stroke-dasharray="5 4"':'fill="'+f+'" stroke="#0003" stroke-width="1.6"')+' '+(extra||'');
+const shpSvg=(s,x,y,w,hh,f,stroke,extra)=>{const a=(stroke?'fill="'+(f||'#ffffff55')+'" stroke="'+stroke+'" stroke-width="2.4" stroke-dasharray="5 4"':'fill="'+f+'" stroke="#0003" stroke-width="1.6"')+' '+(extra||'');
  if(s==='círculo'||s==='óvalo')return '<ellipse cx="'+(x+w/2)+'" cy="'+(y+hh/2)+'" rx="'+w/2+'" ry="'+hh/2+'" '+a+'/>';
  if(s==='triángulo')return '<polygon points="'+(x+w/2)+','+y+' '+(x+w)+','+(y+hh)+' '+x+','+(y+hh)+'" '+a+'/>';
  if(s==='rombo')return '<polygon points="'+(x+w/2)+','+y+' '+(x+w)+','+(y+hh/2)+' '+(x+w/2)+','+(y+hh)+' '+x+','+(y+hh/2)+'" '+a+'/>';

@@ -170,7 +170,7 @@ test('Una mala sesión no quita logros: conserva el estado y solo marca repaso',
 });
 test('Compatibilidad: el registro de la v4.0 (sin historial) se interpreta sin perder datos',()=>{
  const old={runs:2,best:3,ind:9,sup:2,last:{ok:3,of:3},ts:D(3)};
- const st=PR.skillState(old,D(4));assert.equal(st.state,'practicando');assert.equal(st.sessions,1);assert.equal(PR.hist(old)[0].legacy,true);
+ const st=PR.skillState(old,D(4));assert.equal(st.state,'practicando');assert.equal(st.sessions,2,'cuenta las jugadas reales registradas');assert.equal(PR.hist(old)[0].legacy,true);
  assert.equal(PR.skillState({runs:1,last:{ok:1,of:3},ts:D(3)},D(3)).state,'aprendiendo');
 });
 test('Nivel general: depende del estado de las habilidades, no de repetir partidas; nunca baja',()=>{
@@ -195,6 +195,37 @@ test('Insignias: se evalúan por reglas y la de ruta depende de la mitad de sus 
  const e=PR.earned(mkc({contar:rec([ent(1,3),ent(5,3,['choose','put'],4)]),cuantos:rec([ent(1,3)])},{a1:{runs:1,ts:D(6)}}));
  for(const b of ['primer-paso','recordo','perseverante','estrella-1','volvio','aventura-a1'])assert.ok(e.includes(b),b);
  assert.ok(e.includes('ruta-cantidad'));assert.ok(!e.includes('consolidada'));assert.ok(!e.includes('aventuras-todas')||true);
+});
+test('REGRESIÓN: el estado demostrado no se pierde al recortar el historial (consolidada + muchas sesiones fallidas)',()=>{
+ for(const [name,good,expected] of [['consolidada',[1,2,9],'consolidacion'],['comprobada',[1,2],'comprobada'],['practicando',[1],'practicando']]){
+  let o=null;for(const d of good)o=PR.record(o,ent(d,3));
+  assert.equal(PR.skillState(o,D(9)).state,expected,name+' antes');
+  for(let i=0;i<60;i++)o=PR.record(o,ent(10+(i%20),i%7===0?1:0,['choose'],5));
+  assert.equal(o.hist.length,PR.HIST_CAP,'el historial sigue acotado');assert.ok(o.hist.every(e=>!PR.good(e)),'todo lo guardado en el historial son sesiones fallidas');
+  const st=PR.skillState(o,D(40));assert.equal(st.state,expected,name+' tras 60 sesiones fallidas');assert.equal(st.repaso,true,'solo se marca repaso');
+  assert.equal(JSON.stringify(PR.skillState(JSON.parse(JSON.stringify(o)),D(40))),JSON.stringify(st),'sobrevive a guardar y cargar');
+ }
+ const sinProof={hist:[ent(20,0),ent(21,0)]};assert.equal(PR.skillState(sinProof,D(30)).state,'aprendiendo','sin pruebas previas sigue siendo aprendiendo');
+});
+test('REGRESIÓN: el estado nunca baja entre sesiones (propiedad monótona con 500 sesiones al azar)',()=>{
+ let seed=7;const rnd=()=>{seed=(seed*1103515245+12345)&0x7fffffff;return seed/0x7fffffff};
+ let o=null,prev=0;for(let i=0;i<500;i++){const ok=Math.floor(rnd()*4),ty=rnd()<.5?['choose']:['sort','match'];o=PR.record(o,{d:PR.day(D(1+Math.floor(i/3))),ts:D(1+Math.floor(i/3)),ok,of:3,ty,er:ok<2?4:0,hn:0});
+  const r=PR.rank(PR.skillState(o,D(400)).state);assert.ok(r>=prev,'bajó en la sesión '+i);prev=r}
+ assert.ok(o.proof.days.length<=PR.PROOF_CAP&&o.proof.active.length<=PR.PROOF_CAP,'las pruebas también están acotadas');
+ assert.equal(PR.skillState(o,D(400)).state,'consolidacion');
+});
+test('Compatibilidad: registros de la v4.0 y de la v5 temprana (sin «proof») se leen igual y se actualizan sin perder nada',()=>{
+ const v4={runs:2,best:3,ind:6,sup:2,last:{ok:3,of:3},ts:D(3)};assert.equal(PR.skillState(v4,D(4)).state,'practicando');
+ const v5={runs:3,hist:[ent(1,3),ent(2,3),ent(3,0)]};assert.equal(PR.skillState(v5,D(4)).state,'comprobada');
+ const upd=PR.record(JSON.parse(JSON.stringify(v5)),ent(4,0));assert.deepEqual(upd.proof.days,[PR.day(D(1)),PR.day(D(2))]);assert.equal(PR.skillState(upd,D(5)).state,'comprobada');
+ const upd4=PR.record(JSON.parse(JSON.stringify(v4)),ent(5,0));assert.equal(upd4.proof.days.length,1,'la sesión de la v4.0 pasa a las pruebas permanentes');assert.equal(PR.skillState(upd4,D(6)).state,'practicando');
+ const full=PR.record(null,ent(1,3));assert.equal(Object.keys(full).sort().join(),'hist,proof');
+});
+test('Insignias, sesiones y actividad no se pierden al recortar el historial',()=>{
+ const skills=C.skills.map(s=>({id:s.id,mod:s.mod}));let o=null;for(const d of [1,5])o=PR.record(o,ent(d,3,['choose','put'],4));for(let i=0;i<40;i++)o=PR.record(o,ent(10,0,['choose'],0));
+ const recs={contar:Object.assign(o,{runs:42})},st=PR.all(skills,recs,D(20)),bc=PR.badgeCtx(skills,C.modules,[],recs,{},st,D(20)),e=PR.earned(bc);
+ for(const b of ['recordo','perseverante','volvio','estrella-1'])assert.ok(e.includes(b),b);assert.equal(bc.sessions,42);
+ assert.equal(PR.points(st,0),PR.WEIGHT.comprobada,'los puntos de nivel no bajan');
 });
 const mkplan=(recs,adv,now,extra={})=>{const skills=C.skills.map(s=>({id:s.id,mod:s.mod,title:s.title,icon:s.icon})),st=PR.all(skills,recs,now);
  return CO.plan({skills,mods:C.modules,states:st,recs,adventures:[{id:'a1',title:'Aventura 1',icon:'🩺',skills:['partes','contar','clasif-color']}],adv:adv||{},now,...extra})};

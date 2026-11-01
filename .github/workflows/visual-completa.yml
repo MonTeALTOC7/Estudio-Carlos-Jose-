@@ -1,0 +1,25 @@
+name: Recorrido completo de las 40 habilidades
+# Lento (varios minutos por tamaño): se ejecuta a mano o cada semana, no en cada cambio.
+on:
+  workflow_dispatch:
+  schedule:
+    - cron: '17 9 * * 1'
+permissions:
+  contents: read
+jobs:
+  completo:
+    runs-on: ubuntu-latest
+    timeout-minutes: 60
+    strategy:
+      fail-fast: false
+      matrix:
+        viewport: ['320x640', '390x844', '768x1024', '1440x900']
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+      - run: node build.cjs
+      - working-directory: qa
+        run: npm ci --no-audit --no-fund && npx playwright install --with-deps chromium
+      - run: node qa/ui-smoke.cjs --viewport=${{ matrix.viewport }}

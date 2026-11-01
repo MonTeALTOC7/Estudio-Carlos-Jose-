@@ -4,6 +4,7 @@ permissions:
   contents: read
 jobs:
   test:
+    name: Lógica y distribución (Node)
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
@@ -11,3 +12,45 @@ jobs:
         with:
           node-version: 22
       - run: for f in app.js engine.js activities.js content.js skills-a.js skills-b.js skills-c.js progress.js coach.js games.js adventures.js shell.js build.cjs test.cjs; do node --check $f; done && node build.cjs && node test.cjs
+  visual:
+    name: Funciones visuales críticas (Playwright)
+    runs-on: ubuntu-latest
+    timeout-minutes: 25
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+      - run: node build.cjs
+      - name: Instalar Playwright (solo para pruebas; la app no tiene dependencias)
+        working-directory: qa
+        run: npm ci --no-audit --no-fund && npx playwright install --with-deps chromium
+      - name: Diseño, arrastre táctil, persistencia, respaldo, PWA, sin conexión, actualización y canal de prueba
+        run: node qa/ci-visual.cjs --out=qa-out
+      - name: Resumen en la página del flujo
+        if: always()
+        run: if [ -f qa-out/resumen.md ]; then cat qa-out/resumen.md >> "$GITHUB_STEP_SUMMARY"; fi
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: capturas-y-resultados-visuales
+          path: qa-out
+          retention-days: 14
+  flujos:
+    name: Recorridos de uso (portada, aventuras, panel, regresión, 15 habilidades)
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+      - run: node build.cjs
+      - working-directory: qa
+        run: npm ci --no-audit --no-fund && npx playwright install --with-deps chromium
+      - name: Portada, recomendaciones, reanudar, repaso, 5 aventuras, panel y respaldo (390 px)
+        run: node qa/v5-smoke.cjs --viewport=390x844
+      - name: Regresión de los juegos y del progreso anteriores (390 px)
+        run: node qa/legacy-smoke.cjs --viewport=390x844
+      - name: Una habilidad de cada tipo de interacción (320 px)
+        run: node qa/ui-smoke.cjs --viewport=320x640 --only=contar,clasif-color,vocal-inicial,rimas,antes-despues,posiciones,instrucciones,series,une-puntos,pintar,partes,silabas,que-falta,simon,mi-nombre

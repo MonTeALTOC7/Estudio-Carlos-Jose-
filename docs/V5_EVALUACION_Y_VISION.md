@@ -67,7 +67,7 @@ Tres dimensiones, derivadas de los registros (`progress.js`, con pruebas):
 | Comprobada | Comprobaciones buenas en 2 días distintos y con 2 formas de jugar distintas |
 | En consolidación | Comprobada y con comprobaciones buenas en 3 días distintos repartidos en 6 días o más |
 
-Una comprobación perfecta **no** basta. Una mala sesión **no** quita lo logrado: solo marca «repaso». Las insignias, estrellas y el nivel ya ganados se conservan siempre. Los registros de la v4.0 se interpretan como una sesión.
+Una comprobación perfecta **no** basta. Una mala sesión **no** quita lo logrado: solo marca «repaso». Las insignias, estrellas y el nivel ya ganados se conservan siempre. Los registros de la v4.0 se interpretan como una sesión. **El historial se recorta a las últimas 14 sesiones, pero las pruebas (días y formas con comprobación buena, días activos) se guardan aparte y solo crecen**, de modo que un estado ya demostrado no se pierde por descartar registros antiguos (prueba de regresión incluida).
 
 ## 5. Aprendizaje adaptativo (`coach.js`)
 Reglas por prioridad, con el motivo en lenguaje claro para el adulto:

@@ -1,0 +1,51 @@
+# PLANTILLA para el repositorio de PRUEBA (por ejemplo «Estudio-Carlos-Jose-preview»).
+# Copiar como .github/workflows/deploy-prueba.yml en ese repositorio vacío y activar
+# Settings → Pages → Build and deployment → Source: «GitHub Actions».
+# Publica el canal «prueba» de la aplicación (almacenamiento, caché e instalación separados de producción)
+# en https://<usuario>.github.io/<repositorio-de-prueba>/ sin tocar el repositorio ni el sitio de producción.
+name: Publicar prueba
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:
+    inputs:
+      ref:
+        description: 'Rama o commit de Estudio-Carlos-Jose- a probar'
+        default: 'claude/centro-carlos-jose-v5'
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+concurrency:
+  group: pages
+  cancel-in-progress: true
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    env:
+      SRC_REF: ${{ inputs.ref || 'claude/centro-carlos-jose-v5' }}
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          repository: MonTeALTOC7/Estudio-Carlos-Jose-
+          ref: ${{ env.SRC_REF }}
+          path: src
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+      - name: Comprobar y compilar el canal de prueba
+        working-directory: src
+        run: |
+          for f in app.js engine.js activities.js content.js skills-a.js skills-b.js skills-c.js progress.js coach.js games.js adventures.js shell.js build.cjs test.cjs; do node --check $f; done
+          node build.cjs && node test.cjs
+          GITHUB_SHA=$(git rev-parse HEAD) PREVIEW=1 OUT=../site node build.cjs
+      - uses: actions/configure-pages@v5
+      - uses: actions/upload-pages-artifact@v3
+        with:
+          path: site
+      - name: Publicar
+        id: deployment
+        uses: actions/deploy-pages@v4

@@ -90,3 +90,34 @@ Artefacto privado (solo la cuenta del padre) con las imágenes del kit. Limitaci
 
 ### Pendiente en un teléfono real (no verificable aquí)
 Voz española y volumen; tonos; arrastre con el dedo (curitas, clasificar, unir, piezas); aspecto de los emojis; instalación y modo avión; rendimiento en equipos modestos; y, sobre todo, que Carlos José entienda las consignas, disfrute y se sostenga la atención.
+
+
+## Ronda de correcciones (rama `claude/centro-carlos-jose-v5`, PR #6)
+
+### 1. Regresión del aprendizaje por recorte del historial: corregida
+- **Reproducido antes de corregir**: una habilidad *consolidada* con 20 sesiones fallidas y el historial recortado a 14 pasaba a «aprendiendo».
+- **Corrección** (`progress.js`, `games.js`): el historial sigue acotado (para mostrar la evolución), pero las pruebas (`proof`: días con comprobación buena, formas de juego con acierto sin ayuda, días activos, esfuerzo) se guardan aparte y solo crecen. El estado se deriva de esas pruebas; por tanto **nunca baja** por descartar registros.
+- **Compatibilidad**: los registros de la v4.0 (sin historial) y de la v5 temprana (sin `proof`) se leen igual y se actualizan sin perder nada.
+- **Pruebas** (`node test.cjs`, 36 grupos): consolidada, comprobada y practicando + 60 sesiones fallidas conservan su estado y solo marcan repaso; propiedad monótona con 500 sesiones al azar; límites de las pruebas; compatibilidad v4.0 y v5; insignias, sesiones y puntos no se pierden. En navegador (`qa/v5-smoke.cjs`): una sesión real fallida sobre una habilidad consolidada con el historial lleno la deja en «En consolidación».
+
+### 2. PWA de prueba
+- Canal **«prueba»** (`PREVIEW=1 node build.cjs`): datos, cachés, nombre, ícono y cinta propios; **verificado automáticamente que no toca los de producción aunque compartan origen**.
+- **Aviso de actualización** («Hay una versión nueva» → Actualizar) y **diagnóstico del dispositivo** con lista de comprobación física (⚙ → Ajustes).
+- **URL pública: pendiente de un paso del propietario.** Una URL HTTPS independiente exige otro repositorio con Pages y no puedo crearlo (ver `docs/PREVIEW_HTTPS.md`). Todo lo demás está preparado (`preview/deploy-prueba.yml`).
+
+### 3. Validación automatizada en CI
+Nuevo flujo de Playwright (`qa/ci-visual.cjs`): **27 comprobaciones aprobadas de 27** (diseño en 4 anchos; arrastre con **eventos táctiles reales**; persistencia; respaldo; manifiesto e íconos; service worker; instalabilidad según Chromium; **sin conexión**; **actualización**; independencia entre prueba y producción; movimiento reducido; accesibilidad básica). Detalle de lo automático frente a lo físico en `docs/VALIDACION.md`.
+- **Defecto encontrado por esta suite y corregido**: los huecos del rompecabezas tenían relleno `none`, por lo que soltar una pieza *dentro* del contorno no se detectaba (solo sobre la línea fina).
+
+### Resultados de esta ronda (versión final)
+| Prueba | 320 | 390 | 768 | 1440 |
+|---|---|---|---|---|
+| `node test.cjs` | 36 grupos aprobados | | | |
+| `qa/ci-visual.cjs` (4 anchos incluidos) | 27/27 | | | |
+| 40 habilidades completas (`ui-smoke`) | 40/40 | 40/40 | 15/15 (una por tipo) | — |
+| Portada, aventuras, panel, respaldo, regresión (`v5-smoke`) | 0 fallas | 0 fallas | — | 0 fallas |
+| Regresión de lo anterior (`legacy-smoke`) | 0 fallas | 0 fallas | — | — |
+Sin errores de consola en ninguna corrida.
+
+### Pendiente de validación física
+Ver `docs/VALIDACION.md` §C: instalación real, modo avión, arrastre con dedo real, voz y tonos, descarga y restauración del respaldo en el teléfono, actualización real, emojis, rendimiento y, sobre todo, la experiencia de Carlos José.

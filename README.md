@@ -77,3 +77,9 @@ Evaluación, visión y decisiones: [`docs/V5_EVALUACION_Y_VISION.md`](docs/V5_EV
 - **Panel adulto** con Resumen, Progreso, En casa y Ajustes (respaldo descargable y restaurable, personalización).
 - **Privacidad**: no hay fotos en el repositorio ni en el sitio público. La foto y el personaje se cargan en ⚙ → Ajustes y se guardan solo en ese dispositivo; sin imágenes se usa un personaje dibujado.
 - Todo lo de la v4.0 se conserva (8 rutas, 40 habilidades, 5 fases, trazos, juegos antiguos, guardado `primerosPasos3`, PWA).
+
+### Canal de prueba, actualización y validación
+- `PREVIEW=1 node build.cjs` compila el **canal de prueba** (datos, cachés e instalación separados de producción); ver [`docs/PREVIEW_HTTPS.md`](docs/PREVIEW_HTTPS.md).
+- La aplicación avisa cuando hay una versión nueva y tiene **⚙ → Ajustes → Diagnóstico del dispositivo** para validar en un teléfono real.
+- El historial de cada habilidad se recorta, pero las pruebas de dominio se conservan aparte: **un estado demostrado no baja por acumular sesiones fallidas**.
+- Validación automatizada en CI con Playwright y qué requiere teléfono físico: [`docs/VALIDACION.md`](docs/VALIDACION.md).
