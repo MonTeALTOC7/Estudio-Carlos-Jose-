@@ -1,4 +1,5 @@
-# Mis primeros pasos · 4.0
+# Centro de Estudios Carlos José · 5.0
+*Aprendo, juego y descubro · By Carlos Tijerino*
 
 Continuación del ZIP aportado, conservando HTML/CSS/JavaScript y los juegos existentes. Sin dependencias de ejecución ni cuenta infantil.
 
@@ -21,11 +22,11 @@ Abrir el enlace HTTPS publicado. Android/Chrome: menú ⋮ → Instalar aplicaci
 
 ## Desarrollo
 ```bash
-for f in app.js engine.js activities.js content.js skills-a.js skills-b.js skills-c.js games.js build.cjs test.cjs; do node --check $f; done
+for f in app.js engine.js activities.js content.js skills-a.js skills-b.js skills-c.js progress.js coach.js games.js adventures.js shell.js build.cjs test.cjs; do node --check $f; done
 node build.cjs && node test.cjs
 ```
 El build combina page.html, style.css, engine.js, activities.js, content.js + skills-*.js, games.js y app.js en dist/index.html y copia manifest, service worker e iconos.
-Pruebas en navegador (opcionales, requieren Playwright instalado aparte): `node qa/ui-smoke.cjs [--viewport=320x640]` completa las 40 habilidades con clics; `node qa/legacy-smoke.cjs` comprueba que lo anterior sigue funcionando y que el progreso antiguo se conserva.
+Pruebas en navegador (opcionales, requieren Playwright instalado aparte): `node qa/ui-smoke.cjs [--viewport=320x640]` completa las 40 habilidades con clics; `node qa/legacy-smoke.cjs` comprueba que lo anterior sigue funcionando y que el progreso antiguo se conserva; `node qa/v5-smoke.cjs` recorre la portada, las recomendaciones, la reanudación, las 5 aventuras y el panel adulto.
 El progreso se guarda en localStorage (`primerosPasos3`); no se sincroniza entre dispositivos. Cambiar de dominio crea otro almacenamiento independiente.
 
 ## GitHub y publicación
@@ -63,3 +64,16 @@ Auditoría completa y matriz de cobertura del Cuadernillo MINED en [`docs/AUDITO
 - Los resultados son una muestra de lo que hizo hoy con y sin ayuda. No son notas ni diagnóstico, y no equivalen a un examen de admisión.
 
 Limitaciones conocidas: ver §7 de la auditoría (voz española, pruebas en teléfonos reales, emojis como ilustraciones, contenido nacional pendiente, Registro de valoración no recibido).
+
+
+## Versión 5.0 · Centro de Estudios Carlos José
+Evaluación, visión y decisiones: [`docs/V5_EVALUACION_Y_VISION.md`](docs/V5_EVALUACION_Y_VISION.md).
+
+- **Portada «Hoy»** personalizada (saludo, nivel, botón **Continuar**, tres sugerencias del día con su motivo y aventuras) y navegación **Hoy · Aprender · Jugar · Logros**. Dentro de las actividades se conserva la barra superior con Inicio, Módulos y la tira de módulos.
+- **Dominio por habilidad** con reglas visibles (por descubrir, aprendiendo, practicando, comprobada, en consolidación): una comprobación perfecta no basta y una mala sesión no quita lo logrado. Nivel general de aventura y avance por ruta sin porcentajes.
+- **Recomendaciones explicables** (repasar, seguir, comprobar, recordar, nuevo, aventura) sin servicios externos.
+- **Motivación sin presión**: confeti tras 3 aciertos seguidos sin ayuda, insignias, niveles y medallas; sin rankings ni días seguidos; control de animaciones.
+- **5 aventuras** con historia y mecánicas propias (curitas arrastradas, lista de compras, buscar y memoria, mezclar colores y rompecabezas, camino con flechas y semáforo).
+- **Panel adulto** con Resumen, Progreso, En casa y Ajustes (respaldo descargable y restaurable, personalización).
+- **Privacidad**: no hay fotos en el repositorio ni en el sitio público. La foto y el personaje se cargan en ⚙ → Ajustes y se guardan solo en ese dispositivo; sin imágenes se usa un personaje dibujado.
+- Todo lo de la v4.0 se conserva (8 rutas, 40 habilidades, 5 fases, trazos, juegos antiguos, guardado `primerosPasos3`, PWA).

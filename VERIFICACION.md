@@ -63,3 +63,30 @@ Se conserva la aplicación. Desbloqueos permanentes; cantidades en prácticas; r
 | 390 × 844 (teléfono) | 40 de 40 | 0 | 0 |
 | 768 × 1024 (tablet) | 40 de 40 | 0 | 0 |
 | Regresión de lo anterior a 390 px y a 320 px | todas las comprobaciones | 0 | 0 |
+
+
+## Versión 5.0 · Centro de Estudios Carlos José (rama `claude/centro-carlos-jose-v5`, apilada sobre la v4.0)
+
+### Automatizadas (`node test.cjs`, también en CI): 32 grupos
+Los 22 anteriores más 10 nuevos: transiciones de dominio (una comprobación perfecta no es dominio; días y formas distintas; consolidación), una mala sesión no quita logros, compatibilidad con registros de la v4.0, nivel que no depende de repetir y no baja, resumen por ruta, insignias, y recomendaciones (inicio, repaso, refuerzo, confirmar y recordar, aventuras, determinismo por fecha, requisitos suaves).
+
+### En navegador (Chromium con pantalla táctil emulada)
+| Prueba | 320 × 640 | 390 × 844 | 768 × 1024 | 1440 × 900 |
+|---|---|---|---|---|
+| Las 40 habilidades completas con clics (`ui-smoke`)* | 40/40 | 40/40 | 40/40 | 40/40 |
+| Portada, sugerencias, racha, insignia, reanudar, modos «extra» y «repaso», 5 aventuras, panel adulto, respaldo, foto local, reducción de movimiento (`v5-smoke`) | 0 fallas | 0 fallas | 0 fallas | 0 fallas |
+| Regresión de los juegos y trazos anteriores y del progreso de la v3.2/v4.0 (`legacy-smoke`) | 0 fallas | 0 fallas | — | 0 fallas |
+Sin errores de consola en ninguna corrida. *Las corridas completas de las 40 habilidades se hicieron antes del último ajuste de `scroll-padding`; después se repitieron 8 habilidades con elementos tocables a 320 px (0 fallas) y `v5-smoke` completo a 320, 390 y 1440 px.
+
+### Defectos encontrados y corregidos en esta etapa
+- El personaje heredaba una clase antigua (`.hero`) y aparecía dentro de una caja verde.
+- El botón «¡Cruzar!» no mostraba texto por una colisión con la clase antigua `.big` (se renombró a `.xl`).
+- Si el formato que falló ya estaba entre los ejemplos, el modo «extra» no añadía ejemplos (ahora añade variantes del mismo formato).
+- A 320 px el desplazamiento automático dejaba la figura de las curitas **detrás de la barra fija superior** (ahora hay `scroll-padding`).
+- El carrusel de aventuras desbordaba en las revisiones de pantalla (se exime: se desplaza a propósito).
+
+### Vista previa HTTPS
+Artefacto privado (solo la cuenta del padre) con las imágenes del kit. Limitaciones de ese entorno: no instala la PWA, no tiene modo sin conexión y no permite descargas (el respaldo solo funciona en la app real o instalada).
+
+### Pendiente en un teléfono real (no verificable aquí)
+Voz española y volumen; tonos; arrastre con el dedo (curitas, clasificar, unir, piezas); aspecto de los emojis; instalación y modo avión; rendimiento en equipos modestos; y, sobre todo, que Carlos José entienda las consignas, disfrute y se sostenga la atención.
