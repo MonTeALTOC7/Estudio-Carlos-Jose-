@@ -88,7 +88,7 @@ async function advanceUntil(p,type){for(let i=0;i<12;i++){await p.waitForSelecto
  /* 3 ─ PERSISTENCIA, REANUDAR, RESPALDO */
  {const p=await newPage(b,390,844);await p.goto(url);await p.waitForSelector('.hero5');
   await guard('persistencia','El avance y la actividad interrumpida sobreviven a cerrar y abrir',async()=>{await openSkill(p,'cantidad','contar');await p.waitForSelector('#gprompt');await p.click('#directHome');
-   await p.reload();await p.waitForSelector('.hero5');const t=await p.textContent('#cont');if(!t.includes('Continuar'))throw new Error('no ofrece Continuar: '+t);await p.click('#cont');await p.waitForSelector('#gprompt');return /Practico/.test(await p.textContent('.phases li.on span'))||'no volvió a Practico'});
+   await p.reload();await p.waitForSelector('.hero5');if(!(await p.locator('#freeres').count()))throw new Error('no ofrece retomar el juego libre');await p.click('#freeres');await p.waitForSelector('#gprompt');return /Practico/.test(await p.textContent('.phases li.on span'))||'no volvió a Practico'});
   await guard('persistencia','Una sesión completada queda guardada con historial y pruebas',async()=>{await p.click('#directHome');
    for(let i=0;i<8;i++){await p.click('[data-tab="aprender"]');await p.click('[data-mod="cantidad"]');break}
    await p.click('[data-skill="contar"]');await p.waitForSelector('.gcards');await p.click('#gnext');for(;;){await p.waitForSelector('.gexplain');const l=(await p.textContent('#gnext')).includes('Ahora yo');await p.click('#gnext');if(l)break}
