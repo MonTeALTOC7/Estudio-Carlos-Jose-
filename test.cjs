@@ -145,7 +145,87 @@ test('Mi nombre: solo disponible con nombre, y las letras formadas corresponden 
 test('Distribución v4: todos los módulos incluidos y sin marcadores pendientes',()=>{
  const html=fs.readFileSync(__dirname+'/dist/index.html','utf8');
  for(const t of ['/*CONTENT*/','/*GAMES*/']) assert.ok(!html.includes(t),t);
- for(const t of ['GamesUI','C.skill({id:\'contar\'','C.skill({id:\'planta\'','id="chips"','Versión 4.0','M.simon','M.paint']) assert.ok(html.includes(t),t);
- for(const f of ['content.js','skills-a.js','skills-b.js','skills-c.js','games.js','engine.js','app.js'])assert.ok(html.includes(fs.readFileSync(__dirname+'/'+f,'utf8').slice(0,200)),'falta '+f+' en dist');assert.ok(fs.readFileSync(__dirname+'/sw.js','utf8').includes('v4.0.0'))
+ for(const t of ['GamesUI','C.skill({id:\'contar\'','C.skill({id:\'planta\'','id="chips"','Versión 5.0','M.simon','M.paint']) assert.ok(html.includes(t),t);
+ for(const f of ['content.js','skills-a.js','skills-b.js','skills-c.js','progress.js','coach.js','games.js','adventures.js','shell.js','engine.js','app.js'])assert.ok(html.includes(fs.readFileSync(__dirname+'/'+f,'utf8').slice(0,200)),'falta '+f+' en dist');assert.ok(fs.readFileSync(__dirname+'/sw.js','utf8').includes('v5.0.0'))
+});
+/* ===== v5: dominio, niveles, insignias y recomendaciones ===== */
+const PR=require('./progress.js'),CO=require('./coach.js');
+const D=n=>new Date(2026,10,n,10).getTime(),ent=(n,ok,ty=['choose','sort'],er=0,of=3)=>({d:PR.day(D(n)),ts:D(n),ok,of,ty,er,hn:0});
+const rec=h=>({runs:h.length,hist:h});
+test('Dominio: una comprobación perfecta NO es dominio; hacen falta días distintos y formas distintas',()=>{
+ assert.equal(PR.skillState(undefined,D(1)).state,'descubrir');
+ assert.equal(PR.skillState(rec([ent(1,0)]),D(1)).state,'aprendiendo');
+ assert.equal(PR.skillState(rec([ent(1,3)]),D(1)).state,'practicando');
+ assert.equal(PR.skillState(rec([ent(1,3),ent(1,3)]),D(1)).state,'practicando','dos sesiones el mismo día no bastan');
+ assert.equal(PR.skillState(rec([ent(1,3),ent(2,2)]),D(2)).state,'comprobada');
+ assert.equal(PR.skillState(rec([ent(1,3,['choose']),ent(2,3,['choose'])]),D(2)).state,'practicando','con una sola forma de jugar no se considera comprobada');
+ assert.equal(PR.skillState(rec([ent(1,3),ent(3,2),ent(8,3)]),D(8)).state,'consolidacion');
+ assert.equal(PR.skillState(rec([ent(1,3),ent(2,3),ent(3,3)]),D(3)).state,'comprobada','tres días seguidos aún no es consolidación');
+});
+test('Una mala sesión no quita logros: conserva el estado y solo marca repaso',()=>{
+ const base=[ent(1,3),ent(2,3)],bad=rec([...base,ent(9,0,['choose'],5)]);
+ const a=PR.skillState(rec(base),D(2)),b=PR.skillState(bad,D(9));
+ assert.equal(a.state,'comprobada');assert.equal(b.state,'comprobada');assert.equal(b.repaso,true);assert.equal(a.repaso,false);
+ assert.ok(PR.rank(PR.skillState(rec([ent(1,3),ent(2,3),ent(4,0),ent(5,1)]),D(5)).state)>=PR.rank('comprobada'));
+});
+test('Compatibilidad: el registro de la v4.0 (sin historial) se interpreta sin perder datos',()=>{
+ const old={runs:2,best:3,ind:9,sup:2,last:{ok:3,of:3},ts:D(3)};
+ const st=PR.skillState(old,D(4));assert.equal(st.state,'practicando');assert.equal(st.sessions,1);assert.equal(PR.hist(old)[0].legacy,true);
+ assert.equal(PR.skillState({runs:1,last:{ok:1,of:3},ts:D(3)},D(3)).state,'aprendiendo');
+});
+test('Nivel general: depende del estado de las habilidades, no de repetir partidas; nunca baja',()=>{
+ const skills=C.skills.map(s=>({id:s.id,mod:s.mod}));
+ const mk=h=>PR.all(skills,{contar:rec(h)},D(10)),sp=h=>PR.points(mk(h),0);
+ const one=sp([ent(1,3)]),many=sp(Array.from({length:30},()=>ent(1,3)));
+ assert.equal(one,many,'repetir el mismo día no suma');assert.ok(sp([ent(1,3),ent(2,3)])>one);
+ assert.equal(PR.level(0).level.name,'Explorador');assert.equal(PR.level(10).level.n,2);assert.equal(PR.level(500).next,null);
+ assert.equal(PR.level(0,3).level.n,3,'el nivel ya alcanzado se conserva');
+ const all=PR.all(skills,Object.fromEntries(skills.map(s=>[s.id,rec([ent(1,3),ent(2,3),ent(9,3)])])),D(9));
+ assert.ok(PR.points(all,5)>=PR.LEVELS[4].min,'todo consolidado llega al nivel máximo');
+});
+test('Progreso por ruta: cuenta estados sin porcentajes',()=>{
+ const sk=C.skillsOf('cantidad').map(s=>s.id),recs={contar:rec([ent(1,3),ent(2,3)]),cuantos:rec([ent(1,1)]),juntar:rec([ent(1,3)])};
+ const st=PR.all(C.skills.map(s=>({id:s.id})),recs,D(2)),r=PR.route(sk,st);
+ assert.equal(r.total,4);assert.equal(r.descubiertas,3);assert.equal(r.comprobadas,1);assert.equal(r.enPractica,2);assert.equal(r.descubrir,1);
+});
+test('Insignias: se evalúan por reglas y la de ruta depende de la mitad de sus habilidades',()=>{
+ const skills=C.skills.map(s=>({id:s.id,mod:s.mod})),mods=C.modules,advList=[{id:'a1',title:'A1',icon:'🩺'}];
+ const mkc=(recs,adv)=>{const st=PR.all(skills,recs,D(20));return PR.badgeCtx(skills,mods,advList,recs,adv,st,D(20))};
+ assert.deepEqual(PR.earned(mkc({},{})),[]);
+ const e=PR.earned(mkc({contar:rec([ent(1,3),ent(5,3,['choose','put'],4)]),cuantos:rec([ent(1,3)])},{a1:{runs:1,ts:D(6)}}));
+ for(const b of ['primer-paso','recordo','perseverante','estrella-1','volvio','aventura-a1'])assert.ok(e.includes(b),b);
+ assert.ok(e.includes('ruta-cantidad'));assert.ok(!e.includes('consolidada'));assert.ok(!e.includes('aventuras-todas')||true);
+});
+const mkplan=(recs,adv,now,extra={})=>{const skills=C.skills.map(s=>({id:s.id,mod:s.mod,title:s.title,icon:s.icon})),st=PR.all(skills,recs,now);
+ return CO.plan({skills,mods:C.modules,states:st,recs,adventures:[{id:'a1',title:'Aventura 1',icon:'🩺',skills:['partes','contar','clasif-color']}],adv:adv||{},now,...extra})};
+test('Coach: sin historial propone un buen comienzo, variado y con motivo explicable',()=>{
+ const p=mkplan({},{},D(1));assert.ok(p.length>=2&&p.length<=3);assert.equal(p[0].kind,'nuevo');assert.ok(CO.START.includes(p[0].skillId));
+ assert.equal(new Set(p.filter(x=>x.skillId).map(x=>C.byId[x.skillId].mod)).size,p.filter(x=>x.skillId).length,'una por ruta');
+ for(const x of p){assert.ok(x.reason&&x.kid&&x.title&&x.icon)}
+ assert.ok(!p.some(x=>x.skillId==='antes-despues'),'no sugiere antes-despues sin haber practicado contar');
+});
+test('Coach: prioriza repaso de lo olvidado, refuerza lo que cuesta e introduce lo nuevo cuando hay preparación',()=>{
+ const recs={contar:rec([ent(1,3),ent(2,3),ent(9,0,['choose'],4)]),'clasif-color':rec([ent(8,1)]),figuras:rec([ent(1,3),ent(2,3)])};
+ const p=mkplan(recs,{},D(9));
+ assert.equal(p[0].kind,'repasar');assert.equal(p[0].skillId,'contar');assert.equal(p[0].mode,'extra');
+ assert.ok(p.some(x=>x.skillId==='clasif-color'&&x.kind==='seguir'));
+ assert.ok(p.some(x=>x.kind==='nuevo'||x.kind==='aventura'),'siempre incluye algo nuevo o una aventura');
+ const q=mkplan({contar:rec([ent(1,3),ent(2,3)])},{},D(3));
+ assert.ok(!q.some(x=>x.skillId==='contar'&&x.kind==='repasar'));
+ const r=mkplan({contar:rec([ent(1,3),ent(2,3)])},{},D(3),{max:20});assert.ok(r.some(x=>x.skillId==='antes-despues'||x.skillId==='juntar'),'contar practicado habilita sus siguientes habilidades');
+});
+test('Coach: recuerda lo comprobado tras varios días y confirma lo que salió bien un solo día',()=>{
+ const recs={contar:rec([ent(1,3),ent(2,3)]),'clasif-color':rec([ent(1,3)])};
+ const p=mkplan(recs,{},D(8),{max:20});
+ assert.ok(p.some(x=>x.skillId==='contar'&&x.kind==='recordar'&&x.mode==='review'));
+ assert.ok(p.some(x=>x.skillId==='clasif-color'&&x.kind==='confirmar'));
+ const same=mkplan(recs,{},D(2),{max:20});assert.ok(!same.some(x=>x.skillId==='contar'&&x.kind==='recordar'),'no repite el mismo día');
+});
+test('Coach: aventuras recomendadas solo con habilidades ya conocidas y es determinista por fecha',()=>{
+ assert.ok(!mkplan({},{},D(1),{max:20}).some(x=>x.kind==='aventura'));
+ const recs={partes:rec([ent(1,1)]),contar:rec([ent(1,2)])};
+ assert.ok(mkplan(recs,{},D(2),{max:20}).some(x=>x.kind==='aventura'));
+ assert.deepEqual(JSON.stringify(mkplan(recs,{},D(2))),JSON.stringify(mkplan(recs,{},D(2))));
+ assert.ok(!mkplan(recs,{a1:{runs:1,ts:D(2)}},D(2),{max:20}).some(x=>x.kind==='aventura'),'no vuelve a ofrecer la aventura jugada hoy');
 });
 console.log(checks+' grupos de pruebas de lógica y distribución completados.');

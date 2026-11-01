@@ -185,15 +185,18 @@ function ctxFrom(E,s,now){
 C.module=m=>{C.modules.push(m)};
 C.skill=sk=>{if(C.byId[sk.id])throw new Error('Habilidad repetida '+sk.id);C.skills.push(sk);C.byId[sk.id]=sk};
 C.skillsOf=mod=>C.skills.filter(s=>s.mod===mod);
-function session(skill,ctx,rng){
- rng=rng||rand;const used=new Set();
+function session(skill,ctx,rng,opts){
+ opts=opts||{};rng=rng||rand;const used=new Set();
  function make(fmt,phase){
   const g=skill.gens[fmt];if(!g)throw new Error('Formato inexistente '+skill.id+':'+fmt);
   for(let t=0;t<16;t++){const q=g(ctx,rng,used.size,phase);if(!q)continue;q.fmt=fmt;q.phase=phase;q.skill=skill.id;const k=q.key||JSON.stringify(q).slice(0,100);if(used.has(k)&&t<15)continue;used.add(k);return q}
   throw new Error('No se pudo generar '+skill.id+':'+fmt)}
- const P=skill.plan;
- return{skill,learn:skill.learn(ctx),examples:P.examples.map(f=>make(f,'examples')),practice:P.practice.map(f=>make(f,'practice')),reinforce:P.reinforce.map(f=>make(f,'reinforce')),check:P.check.map(f=>make(f,'check')),more:f=>make(f,'reinforce')}}
+ const P=skill.plan,exFmts=P.examples.concat((opts.extra||[]).filter(f=>skill.gens[f]).slice(0,2));
+ return{skill,learn:skill.learn(ctx),examples:exFmts.map(f=>make(f,'examples')),practice:P.practice.map(f=>make(f,'practice')),reinforce:P.reinforce.map(f=>make(f,'reinforce')),check:P.check.map(f=>make(f,'check')),more:f=>make(f,'reinforce')}}
 C.session=session;
+/* Reconstruye una sesión guardada (JSON) para reanudar donde se quedó el niño. */
+C.rebuild=function(skill,ctx,data,rng){rng=rng||rand;const used=new Set();
+ return Object.assign({skill},data,{more:fmt=>{for(let t=0;t<16;t++){const q=skill.gens[fmt](ctx,rng,used.size,'reinforce');if(!q)continue;q.fmt=fmt;q.phase='reinforce';q.skill=skill.id;const k=q.key||JSON.stringify(q).slice(0,100);if(used.has(k)&&t<15)continue;used.add(k);return q}throw new Error('rebuild')}})};
 
 /* ---------- regiones y escenas (datos compartidos con la interfaz) ---------- */
 C.PAINT={
