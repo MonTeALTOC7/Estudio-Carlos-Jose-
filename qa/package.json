@@ -1,0 +1,1 @@
+{"name":"qa-visual","private":true,"description":"Dependencias solo para las pruebas visuales; la aplicación no usa dependencias.","devDependencies":{"playwright":"1.63.0"}}
