@@ -180,8 +180,6 @@ html:has(#app[data-mode="hub"]){scroll-padding-bottom:100px}
 
 /* canal de prueba, actualización y diagnóstico */
 #ribbon{position:fixed;top:env(safe-area-inset-top,0px);left:50%;transform:translateX(-50%);z-index:70;background:#b3261e;color:#fff;font-size:11px;font-weight:900;letter-spacing:.6px;padding:2px 12px;border-radius:0 0 10px 10px;pointer-events:none}
-#updbar{position:fixed;left:12px;right:12px;bottom:calc(12px + env(safe-area-inset-bottom,0px));z-index:65;background:var(--navy);color:#fff;border-radius:20px;padding:12px 14px;display:flex;align-items:center;gap:10px;flex-wrap:wrap;box-shadow:0 10px 24px #0005}#updbar span{flex:1 1 180px;font-weight:700}#updbar .primary{min-height:44px;padding:8px 16px;background:#fff;color:var(--green);box-shadow:none}#updbar .soft{min-height:44px;background:#ffffff2a;color:#fff}
-body:has(#app[data-mode="hub"]) #updbar{bottom:calc(86px + env(safe-area-inset-bottom,0px))}@media(min-width:900px){body:has(#app[data-mode="hub"]) #updbar{bottom:calc(12px + env(safe-area-inset-bottom,0px));left:calc(var(--rail) + 12px)}}
 .dgtable{overflow-x:auto}.dgtest{background:#fff8e6;border-radius:16px;padding:12px 14px;margin:12px 0;display:flex;flex-direction:column;gap:8px}.dgrow{display:flex;justify-content:space-between;align-items:center;gap:20px;max-width:360px}.dgball{font-size:44px;min-width:70px;min-height:70px}.dgbox{font-size:60px;border:3px dashed #d9b25a;border-radius:18px;min-width:90px;min-height:90px;display:inline-flex;align-items:center;justify-content:center}
 .dgchecks{display:grid;gap:8px;margin:12px 0}.dgchecks label{display:flex;gap:10px;align-items:flex-start;font-size:15px}.dgchecks input{width:22px;height:22px;margin:2px 0 0;flex:0 0 auto}.dgrep{width:100%;min-height:130px;font-size:12px;border:2px solid var(--line);border-radius:12px;padding:8px}
 
@@ -258,12 +256,8 @@ input[type=checkbox]{width:28px;height:28px;flex:0 0 auto;margin:0;accent-color:
  .gmatch{margin:4px auto;max-width:560px;gap:28px;--u:46px}.gcol{gap:6px}.gm{min-height:56px;padding:2px 6px;--u:clamp(36px,9vh,46px)}
 }
 
-/* Invitación contextual a instalar (en «Hoy», sin modal) y panel de instalación/actualización */
-.pwacard{display:flex;align-items:center;gap:14px;flex-wrap:wrap;background:#fff;border:2px solid var(--line);border-radius:20px;padding:12px 14px;margin:14px 0 0}
-.pwacard .pc-i{border-radius:14px;flex:none}.pwacard .pc-t{flex:1 1 220px;min-width:0}.pwacard h2{font-size:17px;margin:0 0 2px}.pwacard p{margin:0;font-size:14px;color:var(--ink2,#44506a)}
-.pwacard .pc-b{display:flex;gap:8px;flex-wrap:wrap}.pwacard button{min-height:44px;padding:8px 16px}
+/* Ventana modal de instalación y actualización (pwa.js) */
 .pwapanel{background:#f6f8f2;border-radius:16px;padding:10px 14px}.pwapanel .row{display:flex;gap:8px;flex-wrap:wrap;margin:6px 0}.pwapanel button{min-height:44px}
-#updbar button[disabled]{opacity:.7}
 
 /* Rostros dibujados con expresión (Cómo me siento) */
 .gface{display:inline-block;width:calc(var(--u)*.92*var(--sc,1));height:calc(var(--u)*.92*var(--sc,1))}.gface svg.pfig{width:100%;height:100%;max-height:none;margin:0;padding:0;background:transparent;display:block}
@@ -273,3 +267,21 @@ input[type=checkbox]{width:28px;height:28px;flex:0 0 auto;margin:0;accent-color:
 .gart:has(.gwho){position:relative}.gwho{position:absolute;left:-2px;bottom:-2px;width:34px;height:34px;border-radius:50%;overflow:hidden;border:2px solid #fff;box-shadow:0 1px 4px #0004;background:#fff}
 .gwho svg.pfig{width:100%;height:100%;max-height:none;margin:0;padding:0;border-radius:0}.gwho .rg{pointer-events:none}.gwho svg.pimg{width:100%;height:100%}
 .ghand{width:calc(var(--u)*.9*var(--sc,1));height:calc(var(--u)*1.1*var(--sc,1));display:block}
+
+/* ---- Ventana modal de instalación y actualización: capa superior, fondo oscurecido, centrada ---- */
+html.pwa-lock,html.pwa-lock body{overflow:hidden;overscroll-behavior:none}
+dialog.pwamodal{position:fixed;inset:0;margin:auto;padding:0;border:0;border-radius:28px;background:#fff;color:var(--ink,#1f2a55);width:min(92vw,440px);height:fit-content;max-height:calc(100vh - 24px);max-height:calc(100dvh - 24px - env(safe-area-inset-top,0px) - env(safe-area-inset-bottom,0px));overflow:auto;overscroll-behavior:contain;box-shadow:0 24px 60px #0008;z-index:2147483000}
+dialog.pwamodal::backdrop{background:rgba(16,21,50,.68);-webkit-backdrop-filter:blur(3px);backdrop-filter:blur(3px)}
+.pwamodal .pm-band{display:flex;justify-content:center;padding:26px 16px 44px;background:linear-gradient(180deg,#2b2f6a 0%,#6a4b9a 45%,#e4573f 100%)}
+.pwamodal .pm-icon{width:96px;height:96px;border-radius:24px;background:#fff;border:4px solid #fff;box-shadow:0 8px 20px #0006;margin-bottom:-60px;position:relative;top:34px}
+.pwamodal .pm-body{padding:50px 22px 22px;text-align:center}
+.pwamodal h2{font-size:clamp(21px,5.2vw,26px);line-height:1.2;margin:0 0 10px}
+.pwamodal p{font-size:17px;line-height:1.4;margin:0 0 12px;color:var(--ink2,#44506a)}
+.pwamodal .pm-steps{text-align:left;margin:6px auto 12px;padding-left:24px;font-size:16px;line-height:1.5;max-width:340px}.pwamodal .pm-note{font-size:14px}
+.pwamodal .pm-actions{display:flex;flex-direction:column;gap:10px;margin-top:16px}
+.pwamodal .pm-actions .primary{width:100%;min-height:58px;font-size:19px}.pwamodal .pm-actions .soft{width:100%;min-height:48px;font-size:17px}
+.pwamodal button[disabled]{opacity:.7}
+@media(min-width:900px){dialog.pwamodal{width:480px}}
+@media(max-height:520px){.pwamodal .pm-band{padding:12px 12px 30px}.pwamodal .pm-icon{width:64px;height:64px;border-radius:16px;margin-bottom:-40px;top:22px}.pwamodal .pm-body{padding:34px 18px 14px}.pwamodal p{font-size:15px;margin-bottom:6px}.pwamodal .pm-actions{flex-direction:row;margin-top:8px}.pwamodal .pm-actions .primary,.pwamodal .pm-actions .soft{min-height:48px;font-size:16px}}
+@media(prefers-reduced-motion:no-preference){dialog.pwamodal[open]{animation:pmIn .22s ease-out}dialog.pwamodal[open]::backdrop{animation:pmFade .22s ease-out}}
+@keyframes pmIn{from{opacity:0;transform:translateY(14px) scale(.96)}to{opacity:1;transform:none}}@keyframes pmFade{from{opacity:0}to{opacity:1}}

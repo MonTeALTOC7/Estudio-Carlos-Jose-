@@ -66,7 +66,7 @@ Auditoría completa y matriz de cobertura del Cuadernillo MINED en [`docs/AUDITO
 Limitaciones conocidas: ver §7 de la auditoría (voz española, pruebas en teléfonos reales, emojis como ilustraciones, contenido nacional pendiente, Registro de valoración no recibido).
 
 
-## Versión 5.3 · Cinco habilidades humanas, instalación y actualización PWA
+## Versión 5.3 · Cinco habilidades humanas, instalación y actualización PWA (5.3.1: ventana modal)
 La versión vive en el archivo `VERSION` (única fuente). Detalle: `docs/MATRIZ_MEJORAS_FINAL.md`, `docs/AUDITORIA_PEDAGOGICA_FINAL.md`, `docs/PWA_INSTALACION_ACTUALIZACION.md`. Pruebas: `node test.cjs`, `node qa/audit-pedagogica.cjs`, `node qa/pwa-smoke.cjs`.
 
 ## Versión 5.2 · Identidad personalizada, Galaxy Tab A9 y Partes de mi cuerpo

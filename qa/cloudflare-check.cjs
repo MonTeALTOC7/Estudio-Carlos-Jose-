@@ -41,7 +41,7 @@ async function g(n,fn){try{const r=await fn();rec(n,r===true,r===true?'':String(
  await g('Actualización: una versión nueva muestra el aviso y reemplaza solo la caché de prueba',async()=>{const before=await p.evaluate(()=>window.APP.build);
   let h=fs.readFileSync(path.join(dist,'index.html'),'utf8').replace('"build":"'+before+'"','"build":"cf000001"');fs.writeFileSync(path.join(dist,'index.html'),h);
   fs.writeFileSync(path.join(dist,'sw.js'),fs.readFileSync(path.join(dist,'sw.js'),'utf8').replace("const BUILD='"+before+"';","const BUILD='cf000001';"));
-  await p.click('#home');await p.waitForSelector('.hero5');await p.evaluate(()=>window.appReg.update());await p.waitForSelector('#updbar:not([hidden])',{timeout:15000});await p.click('#updgo');await p.waitForSelector('.hero5');
+  await p.click('#home');await p.waitForSelector('.hero5');await p.evaluate(()=>window.appReg.update());await p.waitForSelector('#pwaModal[open] #updgo',{timeout:15000});await p.click('#updgo');await p.waitForSelector('.hero5');
   const r=await p.evaluate(async()=>({b:window.APP.build,k:await caches.keys(),n:JSON.parse(localStorage.getItem('primerosPasos3-prueba')).name}));return r.b==='cf000001'&&r.k.length===1&&r.k[0].endsWith('cf000001')&&r.n==='Verifica'||JSON.stringify(r)});
  rec('Sin errores de consola ni de página',errs.length===0,errs[0]||'');
  await b.close();srv.close();console.log('\nFallas: '+failures);process.exit(failures?1:0)})().catch(e=>{console.log('ERROR',e.message);process.exit(2)});

@@ -180,8 +180,6 @@ html:has(#app[data-mode="hub"]){scroll-padding-bottom:100px}
 
 /* canal de prueba, actualización y diagnóstico */
 #ribbon{position:fixed;top:env(safe-area-inset-top,0px);left:50%;transform:translateX(-50%);z-index:70;background:#b3261e;color:#fff;font-size:11px;font-weight:900;letter-spacing:.6px;padding:2px 12px;border-radius:0 0 10px 10px;pointer-events:none}
-#updbar{position:fixed;left:12px;right:12px;bottom:calc(12px + env(safe-area-inset-bottom,0px));z-index:65;background:var(--navy);color:#fff;border-radius:20px;padding:12px 14px;display:flex;align-items:center;gap:10px;flex-wrap:wrap;box-shadow:0 10px 24px #0005}#updbar span{flex:1 1 180px;font-weight:700}#updbar .primary{min-height:44px;padding:8px 16px;background:#fff;color:var(--green);box-shadow:none}#updbar .soft{min-height:44px;background:#ffffff2a;color:#fff}
-body:has(#app[data-mode="hub"]) #updbar{bottom:calc(86px + env(safe-area-inset-bottom,0px))}@media(min-width:900px){body:has(#app[data-mode="hub"]) #updbar{bottom:calc(12px + env(safe-area-inset-bottom,0px));left:calc(var(--rail) + 12px)}}
 .dgtable{overflow-x:auto}.dgtest{background:#fff8e6;border-radius:16px;padding:12px 14px;margin:12px 0;display:flex;flex-direction:column;gap:8px}.dgrow{display:flex;justify-content:space-between;align-items:center;gap:20px;max-width:360px}.dgball{font-size:44px;min-width:70px;min-height:70px}.dgbox{font-size:60px;border:3px dashed #d9b25a;border-radius:18px;min-width:90px;min-height:90px;display:inline-flex;align-items:center;justify-content:center}
 .dgchecks{display:grid;gap:8px;margin:12px 0}.dgchecks label{display:flex;gap:10px;align-items:flex-start;font-size:15px}.dgchecks input{width:22px;height:22px;margin:2px 0 0;flex:0 0 auto}.dgrep{width:100%;min-height:130px;font-size:12px;border:2px solid var(--line);border-radius:12px;padding:8px}
 
@@ -258,12 +256,8 @@ input[type=checkbox]{width:28px;height:28px;flex:0 0 auto;margin:0;accent-color:
  .gmatch{margin:4px auto;max-width:560px;gap:28px;--u:46px}.gcol{gap:6px}.gm{min-height:56px;padding:2px 6px;--u:clamp(36px,9vh,46px)}
 }
 
-/* Invitación contextual a instalar (en «Hoy», sin modal) y panel de instalación/actualización */
-.pwacard{display:flex;align-items:center;gap:14px;flex-wrap:wrap;background:#fff;border:2px solid var(--line);border-radius:20px;padding:12px 14px;margin:14px 0 0}
-.pwacard .pc-i{border-radius:14px;flex:none}.pwacard .pc-t{flex:1 1 220px;min-width:0}.pwacard h2{font-size:17px;margin:0 0 2px}.pwacard p{margin:0;font-size:14px;color:var(--ink2,#44506a)}
-.pwacard .pc-b{display:flex;gap:8px;flex-wrap:wrap}.pwacard button{min-height:44px;padding:8px 16px}
+/* Ventana modal de instalación y actualización (pwa.js) */
 .pwapanel{background:#f6f8f2;border-radius:16px;padding:10px 14px}.pwapanel .row{display:flex;gap:8px;flex-wrap:wrap;margin:6px 0}.pwapanel button{min-height:44px}
-#updbar button[disabled]{opacity:.7}
 
 /* Rostros dibujados con expresión (Cómo me siento) */
 .gface{display:inline-block;width:calc(var(--u)*.92*var(--sc,1));height:calc(var(--u)*.92*var(--sc,1))}.gface svg.pfig{width:100%;height:100%;max-height:none;margin:0;padding:0;background:transparent;display:block}
@@ -273,7 +267,25 @@ input[type=checkbox]{width:28px;height:28px;flex:0 0 auto;margin:0;accent-color:
 .gart:has(.gwho){position:relative}.gwho{position:absolute;left:-2px;bottom:-2px;width:34px;height:34px;border-radius:50%;overflow:hidden;border:2px solid #fff;box-shadow:0 1px 4px #0004;background:#fff}
 .gwho svg.pfig{width:100%;height:100%;max-height:none;margin:0;padding:0;border-radius:0}.gwho .rg{pointer-events:none}.gwho svg.pimg{width:100%;height:100%}
 .ghand{width:calc(var(--u)*.9*var(--sc,1));height:calc(var(--u)*1.1*var(--sc,1));display:block}
-</style></head><body><div class="app" id="app" data-mode="hub"><header class="topbar"><button class="brand" id="home" aria-label="Ir a Hoy"><span class="brandmark" id="logo" aria-hidden="true"></span><span class="brandtxt"><small>Centro de Estudios</small><b>Carlos José</b></span></button><div class="header-actions"><button id="parents" class="icon" aria-label="Zona de adultos">⚙</button></div></header><nav class="modulebar" aria-label="Navegación de juegos"><div class="modrow"><button id="directHome" class="soft">⌂ Inicio</button><button id="modules" class="primary" aria-haspopup="dialog">▦ <span class="lg">Cambiar módulo</span><span class="sm">Módulos</span></button></div><div class="chips" id="chips" aria-label="Ir directo a un módulo"></div></nav><main id="main"></main><footer><span>Aprendo, juego y descubro · <b>By Carlos Tijerino</b></span><span>Versión 5.3.0</span></footer></div><nav class="tabbar" id="tabbar" aria-label="Secciones"><button data-tab="hoy"><svg viewBox="0 0 32 32" aria-hidden="true"><circle cx="16" cy="16" r="6"/><path d="M16 3v4M16 25v4M3 16h4M25 16h4M7 7l3 3M22 22l3 3M25 7l-3 3M10 22l-3 3"/></svg><span>Hoy</span></button><button data-tab="camino"><svg viewBox="0 0 32 32" aria-hidden="true"><path d="M7 28c0-6 18-6 18-12S7 12 7 6"/><circle cx="7" cy="5" r="2.6"/><circle cx="25" cy="27" r="2.6"/></svg><span>Camino</span></button><button data-tab="aprender"><svg viewBox="0 0 32 32" aria-hidden="true"><path d="M4 7q6-2 12 2 6-4 12-2v18q-6-2-12 2-6-4-12-2z"/><path d="M16 9v18"/></svg><span>Aprender</span></button><button data-tab="jugar"><svg viewBox="0 0 32 32" aria-hidden="true"><path d="M16 3l3.4 8.4 9 .7-6.9 5.8 2.2 8.8L16 21.9l-7.7 4.8 2.2-8.8-6.9-5.8 9-.7z"/></svg><span>Jugar</span></button><button data-tab="logros"><svg viewBox="0 0 32 32" aria-hidden="true"><circle cx="16" cy="13" r="8"/><path d="M11 20l-3 9 8-4 8 4-3-9"/></svg><span>Logros</span></button></nav><div id="updbar" role="status" aria-live="polite" hidden><span id="updtxt">Hay una nueva versión de Carlos José.</span><button class="primary" id="updgo">Actualizar ahora</button><button class="soft" id="updlater">Después de mi clase</button></div><div id="cheer" role="status" aria-live="polite"></div><div id="celebrate" aria-live="polite"></div><canvas id="confetti" aria-hidden="true"></canvas><dialog id="dialog"><div id="dialogContent"></div><button id="closeDialog" class="soft">Cerrar</button></dialog><dialog id="moduleDialog" aria-labelledby="moduleTitle"><h2 id="moduleTitle">¿A qué jugamos?</h2><p>Elige directamente. Tu progreso se conserva.</p><div id="moduleChoices" class="module-grid"></div><button id="closeModules" class="soft">Seguir jugando</button></dialog><div id="notice" role="status"></div><script>window.APP={"channel":"producción","key":"primerosPasos3","version":"5.3.0","build":"e1b08a20","commit":""};window.CJ_ASSETS=window.CJ_ASSETS||{hero:'assets/hero.webp',face:'assets/avatar.webp'};</script><script>(function(root){
+
+/* ---- Ventana modal de instalación y actualización: capa superior, fondo oscurecido, centrada ---- */
+html.pwa-lock,html.pwa-lock body{overflow:hidden;overscroll-behavior:none}
+dialog.pwamodal{position:fixed;inset:0;margin:auto;padding:0;border:0;border-radius:28px;background:#fff;color:var(--ink,#1f2a55);width:min(92vw,440px);height:fit-content;max-height:calc(100vh - 24px);max-height:calc(100dvh - 24px - env(safe-area-inset-top,0px) - env(safe-area-inset-bottom,0px));overflow:auto;overscroll-behavior:contain;box-shadow:0 24px 60px #0008;z-index:2147483000}
+dialog.pwamodal::backdrop{background:rgba(16,21,50,.68);-webkit-backdrop-filter:blur(3px);backdrop-filter:blur(3px)}
+.pwamodal .pm-band{display:flex;justify-content:center;padding:26px 16px 44px;background:linear-gradient(180deg,#2b2f6a 0%,#6a4b9a 45%,#e4573f 100%)}
+.pwamodal .pm-icon{width:96px;height:96px;border-radius:24px;background:#fff;border:4px solid #fff;box-shadow:0 8px 20px #0006;margin-bottom:-60px;position:relative;top:34px}
+.pwamodal .pm-body{padding:50px 22px 22px;text-align:center}
+.pwamodal h2{font-size:clamp(21px,5.2vw,26px);line-height:1.2;margin:0 0 10px}
+.pwamodal p{font-size:17px;line-height:1.4;margin:0 0 12px;color:var(--ink2,#44506a)}
+.pwamodal .pm-steps{text-align:left;margin:6px auto 12px;padding-left:24px;font-size:16px;line-height:1.5;max-width:340px}.pwamodal .pm-note{font-size:14px}
+.pwamodal .pm-actions{display:flex;flex-direction:column;gap:10px;margin-top:16px}
+.pwamodal .pm-actions .primary{width:100%;min-height:58px;font-size:19px}.pwamodal .pm-actions .soft{width:100%;min-height:48px;font-size:17px}
+.pwamodal button[disabled]{opacity:.7}
+@media(min-width:900px){dialog.pwamodal{width:480px}}
+@media(max-height:520px){.pwamodal .pm-band{padding:12px 12px 30px}.pwamodal .pm-icon{width:64px;height:64px;border-radius:16px;margin-bottom:-40px;top:22px}.pwamodal .pm-body{padding:34px 18px 14px}.pwamodal p{font-size:15px;margin-bottom:6px}.pwamodal .pm-actions{flex-direction:row;margin-top:8px}.pwamodal .pm-actions .primary,.pwamodal .pm-actions .soft{min-height:48px;font-size:16px}}
+@media(prefers-reduced-motion:no-preference){dialog.pwamodal[open]{animation:pmIn .22s ease-out}dialog.pwamodal[open]::backdrop{animation:pmFade .22s ease-out}}
+@keyframes pmIn{from{opacity:0;transform:translateY(14px) scale(.96)}to{opacity:1;transform:none}}@keyframes pmFade{from{opacity:0}to{opacity:1}}
+</style></head><body><div class="app" id="app" data-mode="hub"><header class="topbar"><button class="brand" id="home" aria-label="Ir a Hoy"><span class="brandmark" id="logo" aria-hidden="true"></span><span class="brandtxt"><small>Centro de Estudios</small><b>Carlos José</b></span></button><div class="header-actions"><button id="parents" class="icon" aria-label="Zona de adultos">⚙</button></div></header><nav class="modulebar" aria-label="Navegación de juegos"><div class="modrow"><button id="directHome" class="soft">⌂ Inicio</button><button id="modules" class="primary" aria-haspopup="dialog">▦ <span class="lg">Cambiar módulo</span><span class="sm">Módulos</span></button></div><div class="chips" id="chips" aria-label="Ir directo a un módulo"></div></nav><main id="main"></main><footer><span>Aprendo, juego y descubro · <b>By Carlos Tijerino</b></span><span>Versión 5.3.1</span></footer></div><nav class="tabbar" id="tabbar" aria-label="Secciones"><button data-tab="hoy"><svg viewBox="0 0 32 32" aria-hidden="true"><circle cx="16" cy="16" r="6"/><path d="M16 3v4M16 25v4M3 16h4M25 16h4M7 7l3 3M22 22l3 3M25 7l-3 3M10 22l-3 3"/></svg><span>Hoy</span></button><button data-tab="camino"><svg viewBox="0 0 32 32" aria-hidden="true"><path d="M7 28c0-6 18-6 18-12S7 12 7 6"/><circle cx="7" cy="5" r="2.6"/><circle cx="25" cy="27" r="2.6"/></svg><span>Camino</span></button><button data-tab="aprender"><svg viewBox="0 0 32 32" aria-hidden="true"><path d="M4 7q6-2 12 2 6-4 12-2v18q-6-2-12 2-6-4-12-2z"/><path d="M16 9v18"/></svg><span>Aprender</span></button><button data-tab="jugar"><svg viewBox="0 0 32 32" aria-hidden="true"><path d="M16 3l3.4 8.4 9 .7-6.9 5.8 2.2 8.8L16 21.9l-7.7 4.8 2.2-8.8-6.9-5.8 9-.7z"/></svg><span>Jugar</span></button><button data-tab="logros"><svg viewBox="0 0 32 32" aria-hidden="true"><circle cx="16" cy="13" r="8"/><path d="M11 20l-3 9 8-4 8 4-3-9"/></svg><span>Logros</span></button></nav><div id="cheer" role="status" aria-live="polite"></div><div id="celebrate" aria-live="polite"></div><canvas id="confetti" aria-hidden="true"></canvas><dialog id="dialog"><div id="dialogContent"></div><button id="closeDialog" class="soft">Cerrar</button></dialog><dialog id="moduleDialog" aria-labelledby="moduleTitle"><h2 id="moduleTitle">¿A qué jugamos?</h2><p>Elige directamente. Tu progreso se conserva.</p><div id="moduleChoices" class="module-grid"></div><button id="closeModules" class="soft">Seguir jugando</button></dialog><div id="notice" role="status"></div><script>window.APP={"channel":"producción","key":"primerosPasos3","version":"5.3.1","build":"d92fa331","commit":""};window.CJ_ASSETS=window.CJ_ASSETS||{hero:'assets/hero.webp',face:'assets/avatar.webp'};</script><script>(function(root){
  'use strict';
  const groups={numbers:['1','2','3','4','5','6','7','8','9','10'],vowels:['a','e','i','o','u'],colors:['rojo','azul','amarillo','verde','naranja','morado','rosado','café'],shapes:['círculo','X','cuadrado','triángulo','rectángulo','óvalo','rombo']};
  function fresh(){return{version:3,name:'',sound:true,voice:'',rate:.85,unlocked:{},records:{},sessions:0,drawings:0}}
@@ -2772,7 +2784,7 @@ function hoy(){
  '<div class="hero5-text"><span class="eyebrow">Aprendo, juego y descubro</span><h1>¡Hola, '+esc(nm())+'!</h1><div class="lvl"><span class="lvl-i" aria-hidden="true">'+lv.level.icon+'</span><span><b>'+esc(lv.level.name)+'</b><small>Nivel '+lv.level.n+(lv.next?' · camino a '+esc(lv.next.name):' · ¡el más alto!')+'</small></span></div><div class="lvbar" role="img" aria-label="Camino al siguiente nivel"><i style="width:'+Math.max(6,pct)+'%"></i></div>'+
  '<div class="path" role="img" aria-label="Unidad '+un.n+' de '+un.total+': '+esc(un.title)+'. '+un.done+' de '+un.total2+' clases hechas."><span class="path-t">'+un.icon+' Unidad '+un.n+' · '+esc(un.title)+'</span><span class="path-d" aria-hidden="true">'+un.pips.map(p=>'<i class="'+p+'"></i>').join('')+'</span></div>'+
  '<div class="row hero-actions"><button class="primary xl" id="cont"><span>▶ '+esc(contT)+'</span><small>'+esc(contS)+'</small></button><button class="soft" id="greet" aria-label="Escuchar el saludo">♫</button></div></div>'+
- '<div class="hero5-char" aria-hidden="true">'+avatar('hero')+'</div></div>'+'<div id="pwaSlot"></div>'+
+ '<div class="hero5-char" aria-hidden="true">'+avatar('hero')+'</div></div>'+
  (res?'<div class="freeres"><span class="fr-i" aria-hidden="true">'+(res.icon||'🎮')+'</span><span class="fr-t"><small>Juego libre a medias</small><b>'+esc(res.title)+'</b><small>'+esc(res.label||'')+'</small></span><button class="soft" id="freeres">Retomar</button></div>':'')+
  '<div class="section-title"><h2>Mi aventura de hoy</h2><small>Juego libre · no cambia mi camino</small></div><div class="today">'+(recs.length?recs.map((r,i)=>'<button class="tcard k-'+r.kind+'" data-rec="'+i+'"><span class="tc-i" aria-hidden="true">'+r.icon+'</span><span class="tc-t"><em>'+KIND[r.kind][0]+' '+KIND[r.kind][1]+'</em><strong>'+esc(r.title)+'</strong><small>'+esc(r.kid)+'</small></span><span class="tc-go" aria-hidden="true">›</span></button>').join(''):'<p>¡Todo al día! Juega una aventura.</p>')+'</div>'+
  '<div class="section-title"><h2>Aventuras</h2><button class="linkb" id="alladv">Ver todas ›</button></div><div class="advrow">'+(Adv?Adv.list.map(a=>advCard(a,sn.s.adv[a.id])).join(''):'')+'</div>'+
@@ -2780,7 +2792,7 @@ function hoy(){
  $('#cont').onclick=()=>K.course.begin();const fr=$('#freeres');if(fr)fr.onclick=()=>{if(advR&&Adv.resume())return;if(ri&&G.resume())return};
  $('#greet').onclick=()=>K.speakTap('¡Hola, '+nm()+'! ¿Listo para aprender, jugar y descubrir?');
  qa('[data-rec]').forEach(b=>b.onclick=()=>startRec(recs[+b.dataset.rec]));
- $('#alladv').onclick=jugar;$('#allach').onclick=logros;bindAdv();if(K.pwa)K.pwa.mountCard()}
+ $('#alladv').onclick=jugar;$('#allach').onclick=logros;bindAdv();if(K.pwa)K.pwa.refresh()}
 function advCard(a,rec){const done=rec&&rec.runs>0,stars=rec&&rec.stars||0;return '<button class="advcard" data-adv="'+a.id+'" style="--a:'+a.color+'"><span class="adv-i" aria-hidden="true">'+a.icon+'</span><strong>'+esc(a.title)+'</strong><small>'+esc(a.blurb)+'</small><span class="adv-s">'+(done?'⭐'.repeat(stars)+'<em>Jugada</em>':'<em>Nueva</em>')+'</span></button>'}
 function bindAdv(){qa('[data-adv]').forEach(b=>b.onclick=()=>Adv.open(b.dataset.adv))}
 
@@ -2904,19 +2916,37 @@ root.PwaUI=function(K,Sh){
  const canInvite=()=>{const m=installMode();return(m==='nativa'||m==='ios')&&!cooling()&&!st().inst.at&&!pendingInstall()};
  function postpone(){const i=st().inst;i.d.push(Date.now());if(i.d.length>6)i.d.shift();K.save()}
  function offlineLine(){return root.appOfflineReady?'Ya está lista para usarse sin conexión.':'Se está preparando para usarse sin conexión.'}
- function cardHTML(){const m=installMode();
-  const head='<img class="pc-i" src="icon-192.png" alt="" width="56" height="56"><div class="pc-t"><h2 id="pwat">Instalar «'+esc(name)+'»</h2>';
-  if(m==='ios')return '<section class="pwacard" id="pwaCard" role="region" aria-labelledby="pwat">'+head+'<p>Para tenerla como aplicación: toca <b>Compartir</b> <span aria-hidden="true">⬆️</span> y luego <b>«Añadir a pantalla de inicio»</b>.'+(iosSafari()?'':' (Si no ves la opción, ábrela en Safari.)')+'</p></div><div class="pc-b"><button class="primary" id="pwaNo">Entendido</button></div></section>';
-  return '<section class="pwacard" id="pwaCard" role="region" aria-labelledby="pwat">'+head+'<p>Se instala como una aplicación y funciona sin conexión. '+esc(offlineLine())+'</p></div><div class="pc-b"><button class="primary" id="pwaGo">Instalar</button><button class="soft" id="pwaNo">Ahora no</button></div></section>'}
- /* Se monta en «Hoy», debajo de la portada: nunca durante una clase, un arrastre o un trazo. */
- function mountCard(){const host=$('#pwaSlot');if(!host)return;host.innerHTML='';if(!canInvite())return;host.innerHTML=cardHTML();
-  const go=$('#pwaGo'),no=$('#pwaNo');
-  if(no)no.onclick=()=>{postpone();host.innerHTML=''};
-  if(go)go.onclick=async()=>{const ev=deferred;if(!ev||installing)return;installing=true;deferred=null;               // el evento solo sirve una vez
-   try{await ev.prompt();const r=await ev.userChoice;if(r&&r.outcome==='accepted'){st().inst.pending=Date.now();K.save();host.innerHTML='';K.notice('Instalando… cuando termine aparecerá en tu pantalla de inicio.')}else{postpone();host.innerHTML='';K.notice('Está bien, puedes instalarla más adelante desde Ajustes.')}}
-   catch(e){host.innerHTML='';K.notice('No se pudo abrir la instalación. Prueba desde Ajustes.')}finally{installing=false}}}
- root.addEventListener('beforeinstallprompt',e=>{e.preventDefault();deferred=e;mountCard();rerenderSettings()});
- root.addEventListener('appinstalled',()=>{deferred=null;installing=false;const i=st().inst;i.at=Date.now();delete i.pending;K.save();const c=$('#pwaCard');if(c)c.remove();K.notice('¡Listo! Ya está instalada.');rerenderSettings()});
+
+ /* ================= VENTANA MODAL (instalación, actualización y avisos) =================
+    Un <dialog> nativo abierto con showModal(): capa superior, fondo oscurecido, el resto de la página queda inerte (foco atrapado),
+    Esc cierra, el foco vuelve a donde estaba y el desplazamiento del fondo se bloquea. Solo existe uno a la vez. */
+ let dlg=null,kind=null,lastFocus=null,activePtr=0;
+ const lock=on=>{document.documentElement.classList.toggle('pwa-lock',!!on)};
+ function ensureDlg(){if(dlg)return dlg;dlg=document.createElement('dialog');dlg.id='pwaModal';dlg.className='pwamodal';dlg.setAttribute('role','dialog');dlg.setAttribute('aria-modal','true');dlg.setAttribute('aria-labelledby','pmT');dlg.setAttribute('aria-describedby','pmP');document.body.appendChild(dlg);
+  dlg.addEventListener('cancel',e=>{e.preventDefault();if(applying)return;const no=dlg.querySelector('#pwaNo,#updlater');if(no)no.click()});   // Esc = la opción secundaria; nunca queda bloqueado
+  dlg.addEventListener('close',()=>{lock(false);kind=null;setTimeout(refresh,0)});return dlg}
+ function openModal(k,o){const d=ensureDlg();kind=k;
+  d.dataset.kind=k;d.innerHTML='<div class="pm-band"><img class="pm-icon" src="icon-192.png" alt="" width="96" height="96"></div><div class="pm-body"><h2 id="pmT">'+o.title+'</h2><p id="pmP">'+o.text+'</p>'+(o.extra||'')+'<div class="pm-actions">'+o.buttons+'</div></div>';
+  lastFocus=document.activeElement;lock(true);if(!d.open)d.showModal();const f=d.querySelector('[autofocus]')||d.querySelector('button');if(f)f.focus();return d}
+ function closeModal(){lock(false);if(dlg&&dlg.open)dlg.close();kind=null}
+ /* ---- instalación ---- */
+ function installModal(){const m=installMode(),ios=m==='ios';
+  const T='¡Instala '+esc(name)+'!';
+  if(ios)return openModal('install-ios',{title:T,text:'Para tenerla en tu pantalla de inicio, incluso sin conexión:',extra:'<ol class="pm-steps"><li>Toca <b>Compartir</b> <span aria-hidden="true">⬆️</span> en la barra de Safari.</li><li>Elige <b>«Añadir a pantalla de inicio»</b>.</li><li>Toca <b>«Añadir»</b>.</li></ol>'+(iosSafari()?'':'<p class="pm-note">Si no ves la opción, abre esta página en Safari.</p>'),buttons:'<button class="primary xl" id="pwaOk" autofocus>Entendido</button><button class="soft" id="pwaNo">Ahora no</button>'});
+  return openModal('install',{title:T,text:'Aprende y juega desde tu pantalla de inicio, incluso sin conexión.',buttons:'<button class="primary xl" id="pwaGo" autofocus>Instalar aplicación</button><button class="soft" id="pwaNo">Ahora no</button>'})}
+ function bindInstall(){const go=$('#pwaGo'),no=$('#pwaNo'),ok=$('#pwaOk');
+  const later=()=>{postpone();closeModal()};
+  if(no)no.onclick=later;if(ok)ok.onclick=later;
+  if(go)go.onclick=async()=>{const ev=deferred;if(!ev||installing)return;installing=true;deferred=null;go.disabled=true;               // el evento solo sirve una vez y solo tras este toque
+   try{await ev.prompt();const r=await ev.userChoice;
+    if(r&&r.outcome==='accepted'){const i=st().inst;i.pending=Date.now();K.save();closeModal();K.notice('Instalando… cuando termine aparecerá en tu pantalla de inicio.')}   // aceptar NO es haber instalado: eso lo confirma «appinstalled»
+    else{postpone();closeModal();K.notice('Está bien, puedes instalarla más adelante desde Ajustes.')}}
+   catch(e){closeModal();K.notice('No se pudo abrir la instalación. Prueba desde Ajustes.')}finally{installing=false}}}
+ root.addEventListener('beforeinstallprompt',e=>{e.preventDefault();deferred=e;refresh();rerenderSettings()});
+ root.addEventListener('appinstalled',()=>{deferred=null;installing=false;const i=st().inst;i.at=Date.now();delete i.pending;K.save();if(kind&&/^install/.test(kind))closeModal();K.notice('¡Listo! Ya está instalada.');rerenderSettings()});
+ /* Ningún toque ni arrastre en curso: no se abre nada encima de un dedo */
+ document.addEventListener('pointerdown',()=>{activePtr++},true);const pu=()=>{activePtr=Math.max(0,activePtr-1)};document.addEventListener('pointerup',pu,true);document.addEventListener('pointercancel',pu,true);
+ const calm=()=>hubNow()&&activePtr===0&&!($('#dialog')&&$('#dialog').open)&&!(dlg&&dlg.open)&&!document.querySelector('#drawing');
  /* ================= ACTUALIZACIÓN ================= */
  let reg=null,pend=null,applying=false,deferredThisSession=false,classEnded=false,lastCheck=0;
  const swc=()=>navigator.serviceWorker&&navigator.serviceWorker.controller;
@@ -2934,13 +2964,14 @@ root.PwaUI=function(K,Sh){
    if(w.state==='redundant'&&!r.waiting&&!pend){st().upd.err=Date.now();K.save();if(applying)failApply('No se pudo descargar la versión nueva. Seguimos con la actual.')}})})}
  function check(force){if(!reg||!navigator.onLine)return Promise.resolve();const n=Date.now();if(!force&&n-lastCheck<20*60e3)return Promise.resolve();lastCheck=n;return reg.update().catch(()=>{})}
  /* Barra de aviso: solo en las pantallas de navegación (no durante clases ni actividades) y respetando «Después de mi clase». */
- function refresh(){const b=$('#updbar');if(!b)return;
-  const show=!!pend&&!pend.silent&&!applying&&hubNow()&&(!deferredThisSession||classEnded)&&st().upd.applied!==pend.build;
-  if(show&&!b.dataset.on){b.dataset.on='1';deferredThisSession=false}
-  if(!show){if(!b.dataset.err){b.hidden=true;delete b.dataset.on;document.body.classList.remove('upd-on')}if(!b.dataset.err)return}
-  if(show){b.dataset.err='';delete b.dataset.err;$('#updtxt').textContent='Hay una nueva versión de Carlos José'+(pend.version&&pend.version!==APPI.version?' ('+pend.version+')':'')+'. Tu avance y tu clase se conservan.';$('#updgo').hidden=false;$('#updlater').hidden=false;$('#updgo').textContent='Actualizar ahora';b.hidden=false;document.body.classList.add('upd-on');
-   $('#updgo').onclick=()=>apply();$('#updlater').onclick=()=>{deferredThisSession=true;classEnded=false;b.hidden=true;delete b.dataset.on;document.body.classList.remove('upd-on');K.notice('Te lo volveremos a ofrecer al terminar tu clase o al abrir la aplicación.')}}}
- function showMsg(text,btn){const b=$('#updbar');if(!b)return;b.hidden=false;b.dataset.err='1';document.body.classList.add('upd-on');$('#updtxt').textContent=text;$('#updgo').hidden=true;const l=$('#updlater');l.hidden=false;l.textContent=btn||'Entendido';l.onclick=()=>{b.hidden=true;delete b.dataset.err;l.textContent='Después de mi clase';document.body.classList.remove('upd-on')}}
+ /* Un único punto de decisión. Instalación: al entrar, en cuanto el navegador la permita. Actualización: solo con la versión descargada y un momento seguro (nunca en clase, trazo, arrastre o juego). */
+ function refresh(){if(!calm())return;
+  if(canInvite()){installModal();bindInstall();return}
+  const show=!!pend&&!pend.silent&&!applying&&(!deferredThisSession||classEnded)&&st().upd.applied!==pend.build;
+  if(show){deferredThisSession=false;classEnded=false;updateModal()}}
+ function updateModal(){openModal('update',{title:'Hay una nueva versión de Carlos José',text:'<span id="updtxt">Tu avance y tu clase se conservan'+(pend&&pend.version&&pend.version!==APPI.version?' (versión '+esc(pend.version)+')':'')+'.</span>',buttons:'<button class="primary xl" id="updgo" autofocus>Actualizar ahora</button><button class="soft" id="updlater">Después de mi clase</button>'});
+  $('#updgo').onclick=()=>apply();$('#updlater').onclick=()=>{if(applying)return;deferredThisSession=true;classEnded=false;closeModal();K.notice('Te lo volveremos a ofrecer al terminar tu clase o al abrir la aplicación.')}}
+ function showMsg(text,btn){deferredThisSession=true;classEnded=false;openModal('msg',{title:'Sobre la actualización',text:esc(text),buttons:'<button class="primary xl" id="updlater" autofocus>'+esc(btn||'Entendido')+'</button>'});$('#updlater').onclick=()=>closeModal()}
  function failApply(text){applying=false;try{sessionStorage.removeItem('cj_upd')}catch(e){}showMsg(text||'No se pudo activar la versión nueva. Seguimos con la actual; puedes intentarlo más tarde.');rerenderSettings()}
  /* Aplicar: guarda el estado, pide la activación a la versión en espera, recarga UNA sola vez y verifica. */
  async function apply(){if(applying)return;const unsafe=!hubNow()&&!$('#dialog').open;if(unsafe){K.notice('Primero vuelve a «Hoy»: así tu clase queda guardada.');return}
@@ -2954,7 +2985,7 @@ root.PwaUI=function(K,Sh){
    w.postMessage({type:'SKIP_WAITING'});
    setTimeout(()=>{if(!done){done=true;navigator.serviceWorker.removeEventListener('controllerchange',onc);failApply('No se pudo activar la versión nueva. Seguimos con la actual; tu avance está intacto.')}},10000)
   }catch(e){failApply(e&&e.message==='tiempo'?'La versión nueva tarda en descargarse (¿sin conexión?). Seguimos con la actual.':'No se pudo actualizar. Seguimos con la versión actual; tu avance está intacto.')}}
- function refreshBusy(on){const g=$('#updgo');if(g){g.disabled=!!on;g.textContent=on?'Actualizando…':'Actualizar ahora'}}
+ function refreshBusy(on){const g=$('#updgo');if(g){g.disabled=!!on;g.textContent=on?'Actualizando…':'Actualizar ahora'}const l=$('#updlater');if(l)l.disabled=!!on}
  function doReload(){K.save();location.reload()}
  /* Tras la recarga: confirma que la versión nueva es la activa y retira el aviso; nunca recarga otra vez. */
  function verifyAfterReload(){let f=null;try{f=JSON.parse(sessionStorage.getItem('cj_upd')||'null');sessionStorage.removeItem('cj_upd')}catch(e){}
@@ -2967,8 +2998,9 @@ root.PwaUI=function(K,Sh){
   navigator.serviceWorker.addEventListener('controllerchange',()=>{                       // sin la marca de «actualizando» o «silencioso» nunca se recarga solo
    let silent=false;try{silent=sessionStorage.getItem('cj_silent')==='1';sessionStorage.removeItem('cj_silent')}catch(e){}if(silent){pend=null;K.save();rerenderSettings();return}
    getInfo(swc()).then(i=>{if(i&&i.build&&i.build!==APPI.build&&!applying){pend={worker:null,build:i.build,version:i.version};refresh()}})});
-  navigator.serviceWorker.register('./sw.js').then(r=>{track(r);check(true);return navigator.serviceWorker.ready}).then(()=>{root.appOfflineReady=true;const c=$('#pwaCard');if(c){const p=c.querySelector('.pc-t p');if(p&&installMode()==='nativa')p.textContent='Se instala como una aplicación y funciona sin conexión. '+offlineLine()}rerenderSettings()}).catch(()=>{K.notice('No se pudo preparar el uso sin conexión. Puedes seguir jugando con internet.')});
+  navigator.serviceWorker.register('./sw.js').then(r=>{track(r);check(true);return navigator.serviceWorker.ready}).then(()=>{root.appOfflineReady=true;rerenderSettings()}).catch(()=>{K.notice('No se pudo preparar el uso sin conexión. Puedes seguir jugando con internet.')});
   document.addEventListener('visibilitychange',()=>{if(!document.hidden)check(false)});
+  setInterval(()=>{if(!dlg||!dlg.open)refresh()},3000);                         // reintenta cuando hay algo que ofrecer y el momento ya es tranquilo
   root.addEventListener('online',()=>check(false))}
  /* ================= AJUSTES (adultos) ================= */
  function panelHTML(){const m=installMode(),u=st().upd,inst=st().inst;
@@ -2985,7 +3017,7 @@ root.PwaUI=function(K,Sh){
   const ap=$('#pwaApply');if(ap)ap.onclick=()=>{const d=$('#dialog');if(d&&d.open)d.close();apply()}}
  function rerenderSettings(){const p=$('.pwapanel');if(p&&p.closest('#dialogContent')){const wrap=p.parentNode.previousElementSibling&&p.parentNode;/* se repinta solo el panel */const h=document.createElement('div');h.innerHTML=panelHTML();const nw=h.querySelector('.pwapanel');if(nw){p.replaceWith(nw);bindPanel()}}}
  const noteClassEnd=()=>{classEnded=true;refresh()};
- return{init,mountCard,refresh,panelHTML,bindPanel,noteClassEnd,apply,check,installMode,canInvite,state:()=>({mode:installMode(),pending:pend&&{build:pend.build,silent:!!pend.silent},applying,cooling:cooling(),deferred:!!deferred}),_testHooks:{setPending:w=>setPending(w),getReg:()=>reg}}};
+ return{init,refresh,panelHTML,bindPanel,noteClassEnd,apply,check,installMode,canInvite,state:()=>({mode:installMode(),pending:pend&&{build:pend.build,silent:!!pend.silent},applying,cooling:cooling(),deferred:!!deferred}),_testHooks:{setPending:w=>setPending(w),getReg:()=>reg}}};
 })(typeof globalThis!=='undefined'?globalThis:this);
 </script><script>(()=>{
 'use strict';const SK=(window.APP&&window.APP.key)||'primerosPasos3';const E=Learning,A=Activities,$=s=>document.querySelector(s),$$=s=>Array.from(document.querySelectorAll(s)),main=$('#main');

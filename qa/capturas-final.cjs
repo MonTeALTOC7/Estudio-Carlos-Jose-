@@ -1,5 +1,5 @@
 /* Capturas de la etapa final (docs/capturas/final_*.png): cinco habilidades humanas, mejoras adicionales,
-   invitación de instalación contextual, aviso de actualización y encabezado sin «Instalar».
+   (la instalación y la actualización se capturan con qa/capturas-pwa.cjs).
    Uso: node qa/capturas-final.cjs [--out=docs/capturas] [--viewport=390x844]
    Son capturas de Chromium emulado (no de la tablet física). La invitación y el aviso usan los mismos eventos simulados que qa/pwa-smoke.cjs. */
 const {chromium}=require('playwright');const fs=require('node:fs'),path=require('node:path'),os=require('node:os');
@@ -12,18 +12,6 @@ const copyDir=(a,b)=>{fs.mkdirSync(b,{recursive:true});for(const e of fs.readdir
 const hideToast=p=>p.addStyleTag({content:'#cheer,#notice{display:none!important}'});
 (async()=>{const b=await chromium.launch(),sv=await serve();
  const mk=async(o)=>{const ctx=await b.newContext(Object.assign({viewport:{width:W,height:H},hasTouch:true,isMobile:W<700,serviceWorkers:'block'},o||{}));await ctx.addInitScript(STUB);const p=await ctx.newPage();p.on('pageerror',e=>console.log('PAGEERROR',e.message));await p.goto(sv.url);await p.waitForSelector('.hero5');await hideToast(p);return{ctx,p}};
- /* ---- 1 · Encabezado sin «Instalar», invitación contextual (Android/Chrome) y iPhone ---- */
- {const {ctx,p}=await mk();await p.screenshot({path:path.join(OUT,'final_encabezado_sin_instalar'+tag+'.png'),clip:{x:0,y:0,width:W,height:170}});
-  await p.evaluate(()=>{window.__prompts=0;const ev=new Event('beforeinstallprompt',{cancelable:true});ev.prompt=()=>{window.__prompts++;return Promise.resolve()};ev.userChoice=Promise.resolve({outcome:'accepted'});window.dispatchEvent(ev)});await p.waitForSelector('#pwaCard');
-  await p.evaluate(()=>document.querySelector('#pwaCard').scrollIntoView({block:'center'}));await sleep(200);await p.screenshot({path:path.join(OUT,'final_instalar_contextual'+tag+'.png')});await ctx.close()}
- {const {ctx,p}=await mk({userAgent:'Mozilla/5.0 (iPhone; CPU iPhone OS 17_4 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/17.4 Mobile/15E148 Safari/604.1'});
-  await p.reload();await p.waitForSelector('#pwaCard');await p.evaluate(()=>document.querySelector('#pwaCard').scrollIntoView({block:'center'}));await sleep(200);await p.screenshot({path:path.join(OUT,'final_instalar_ios'+tag+'.png')});await ctx.close()}
- /* ---- 2 · Aviso de actualización (service worker real, versión «publicada» en una copia) ---- */
- {const dir=path.join(os.tmpdir(),'cj-cap-'+Date.now());copyDir(path.join(__dirname,'..','dist'),dir);const s2=await serve(0,{'/':dir});
-  const ctx=await b.newContext({viewport:{width:W,height:H},hasTouch:true,isMobile:W<700,serviceWorkers:'allow'}),p=await ctx.newPage();await ctx.addInitScript(STUB);await p.goto(s2.url);await p.waitForFunction(()=>window.appOfflineReady===true);await p.reload();await p.waitForSelector('.hero5');await p.waitForFunction(()=>!!navigator.serviceWorker.controller);
-  const old=await p.evaluate(()=>window.APP.build);let h=fs.readFileSync(path.join(dir,'index.html'),'utf8').replace('"build":"'+old+'"','"build":"nuevo0001"');fs.writeFileSync(path.join(dir,'index.html'),h);
-  fs.writeFileSync(path.join(dir,'sw.js'),fs.readFileSync(path.join(dir,'sw.js'),'utf8').replace("const BUILD='"+old+"';","const BUILD='nuevo0001';"));
-  await p.evaluate(()=>window.appReg.update());await p.waitForSelector('#updbar:not([hidden])',{timeout:15000});await hideToast(p);await sleep(300);await p.screenshot({path:path.join(OUT,'final_aviso_actualizacion'+tag+'.png')});await ctx.close();s2.srv.close()}
  /* ---- 3 · Habilidades: se recorre la sesión hasta ver cada tipo de pregunta pedido ---- */
  const open=async(p,mod,skill)=>{await p.click('[data-tab="aprender"]');await p.click('[data-mod="'+mod+'"]');await p.click('[data-skill="'+skill+'"]');await p.waitForSelector('.gcards')};
  async function run(mod,skill,wanted,learnShot){const got=new Set();

@@ -413,9 +413,9 @@ test('Versión única: VERSION es la única fuente y no quedan literales de vers
  const sw=fs.readFileSync(__dirname+'/dist/sw.js','utf8');assert.ok(sw.includes("const VERSION='"+V+"'"));assert.ok(!/BUILD='dev'/.test(sw)&&!/VERSION='0\.0\.0'/.test(sw));
  for(const f of ['shell.js','app.js','pwa.js','course.js','page.html'])assert.ok(!/(?<![\d.#a-f])5\.[123]\.\d(?![\d])|Versión 5\.\d|versión 5\.\d/.test(fs.readFileSync(__dirname+'/'+f,'utf8')),'literal de versión en '+f);
 });
-test('Instalación y actualización: sin botón fijo «Instalar» y con aviso de actualización contextual',()=>{
+test('Instalación y actualización: sin botón fijo «Instalar», ventana modal para instalar y actualizar',()=>{
  const html=fs.readFileSync(__dirname+'/dist/index.html','utf8');assert.ok(!html.includes('id="install"'));assert.ok(!html.includes('beforeinstallprompt\'')||html.includes('PwaUI'));
- assert.ok(html.includes('id="pwaSlot"'));assert.ok(html.includes('Actualizar ahora')&&html.includes('Después de mi clase'));
+ assert.ok(!html.includes('pwaSlot')&&!html.includes('pwacard')&&!html.includes('id="updbar"'),'sin tarjeta ni barra dentro del flujo');assert.ok(html.includes('showModal()')&&html.includes('dialog.pwamodal'),'ventana modal nativa');assert.ok(html.includes('¡Instala ')&&html.includes('Instalar aplicación')&&html.includes('Aprende y juega desde tu pantalla de inicio, incluso sin conexión.'));assert.ok(html.includes('Actualizar ahora')&&html.includes('Después de mi clase'));
  assert.ok(!/Notification\.requestPermission|pushManager/.test(html),'no se piden permisos de notificaciones');
  assert.ok(!/skipWaiting\(\)\)/.test(fs.readFileSync(__dirname+'/sw.js','utf8').split("'install'")[1].split("'activate'")[0].replace(/if\(!self\.registration\.active\)return self\.skipWaiting\(\)/,'')),'el service worker no se salta la espera por su cuenta');
 });

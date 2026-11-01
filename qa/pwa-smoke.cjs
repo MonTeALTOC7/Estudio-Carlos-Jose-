@@ -25,49 +25,74 @@ const closeDlg=p=>p.evaluate(()=>{const d=document.querySelector('#dialog');if(d
 
  /* ================= A · INSTALACIÓN CONTEXTUAL ================= */
  if(want('A')){
+  const modalOpen=p=>p.locator('#pwaModal[open]').count().then(n=>n>0);
+  const M='#pwaModal[open]';
+  const geom=async p=>{await sleep(400);return p.evaluate(()=>{const d=document.querySelector('#pwaModal'),r=d.getBoundingClientRect(),W=innerWidth,H=innerHeight,cs=getComputedStyle(d),bd=getComputedStyle(d,'::backdrop');
+   return{open:d.open,isDialog:d.tagName==='DIALOG',modal:d.matches(':modal'),pos:cs.position,cx:Math.abs((r.left+r.right)/2-W/2),cy:Math.abs((r.top+r.bottom)/2-H/2),w:r.width,h:r.height,W,H,top:r.top,bottom:r.bottom,bd:bd.backgroundColor,lock:getComputedStyle(document.documentElement).overflow,inFlow:!!document.querySelector('.hoy #pwaModal,main #pwaModal'),underHero:(()=>{const h=document.querySelector('.hero5');return !!h&&r.top>=h.getBoundingClientRect().bottom-2&&!d.matches(':modal')})()}})};
   {const errs=[],ctx=await newCtx(b);const p=await page(ctx,s0.url,errs);
    ok('A1 El encabezado ya no tiene el botón fijo «Instalar»',(await p.locator('#install').count())===0&&!/Instalar/.test(await p.textContent('.header-actions')));
-   ok('A2 Sin evento de instalación no aparece ninguna invitación ni botón inútil',!(await hasCard(p)));
-   await p.evaluate(fakeInstall('accepted'));await p.waitForSelector('#pwaCard');
-   ok('A3 Con el evento aparece una invitación dentro de «Hoy» (no es modal)',(await p.evaluate(()=>!document.querySelector('#pwaCard').closest('dialog')))&&!(await p.evaluate(()=>document.querySelector('#dialog').open)));
-   ok('A4 La invitación va debajo de la portada, antes del resto de la pantalla',await p.evaluate(()=>{const h=document.querySelector('.hero5'),c=document.querySelector('#pwaCard');return h.getBoundingClientRect().bottom<=c.getBoundingClientRect().top+2}));
-   ok('A5 El diálogo del sistema NO se abre solo: prompt() no se llamó sin un toque',(await p.evaluate(()=>window.__prompts))===0);
-   const bt=await p.evaluate(()=>[...document.querySelectorAll('#pwaCard button')].map(b=>({t:b.textContent,h:b.getBoundingClientRect().height})));
-   ok('A6 Botones «Instalar» y «Ahora no» con área táctil ≥ 44 px',bt.length===2&&bt.every(x=>x.h>=44),JSON.stringify(bt));
-   await p.click('#pwaGo');await p.waitForFunction(()=>window.__prompts===1);await p.waitForFunction(()=>!document.querySelector('#pwaCard'));
-   ok('A7 Al tocar «Instalar» se llama a prompt() una sola vez y, si se acepta, la invitación desaparece',(await p.evaluate(()=>window.__prompts))===1);
-   const s=await getS(p);ok('A8 Queda registrado que se aceptó (sin repetir la invitación)',!!(s.pwa&&s.pwa.inst&&s.pwa.inst.pending));
-   await p.reload();await p.waitForSelector('.hero5');await p.evaluate(fakeInstall('accepted'));await sleep(200);
-   ok('A9 Tras aceptar, un evento posterior no vuelve a invitar mientras se instala',!(await hasCard(p)));
+   ok('A2 Sin evento de instalación no aparece ninguna ventana ni botón inútil',!(await modalOpen(p)));
+   await p.evaluate(fakeInstall('accepted'));await p.waitForSelector(M);const g=await geom(p);
+   ok('A3 Con el evento aparece AUTOMÁTICAMENTE una ventana modal nativa (<dialog> abierto con showModal)',g.open&&g.isDialog&&g.modal);
+   ok('A4 Está centrada y superpuesta (posición fija, centro de la ventana ±2 px)',g.pos==='fixed'&&g.cx<=2&&g.cy<=2,JSON.stringify(g));
+   ok('A5 NO es una tarjeta ni un banner del flujo: no está dentro de «Hoy»/main, no hay #pwaCard ni #pwaSlot ni #updbar',!g.inFlow&&!g.underHero&&(await p.locator('#pwaCard,#pwaSlot,#updbar').count())===0);
+   ok('A6 El fondo está oscurecido con un backdrop semitransparente',/rgba\(\s*\d+,\s*\d+,\s*\d+,\s*0?\.\d+\)/.test(g.bd),g.bd);
+   ok('A7 El desplazamiento del fondo está bloqueado',g.lock==='hidden');
+   const txt=await p.textContent(M);
+   ok('A8 Textos exactos: «¡Instala Centro de Estudios Carlos José!», mensaje breve y «Instalar aplicación» / «Ahora no»',/¡Instala Centro de Estudios Carlos José!/.test(txt)&&/Aprende y juega desde tu pantalla de inicio, incluso sin conexión\./.test(txt)&&(await p.textContent('#pwaGo'))==='Instalar aplicación'&&(await p.textContent('#pwaNo'))==='Ahora no');
+   ok('A9 Ícono auténtico de Carlos José con su cubo (icon-192.png) cargado',await p.evaluate(()=>{const i=document.querySelector('#pwaModal .pm-icon');return !!i&&i.complete&&i.naturalWidth>=192&&/icon-192\.png$/.test(i.src)}));
+   ok('A10 Accesibilidad: aria-modal, nombre y descripción, foco inicial en el botón principal',await p.evaluate(()=>{const d=document.querySelector('#pwaModal');return d.getAttribute('aria-modal')==='true'&&!!document.getElementById(d.getAttribute('aria-labelledby'))&&!!document.getElementById(d.getAttribute('aria-describedby'))&&document.activeElement.id==='pwaGo'}));
+   ok('A11 El resto de la aplicación queda inerte: un clic sobre el fondo no activa los controles de debajo',await p.evaluate(()=>{const e=document.elementFromPoint(innerWidth-30,30);return !e||e.id==='pwaModal'||!e.closest('#app')}));
+   await sleep(400);const bt=await p.evaluate(()=>[...document.querySelectorAll('#pwaModal button')].map(b=>({t:b.textContent,h:b.getBoundingClientRect().height})));
+   ok('A12 Botones con área táctil ≥ 44 px y el principal grande (≥ 56 px)',bt.length===2&&bt.every(x=>x.h>=44)&&bt[0].h>=56,JSON.stringify(bt));
+   ok('A13 prompt() NO se llamó solo: espera al toque en «Instalar aplicación»',(await p.evaluate(()=>window.__prompts))===0);
+   await p.keyboard.press('Tab');await p.keyboard.press('Tab');await p.keyboard.press('Tab');ok('A14 El foco se queda dentro de la ventana con el teclado (Tab)',await p.evaluate(()=>!!document.activeElement.closest('#pwaModal')));
+   await p.click('#pwaGo');await p.waitForFunction(()=>window.__prompts===1);await p.waitForFunction(()=>!document.querySelector('#pwaModal[open]'));
+   ok('A15 Al tocar «Instalar aplicación» se llama a prompt() una sola vez y, si se acepta, la ventana se retira y el fondo se desbloquea',(await p.evaluate(()=>window.__prompts))===1&&(await p.evaluate(()=>getComputedStyle(document.documentElement).overflow))!=='hidden');
+   const s=await getS(p);ok('A16 Aceptar NO es instalar: queda «en curso» (pending) y NO marcado como instalado',!!(s.pwa&&s.pwa.inst&&s.pwa.inst.pending)&&!s.pwa.inst.at);
+   await p.reload();await p.waitForSelector('.hero5');await p.evaluate(fakeInstall('accepted'));await sleep(250);
+   ok('A17 Mientras la instalación está en curso no se vuelve a ofrecer',!(await modalOpen(p)));
    await p.evaluate(()=>window.dispatchEvent(new Event('appinstalled')));await sleep(150);const s2=await getS(p);
-   ok('A10 «appinstalled» marca la aplicación como instalada y limpia el estado pendiente',!!(s2.pwa.inst.at)&&!s2.pwa.inst.pending);
-   ok('A11 Sin errores de consola',errs.length===0,errs[0]);await ctx.close()}
-  {const errs=[],ctx=await newCtx(b);const p=await page(ctx,s0.url,errs);await p.evaluate(fakeInstall('dismissed'));await p.waitForSelector('#pwaCard');await p.click('#pwaGo');await p.waitForFunction(()=>!document.querySelector('#pwaCard'));
-   const s=await getS(p);ok('A12 Si el adulto cancela el diálogo del sistema se respeta (queda en espera, sin insistir)',s.pwa.inst.d.length===1&&!s.pwa.inst.at);
-   await p.reload();await p.waitForSelector('.hero5');await p.evaluate(fakeInstall('accepted'));await sleep(200);
-   ok('A13 Tras cancelar, no se vuelve a mostrar en la siguiente visita (enfriamiento de varios días)',!(await hasCard(p)));
-   await settings(p);ok('A14 En Ajustes sigue disponible «Instalar ahora» y la opción de volver a mostrar la invitación',(await p.locator('#pwaSetInstall').count())===1&&(await p.locator('#pwaReinvite').count())===1);
-   await p.click('#pwaReinvite');await closeDlg(p);await p.reload();await p.waitForSelector('.hero5');await p.evaluate(fakeInstall('accepted'));await p.waitForSelector('#pwaCard');
-   ok('A15 «Volver a mostrar la invitación» reactiva el aviso',true);
-   await p.click('#pwaNo');const s3=await getS(p);ok('A16 «Ahora no» no abre el diálogo del sistema y registra el aplazamiento',(await p.evaluate(()=>window.__prompts))===0&&s3.pwa.inst.d.length===1&&!(await hasCard(p)));
-   ok('A17 Sin errores de consola',errs.length===0,errs[0]);await ctx.close()}
+   ok('A18 «appinstalled» marca la instalación terminada y limpia lo pendiente',!!s2.pwa.inst.at&&!s2.pwa.inst.pending);
+   ok('A19 Sin errores de consola',errs.length===0,errs[0]);await ctx.close()}
+  {const errs=[],ctx=await newCtx(b);const p=await page(ctx,s0.url,errs);await p.evaluate(fakeInstall('dismissed'));await p.waitForSelector(M);await p.click('#pwaGo');await p.waitForFunction(()=>!document.querySelector('#pwaModal[open]'));
+   const s=await getS(p);ok('A20 Si se cancela el diálogo del sistema se respeta (espera, sin insistir)',s.pwa.inst.d.length===1&&!s.pwa.inst.at);
+   await p.reload();await p.waitForSelector('.hero5');await p.evaluate(fakeInstall('accepted'));await sleep(250);
+   ok('A21 Tras cancelar, no se muestra en la siguiente visita (intervalo de espera)',!(await modalOpen(p)));
+   await settings(p);ok('A22 En Ajustes siguen «Instalar ahora» y «Volver a mostrar la invitación»',(await p.locator('#pwaSetInstall').count())===1&&(await p.locator('#pwaReinvite').count())===1);
+   await p.click('#pwaReinvite');await closeDlg(p);await p.reload();await p.waitForSelector('.hero5');await p.evaluate(fakeInstall('accepted'));await p.waitForSelector(M);ok('A23 «Volver a mostrar» reactiva la ventana',true);
+   await p.click('#pwaNo');const s3=await getS(p);ok('A24 «Ahora no» cierra, NO abre el diálogo del sistema y registra el aplazamiento',(await p.evaluate(()=>window.__prompts))===0&&s3.pwa.inst.d.length===1&&!(await modalOpen(p)));
+   await sleep(150);ok('A25 Tras cerrar, la aplicación es plenamente usable (sin bloqueo del fondo)',await p.evaluate(()=>getComputedStyle(document.documentElement).overflow!=='hidden')&&await p.evaluate(()=>{document.querySelector('[data-tab="camino"]').click();return true}));
+   ok('A26 Sin errores de consola',errs.length===0,errs[0]);await ctx.close()}
+  {const errs=[],ctx=await newCtx(b);const p=await page(ctx,s0.url,errs);await p.evaluate(fakeInstall('accepted'));await p.waitForSelector(M);
+   await p.keyboard.press('Escape');await sleep(250);const s=await getS(p);
+   ok('A27 Esc cierra la ventana como «Ahora no» (nunca bloquea al usuario) y registra el aplazamiento',!(await modalOpen(p))&&s.pwa.inst.d.length===1&&(await p.evaluate(()=>window.__prompts))===0);
+   ok('A28 El foco vuelve a la página (no queda en el vacío)',await p.evaluate(()=>document.activeElement&&document.activeElement!==document.querySelector('#pwaModal')));await ctx.close()}
+  {const errs=[],ctx=await newCtx(b);const p=await page(ctx,s0.url,errs);await p.evaluate(fakeInstall('accepted'));await p.waitForSelector(M);
+   await p.evaluate(()=>window.dispatchEvent(new Event('appinstalled')));await sleep(300);
+   ok('A29 Si se instala por otra vía (menú del navegador) y llega «appinstalled», la ventana se retira sola',!(await modalOpen(p)));await ctx.close()}
   {const errs=[],ctx=await newCtx(b);const p=await page(ctx,s0.url,errs);await p.click('#cont');await p.waitForSelector('#mskip');await p.click('#mskip');await p.waitForSelector('.clswel');
-   await p.evaluate(fakeInstall('accepted'));await sleep(250);ok('A18 Durante una clase NUNCA aparece la invitación',!(await hasCard(p)));
-   await hoy(p);await p.waitForSelector('#pwaCard');ok('A19 Al volver a «Hoy» sí se ofrece',true);ok('A20 Sin errores de consola',errs.length===0,errs[0]);await ctx.close()}
+   await p.evaluate(fakeInstall('accepted'));await sleep(300);ok('A30 Durante una clase NUNCA se abre la ventana',!(await modalOpen(p)));
+   await hoy(p);await p.waitForSelector(M);ok('A31 Al volver a una pantalla de navegación se ofrece',true);ok('A32 Sin errores de consola',errs.length===0,errs[0]);await ctx.close()}
   {const errs=[],ctx=await newCtx(b);await ctx.addInitScript("const mm=window.matchMedia.bind(window);window.matchMedia=q=>/display-mode: standalone/.test(q)?{matches:true,media:q,addEventListener(){},removeEventListener(){},addListener(){},removeListener(){}}:mm(q)");
-   const p=await page(ctx,s0.url,errs);await p.evaluate(fakeInstall('accepted'));await sleep(250);ok('A21 Abierta como aplicación instalada (standalone) no pide instalar',!(await hasCard(p)));
-   await settings(p);ok('A22 En Ajustes se explica que ya está instalada y no hay botón de instalar',/instalada/i.test(await p.textContent('.pwapanel'))&&(await p.locator('#pwaSetInstall').count())===0);await ctx.close()}
+   const p=await page(ctx,s0.url,errs);await p.evaluate(fakeInstall('accepted'));await sleep(300);ok('A33 Abierta como aplicación instalada (standalone) no se muestra el modal',!(await modalOpen(p)));
+   await settings(p);ok('A34 En Ajustes se explica que ya está instalada y no hay botón de instalar',/instalada/i.test(await p.textContent('.pwapanel'))&&(await p.locator('#pwaSetInstall').count())===0);await ctx.close()}
   {const errs=[],ctx=await newCtx(b,{userAgent:'Mozilla/5.0 (iPhone; CPU iPhone OS 17_4 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/17.4 Mobile/15E148 Safari/604.1'});
-   const p=await page(ctx,s0.url,errs);await p.waitForSelector('#pwaCard');const t=await p.textContent('#pwaCard');
-   ok('A23 iPhone/iPad (Safari): instrucciones de «Compartir → Añadir a pantalla de inicio» y sin botón Instalar',/Compartir/.test(t)&&/Añadir a pantalla de inicio/.test(t)&&(await p.locator('#pwaGo').count())===0);
-   await p.click('#pwaNo');await p.reload();await p.waitForSelector('.hero5');ok('A24 «Entendido» no insiste en la siguiente visita',!(await hasCard(p)));await ctx.close()}
-  {const errs=[],ctx=await newCtx(b);await ctx.addInitScript("window.__perm=0;try{const o=Notification.requestPermission;Notification.requestPermission=function(){window.__perm++;return o.apply(this,arguments)}}catch(e){}");const p=await page(ctx,s0.url,errs);await p.evaluate(fakeInstall('accepted'));await p.waitForSelector('#pwaCard');
+   const p=await page(ctx,s0.url,errs);await p.waitForSelector(M);const t=await p.textContent(M);const g=await geom(p);
+   ok('A35 iPhone/iPad (Safari): modal con instrucciones reales de «Compartir → Añadir a pantalla de inicio»',g.modal&&/Compartir/.test(t)&&/Añadir a pantalla de inicio/.test(t));
+   ok('A36 iOS: ningún botón invoca APIs inexistentes (sin «Instalar aplicación»/prompt)',(await p.locator('#pwaGo').count())===0&&/Entendido/.test(t));
+   await p.click('#pwaOk');await p.reload();await p.waitForSelector('.hero5');await sleep(250);ok('A37 «Entendido» no insiste en la siguiente visita',!(await modalOpen(p)));await ctx.close()}
+  {const errs=[],ctx=await newCtx(b);await ctx.addInitScript("window.__perm=0;try{const o=Notification.requestPermission;Notification.requestPermission=function(){window.__perm++;return o.apply(this,arguments)}}catch(e){}");const p=await page(ctx,s0.url,errs);await p.evaluate(fakeInstall('accepted'));await p.waitForSelector(M);await p.click('#pwaNo');
    await settings(p);const t=await p.textContent('.pwapanel');
-   ok('A25 Ajustes muestra la versión, el build y el estado de instalación/actualización',t.includes(VER)&&/build/.test(t)&&/Buscar actualizaciones/.test(t));
-   ok('A26 No se solicitan permisos de notificaciones ni push',await p.evaluate(()=>window.__perm===0&&(typeof Notification==='undefined'||Notification.permission!=='granted')));
+   ok('A38 Ajustes muestra la versión, el build y el estado de instalación/actualización',t.includes(VER)&&/build/.test(t)&&/Buscar actualizaciones/.test(t));
+   ok('A39 No se solicitan permisos de notificaciones ni push',await p.evaluate(()=>window.__perm===0&&(typeof Notification==='undefined'||Notification.permission!=='granted')));
    await closeDlg(p);await p.click('#parents');await p.fill('#gate','7');await p.click('#enter');await p.waitForSelector('[data-atab]');await p.click('[data-atab="ajustes"]');await p.waitForSelector('#bkExp');
    const [dl]=await Promise.all([p.waitForEvent('download'),p.click('#bkExp')]);const raw=fs.readFileSync(await dl.path(),'utf8');
-   ok('A27 El respaldo NO incluye el estado de instalación (es propio de cada dispositivo)',!JSON.parse(raw).estado.pwa);await ctx.close()}
+   ok('A40 El respaldo NO incluye el estado de instalación (es propio de cada dispositivo)',!JSON.parse(raw).estado.pwa);await ctx.close()}
+  for(const [nm,w,h] of [['teléfono pequeño',320,640],['teléfono',390,844],['tablet vertical',800,1260],['tablet apaisada',1005,540],['tablet apaisada baja',893,470],['escritorio',1440,900]]){
+   const errs=[],ctx=await newCtx(b,{viewport:{width:w,height:h},isMobile:w<700});const p=await page(ctx,s0.url,errs);await p.evaluate(fakeInstall('accepted'));await p.waitForSelector(M);const g=await geom(p);
+   const vis=await p.evaluate(()=>['#pwaGo','#pwaNo'].every(s=>{const r=document.querySelector(s).getBoundingClientRect();return r.top>=0&&r.bottom<=innerHeight&&r.left>=0&&r.right<=innerWidth}));
+   ok('A41 '+nm+' ('+w+'×'+h+'): centrada, dentro de la pantalla, sin desbordar y con ambos botones visibles',g.cx<=2&&g.cy<=2&&g.w<=w&&g.h<=h&&g.top>=0&&g.bottom<=h&&vis,JSON.stringify(g));await ctx.close()}
  }
 
  /* ================= B · ACTUALIZACIÓN SEGURA ================= */
@@ -76,7 +101,7 @@ const closeDlg=p=>p.evaluate(()=>{const d=document.querySelector('#dialog');if(d
    const p=await page(ctx,sv.url,errs);await p.waitForFunction(()=>window.appOfflineReady===true,null,{timeout:15000});await p.reload();await p.waitForSelector('.hero5');await p.waitForFunction(()=>!!navigator.serviceWorker.controller,null,{timeout:10000});
    p._navs=0;p.on('framenavigated',f=>{if(f===p.mainFrame())p._navs++});
    const build=await p.evaluate(()=>window.APP.build);return{dir,sv,errs,ctx,p,build,done:async()=>{await ctx.close();sv.srv.close()}}};
-  const bar=p=>p.locator('#updbar').isVisible();
+  const bar=p=>p.locator('#pwaModal[open] #updgo').isVisible();
   const ctl=p=>p.evaluate(()=>new Promise(r=>{const c=navigator.serviceWorker.controller;if(!c)return r(null);const ch=new MessageChannel();ch.port1.onmessage=e=>r(e.data);c.postMessage({type:'GET_INFO'},[ch.port2]);setTimeout(()=>r(null),2000)}));
   const caches_=p=>p.evaluate(async()=>(await caches.keys()).sort());
   const check=p=>p.evaluate(()=>window.appReg.update());
@@ -92,14 +117,14 @@ const closeDlg=p=>p.evaluate(()=>{const d=document.querySelector('#dialog');if(d
    ok('B4 Durante la clase no se muestra el aviso (no interrumpe)',!(await bar(p)));
    ok('B5 La clase sigue en pantalla, sin recargar la página',(await p.locator('.clswel').count())===1&&t.p._navs===0);
    const before=await getS(p);
-   await hoy(p);await p.waitForSelector('#updbar:not([hidden])');
-   ok('B6 En «Hoy» aparece «Hay una nueva versión de Carlos José» con las dos opciones',/Hay una nueva versión de Carlos José/.test(await p.textContent('#updtxt'))&&/Actualizar ahora/.test(await p.textContent('#updgo'))&&/Después de mi clase/.test(await p.textContent('#updlater')));
-   ok('B7 El aviso no tapa la barra de navegación (queda por encima de ella)',await p.evaluate(()=>{const u=document.querySelector('#updbar').getBoundingClientRect(),t=document.querySelector('.tabbar').getBoundingClientRect();return u.bottom<=t.top+1}));
+   await hoy(p);await p.waitForSelector('#pwaModal[open] #updgo');
+   ok('B6 En «Hoy» aparece «Hay una nueva versión de Carlos José» con las dos opciones',/Hay una nueva versión de Carlos José/.test(await p.textContent('#pmT'))&&/Actualizar ahora/.test(await p.textContent('#updgo'))&&/Después de mi clase/.test(await p.textContent('#updlater')));
+   await sleep(400);ok('B7 La actualización se presenta como ventana MODAL centrada con fondo oscurecido (no como barra ni tarjeta del flujo)',await p.evaluate(()=>{const d=document.querySelector('#pwaModal'),r=d.getBoundingClientRect();return d.matches(':modal')&&getComputedStyle(d).position==='fixed'&&Math.abs((r.left+r.right)/2-innerWidth/2)<=2&&Math.abs((r.top+r.bottom)/2-innerHeight/2)<=2&&!document.querySelector('#updbar')&&getComputedStyle(d,'::backdrop').backgroundColor!=='rgba(0, 0, 0, 0)'}));
    await p.click('#updlater');await sleep(200);ok('B8 «Después de mi clase» oculta el aviso y no activa nada',!(await bar(p))&&(await ctl(p)).build===old);
    await p.click('[data-tab="camino"]');await p.click('[data-tab="hoy"]');await p.waitForSelector('.hero5');await sleep(200);ok('B9 No vuelve a molestar al navegar por las pantallas',!(await bar(p)));
    /* terminar una clase completa → se ofrece de nuevo */
    await p.click('#cont');const r=await driveClass(p);ok('B10 Se pudo terminar la clase con la actualización en espera (sin interrupciones)',r.kind==='close',r.kind);
-   await p.click('#ccrest');await p.waitForSelector('.hero5');await p.waitForSelector('#updbar:not([hidden])',{timeout:8000});
+   await p.click('#ccrest');await p.waitForSelector('.hero5');await p.waitForSelector('#pwaModal[open] #updgo',{timeout:8000});
    ok('B11 Al terminar la clase el aviso vuelve a ofrecerse',true);
    const mid=await getS(p);
    t.p._navs=0;ok('B12 El aviso sigue disponible hasta que el adulto decide (no se pierde)',await bar(p));
@@ -117,7 +142,7 @@ const closeDlg=p=>p.evaluate(()=>{const d=document.querySelector('#dialog');if(d
    await p.click('#cont');await p.waitForSelector('#mskip');await p.click('#mskip');await p.waitForSelector('.clswel');await p.click('#cwgo');
    await driveClass(p,{stop:(k,i)=>i.qn>=1&&k==='q'});await p.waitForSelector('#gprompt');
    const snapBefore=(await getS(p)).course.cur;publish(t.dir,old,'nuevo0002');await check(p);await p.waitForFunction(()=>!!window.appReg.waiting);
-   await hoy(p);await p.waitForSelector('#updbar:not([hidden])');await p.click('#updgo');await p.waitForFunction(v=>window.APP.build===v,'nuevo0002',{timeout:20000});await p.waitForSelector('.hero5');
+   await hoy(p);await p.waitForSelector('#pwaModal[open] #updgo');await p.click('#updgo');await p.waitForFunction(v=>window.APP.build===v,'nuevo0002',{timeout:20000});await p.waitForSelector('.hero5');
    const snapAfter=(await getS(p)).course.cur;
    ok('B21 Una clase pausada a mitad se conserva exacta (lección, paso, fase, pregunta) tras actualizar',!!snapBefore&&!!snapAfter&&snapBefore.l===snapAfter.l&&snapBefore.step===snapAfter.step&&JSON.stringify(snapBefore.snap)===JSON.stringify(snapAfter.snap),JSON.stringify([snapBefore&&snapBefore.snap,snapAfter&&snapAfter.snap]));
    ok('B22 «Continuar» retoma esa clase',/Continuar|Seguir/i.test(await p.textContent('#cont')));
@@ -139,7 +164,20 @@ const closeDlg=p=>p.evaluate(()=>{const d=document.querySelector('#dialog');if(d
    publish(t.dir,old,'nuevo0005');await ctx.setOffline(true);await settings(p);await p.click('#pwaCheck');await sleep(400);const offMsg=await p.textContent('#pwaMsg');await closeDlg(p);
    ok('B31 Sin conexión no se busca ni se avisa («Sin conexión: se usa la última versión»), y la aplicación sigue funcionando',/Sin conexión/.test(offMsg)&&!(await bar(p))&&(await p.locator('#cont').count())===1);
    await p.reload();await p.waitForSelector('.hero5',{timeout:10000});ok('B32 Sin conexión se reabre con la última versión descargada',(await p.evaluate(()=>window.APP.build))===old);
-   await ctx.setOffline(false);await check(p);await p.waitForFunction(()=>!!window.appReg.waiting,null,{timeout:15000});await p.waitForSelector('#updbar:not([hidden])',{timeout:8000});ok('B33 Al volver la red se detecta la versión nueva',true);
+   await ctx.setOffline(false);await check(p);await p.waitForFunction(()=>!!window.appReg.waiting,null,{timeout:15000});await p.waitForSelector('#pwaModal[open] #updgo',{timeout:8000});ok('B33 Al volver la red se detecta la versión nueva',true);
    ok('B34 Sin errores de consola',t.errs.filter(e=>!/net::|Failed|offline/i.test(e)).length===0,t.errs[0]);await t.done()}
+  {const t=await boot('modal');const {p}=t;const old=t.build;
+   await p.evaluate(()=>document.dispatchEvent(new PointerEvent('pointerdown',{bubbles:true,pointerId:7})));                       // un dedo apoyado (arrastre/trazo en curso)
+   publish(t.dir,old,'nuevo0006','9.9.9');await check(p);await p.waitForFunction(()=>!!window.appReg.waiting);await sleep(1500);
+   ok('B35 Con un toque/arrastre en curso NO se abre la ventana de actualización',!(await bar(p)));
+   await p.evaluate(()=>document.dispatchEvent(new PointerEvent('pointerup',{bubbles:true,pointerId:7})));await p.waitForSelector('#pwaModal[open] #updgo',{timeout:8000});ok('B36 En cuanto el momento es seguro (dedo levantado) se ofrece',true);
+   ok('B37 Texto: «Hay una nueva versión de Carlos José», «Actualizar ahora» y «Después de mi clase»; foco en el botón principal',/Hay una nueva versión de Carlos José/.test(await p.textContent('#pmT'))&&(await p.textContent('#updgo'))==='Actualizar ahora'&&(await p.textContent('#updlater'))==='Después de mi clase'&&await p.evaluate(()=>document.activeElement.id==='updgo'));
+   await p.keyboard.press('Escape');await sleep(300);ok('B38 Esc equivale a «Después de mi clase»: cierra, no activa nada y no insiste',!(await bar(p))&&(await ctl(p)).build===old);
+   await sleep(3500);ok('B39 No reaparece mientras se navega (reintento cada 3 s respeta el aplazamiento)',!(await bar(p)));
+   await t.done()}
+  {const t=await boot('apply');const {p}=t;const old=t.build;publish(t.dir,old,'nuevo0007','9.9.9');await check(p);await p.waitForSelector('#pwaModal[open] #updgo',{timeout:15000});
+   await p.click('#updgo');await p.waitForFunction(v=>window.APP.build===v,'nuevo0007',{timeout:20000});await p.waitForSelector('.hero5');await sleep(1800);
+   ok('B40 Tras aplicar y verificar, el modal desaparece solo y no vuelve a ofrecerse esa versión',!(await bar(p))&&(await p.locator('#pwaModal[open]').count())===0&&(await p.evaluate(()=>getComputedStyle(document.documentElement).overflow))!=='hidden');
+   ok('B41 Sin bucle: una sola recarga',t.p._navs===1,'recargas: '+t.p._navs);await t.done()}
  }
  await b.close();s0.srv.close();console.log('\n'+pass+' correctas, '+fail+' fallidas');process.exit(fail?1:0)})().catch(e=>{console.error(e);process.exit(1)});

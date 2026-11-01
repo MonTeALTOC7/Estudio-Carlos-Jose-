@@ -1,4 +1,4 @@
-const BUILD='e1b08a20';const VERSION='5.3.0';const PREFIX='mis-pasos-';const CACHE=PREFIX+'v'+VERSION+'-'+BUILD;
+const BUILD='d92fa331';const VERSION='5.3.1';const PREFIX='mis-pasos-';const CACHE=PREFIX+'v'+VERSION+'-'+BUILD;
 const ASSETS=["./","./index.html","./manifest.webmanifest","./icon-192.png","./icon-512.png","./icon-maskable-192.png","./icon-maskable-512.png","./apple-touch-icon.png","./favicon-32.png","./favicon-48.png","./logo-128.png","./assets/avatar.webp","./assets/hero.webp","./assets/people/carlos-campo.webp"];/*lo completa build.cjs*/
 /* Actualización segura: una versión nueva se descarga y queda EN ESPERA; solo se activa cuando la página lo pide (mensaje SKIP_WAITING) o cuando se cierran todas las ventanas.
    Así nunca se cambia de versión por debajo de una clase o actividad en curso. La primera instalación (sin versión anterior) sí se activa de inmediato. */

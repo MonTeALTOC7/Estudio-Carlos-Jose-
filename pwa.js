@@ -26,19 +26,37 @@ root.PwaUI=function(K,Sh){
  const canInvite=()=>{const m=installMode();return(m==='nativa'||m==='ios')&&!cooling()&&!st().inst.at&&!pendingInstall()};
  function postpone(){const i=st().inst;i.d.push(Date.now());if(i.d.length>6)i.d.shift();K.save()}
  function offlineLine(){return root.appOfflineReady?'Ya está lista para usarse sin conexión.':'Se está preparando para usarse sin conexión.'}
- function cardHTML(){const m=installMode();
-  const head='<img class="pc-i" src="icon-192.png" alt="" width="56" height="56"><div class="pc-t"><h2 id="pwat">Instalar «'+esc(name)+'»</h2>';
-  if(m==='ios')return '<section class="pwacard" id="pwaCard" role="region" aria-labelledby="pwat">'+head+'<p>Para tenerla como aplicación: toca <b>Compartir</b> <span aria-hidden="true">⬆️</span> y luego <b>«Añadir a pantalla de inicio»</b>.'+(iosSafari()?'':' (Si no ves la opción, ábrela en Safari.)')+'</p></div><div class="pc-b"><button class="primary" id="pwaNo">Entendido</button></div></section>';
-  return '<section class="pwacard" id="pwaCard" role="region" aria-labelledby="pwat">'+head+'<p>Se instala como una aplicación y funciona sin conexión. '+esc(offlineLine())+'</p></div><div class="pc-b"><button class="primary" id="pwaGo">Instalar</button><button class="soft" id="pwaNo">Ahora no</button></div></section>'}
- /* Se monta en «Hoy», debajo de la portada: nunca durante una clase, un arrastre o un trazo. */
- function mountCard(){const host=$('#pwaSlot');if(!host)return;host.innerHTML='';if(!canInvite())return;host.innerHTML=cardHTML();
-  const go=$('#pwaGo'),no=$('#pwaNo');
-  if(no)no.onclick=()=>{postpone();host.innerHTML=''};
-  if(go)go.onclick=async()=>{const ev=deferred;if(!ev||installing)return;installing=true;deferred=null;               // el evento solo sirve una vez
-   try{await ev.prompt();const r=await ev.userChoice;if(r&&r.outcome==='accepted'){st().inst.pending=Date.now();K.save();host.innerHTML='';K.notice('Instalando… cuando termine aparecerá en tu pantalla de inicio.')}else{postpone();host.innerHTML='';K.notice('Está bien, puedes instalarla más adelante desde Ajustes.')}}
-   catch(e){host.innerHTML='';K.notice('No se pudo abrir la instalación. Prueba desde Ajustes.')}finally{installing=false}}}
- root.addEventListener('beforeinstallprompt',e=>{e.preventDefault();deferred=e;mountCard();rerenderSettings()});
- root.addEventListener('appinstalled',()=>{deferred=null;installing=false;const i=st().inst;i.at=Date.now();delete i.pending;K.save();const c=$('#pwaCard');if(c)c.remove();K.notice('¡Listo! Ya está instalada.');rerenderSettings()});
+
+ /* ================= VENTANA MODAL (instalación, actualización y avisos) =================
+    Un <dialog> nativo abierto con showModal(): capa superior, fondo oscurecido, el resto de la página queda inerte (foco atrapado),
+    Esc cierra, el foco vuelve a donde estaba y el desplazamiento del fondo se bloquea. Solo existe uno a la vez. */
+ let dlg=null,kind=null,lastFocus=null,activePtr=0;
+ const lock=on=>{document.documentElement.classList.toggle('pwa-lock',!!on)};
+ function ensureDlg(){if(dlg)return dlg;dlg=document.createElement('dialog');dlg.id='pwaModal';dlg.className='pwamodal';dlg.setAttribute('role','dialog');dlg.setAttribute('aria-modal','true');dlg.setAttribute('aria-labelledby','pmT');dlg.setAttribute('aria-describedby','pmP');document.body.appendChild(dlg);
+  dlg.addEventListener('cancel',e=>{e.preventDefault();if(applying)return;const no=dlg.querySelector('#pwaNo,#updlater');if(no)no.click()});   // Esc = la opción secundaria; nunca queda bloqueado
+  dlg.addEventListener('close',()=>{lock(false);kind=null;setTimeout(refresh,0)});return dlg}
+ function openModal(k,o){const d=ensureDlg();kind=k;
+  d.dataset.kind=k;d.innerHTML='<div class="pm-band"><img class="pm-icon" src="icon-192.png" alt="" width="96" height="96"></div><div class="pm-body"><h2 id="pmT">'+o.title+'</h2><p id="pmP">'+o.text+'</p>'+(o.extra||'')+'<div class="pm-actions">'+o.buttons+'</div></div>';
+  lastFocus=document.activeElement;lock(true);if(!d.open)d.showModal();const f=d.querySelector('[autofocus]')||d.querySelector('button');if(f)f.focus();return d}
+ function closeModal(){lock(false);if(dlg&&dlg.open)dlg.close();kind=null}
+ /* ---- instalación ---- */
+ function installModal(){const m=installMode(),ios=m==='ios';
+  const T='¡Instala '+esc(name)+'!';
+  if(ios)return openModal('install-ios',{title:T,text:'Para tenerla en tu pantalla de inicio, incluso sin conexión:',extra:'<ol class="pm-steps"><li>Toca <b>Compartir</b> <span aria-hidden="true">⬆️</span> en la barra de Safari.</li><li>Elige <b>«Añadir a pantalla de inicio»</b>.</li><li>Toca <b>«Añadir»</b>.</li></ol>'+(iosSafari()?'':'<p class="pm-note">Si no ves la opción, abre esta página en Safari.</p>'),buttons:'<button class="primary xl" id="pwaOk" autofocus>Entendido</button><button class="soft" id="pwaNo">Ahora no</button>'});
+  return openModal('install',{title:T,text:'Aprende y juega desde tu pantalla de inicio, incluso sin conexión.',buttons:'<button class="primary xl" id="pwaGo" autofocus>Instalar aplicación</button><button class="soft" id="pwaNo">Ahora no</button>'})}
+ function bindInstall(){const go=$('#pwaGo'),no=$('#pwaNo'),ok=$('#pwaOk');
+  const later=()=>{postpone();closeModal()};
+  if(no)no.onclick=later;if(ok)ok.onclick=later;
+  if(go)go.onclick=async()=>{const ev=deferred;if(!ev||installing)return;installing=true;deferred=null;go.disabled=true;               // el evento solo sirve una vez y solo tras este toque
+   try{await ev.prompt();const r=await ev.userChoice;
+    if(r&&r.outcome==='accepted'){const i=st().inst;i.pending=Date.now();K.save();closeModal();K.notice('Instalando… cuando termine aparecerá en tu pantalla de inicio.')}   // aceptar NO es haber instalado: eso lo confirma «appinstalled»
+    else{postpone();closeModal();K.notice('Está bien, puedes instalarla más adelante desde Ajustes.')}}
+   catch(e){closeModal();K.notice('No se pudo abrir la instalación. Prueba desde Ajustes.')}finally{installing=false}}}
+ root.addEventListener('beforeinstallprompt',e=>{e.preventDefault();deferred=e;refresh();rerenderSettings()});
+ root.addEventListener('appinstalled',()=>{deferred=null;installing=false;const i=st().inst;i.at=Date.now();delete i.pending;K.save();if(kind&&/^install/.test(kind))closeModal();K.notice('¡Listo! Ya está instalada.');rerenderSettings()});
+ /* Ningún toque ni arrastre en curso: no se abre nada encima de un dedo */
+ document.addEventListener('pointerdown',()=>{activePtr++},true);const pu=()=>{activePtr=Math.max(0,activePtr-1)};document.addEventListener('pointerup',pu,true);document.addEventListener('pointercancel',pu,true);
+ const calm=()=>hubNow()&&activePtr===0&&!($('#dialog')&&$('#dialog').open)&&!(dlg&&dlg.open)&&!document.querySelector('#drawing');
  /* ================= ACTUALIZACIÓN ================= */
  let reg=null,pend=null,applying=false,deferredThisSession=false,classEnded=false,lastCheck=0;
  const swc=()=>navigator.serviceWorker&&navigator.serviceWorker.controller;
@@ -56,13 +74,14 @@ root.PwaUI=function(K,Sh){
    if(w.state==='redundant'&&!r.waiting&&!pend){st().upd.err=Date.now();K.save();if(applying)failApply('No se pudo descargar la versión nueva. Seguimos con la actual.')}})})}
  function check(force){if(!reg||!navigator.onLine)return Promise.resolve();const n=Date.now();if(!force&&n-lastCheck<20*60e3)return Promise.resolve();lastCheck=n;return reg.update().catch(()=>{})}
  /* Barra de aviso: solo en las pantallas de navegación (no durante clases ni actividades) y respetando «Después de mi clase». */
- function refresh(){const b=$('#updbar');if(!b)return;
-  const show=!!pend&&!pend.silent&&!applying&&hubNow()&&(!deferredThisSession||classEnded)&&st().upd.applied!==pend.build;
-  if(show&&!b.dataset.on){b.dataset.on='1';deferredThisSession=false}
-  if(!show){if(!b.dataset.err){b.hidden=true;delete b.dataset.on;document.body.classList.remove('upd-on')}if(!b.dataset.err)return}
-  if(show){b.dataset.err='';delete b.dataset.err;$('#updtxt').textContent='Hay una nueva versión de Carlos José'+(pend.version&&pend.version!==APPI.version?' ('+pend.version+')':'')+'. Tu avance y tu clase se conservan.';$('#updgo').hidden=false;$('#updlater').hidden=false;$('#updgo').textContent='Actualizar ahora';b.hidden=false;document.body.classList.add('upd-on');
-   $('#updgo').onclick=()=>apply();$('#updlater').onclick=()=>{deferredThisSession=true;classEnded=false;b.hidden=true;delete b.dataset.on;document.body.classList.remove('upd-on');K.notice('Te lo volveremos a ofrecer al terminar tu clase o al abrir la aplicación.')}}}
- function showMsg(text,btn){const b=$('#updbar');if(!b)return;b.hidden=false;b.dataset.err='1';document.body.classList.add('upd-on');$('#updtxt').textContent=text;$('#updgo').hidden=true;const l=$('#updlater');l.hidden=false;l.textContent=btn||'Entendido';l.onclick=()=>{b.hidden=true;delete b.dataset.err;l.textContent='Después de mi clase';document.body.classList.remove('upd-on')}}
+ /* Un único punto de decisión. Instalación: al entrar, en cuanto el navegador la permita. Actualización: solo con la versión descargada y un momento seguro (nunca en clase, trazo, arrastre o juego). */
+ function refresh(){if(!calm())return;
+  if(canInvite()){installModal();bindInstall();return}
+  const show=!!pend&&!pend.silent&&!applying&&(!deferredThisSession||classEnded)&&st().upd.applied!==pend.build;
+  if(show){deferredThisSession=false;classEnded=false;updateModal()}}
+ function updateModal(){openModal('update',{title:'Hay una nueva versión de Carlos José',text:'<span id="updtxt">Tu avance y tu clase se conservan'+(pend&&pend.version&&pend.version!==APPI.version?' (versión '+esc(pend.version)+')':'')+'.</span>',buttons:'<button class="primary xl" id="updgo" autofocus>Actualizar ahora</button><button class="soft" id="updlater">Después de mi clase</button>'});
+  $('#updgo').onclick=()=>apply();$('#updlater').onclick=()=>{if(applying)return;deferredThisSession=true;classEnded=false;closeModal();K.notice('Te lo volveremos a ofrecer al terminar tu clase o al abrir la aplicación.')}}
+ function showMsg(text,btn){deferredThisSession=true;classEnded=false;openModal('msg',{title:'Sobre la actualización',text:esc(text),buttons:'<button class="primary xl" id="updlater" autofocus>'+esc(btn||'Entendido')+'</button>'});$('#updlater').onclick=()=>closeModal()}
  function failApply(text){applying=false;try{sessionStorage.removeItem('cj_upd')}catch(e){}showMsg(text||'No se pudo activar la versión nueva. Seguimos con la actual; puedes intentarlo más tarde.');rerenderSettings()}
  /* Aplicar: guarda el estado, pide la activación a la versión en espera, recarga UNA sola vez y verifica. */
  async function apply(){if(applying)return;const unsafe=!hubNow()&&!$('#dialog').open;if(unsafe){K.notice('Primero vuelve a «Hoy»: así tu clase queda guardada.');return}
@@ -76,7 +95,7 @@ root.PwaUI=function(K,Sh){
    w.postMessage({type:'SKIP_WAITING'});
    setTimeout(()=>{if(!done){done=true;navigator.serviceWorker.removeEventListener('controllerchange',onc);failApply('No se pudo activar la versión nueva. Seguimos con la actual; tu avance está intacto.')}},10000)
   }catch(e){failApply(e&&e.message==='tiempo'?'La versión nueva tarda en descargarse (¿sin conexión?). Seguimos con la actual.':'No se pudo actualizar. Seguimos con la versión actual; tu avance está intacto.')}}
- function refreshBusy(on){const g=$('#updgo');if(g){g.disabled=!!on;g.textContent=on?'Actualizando…':'Actualizar ahora'}}
+ function refreshBusy(on){const g=$('#updgo');if(g){g.disabled=!!on;g.textContent=on?'Actualizando…':'Actualizar ahora'}const l=$('#updlater');if(l)l.disabled=!!on}
  function doReload(){K.save();location.reload()}
  /* Tras la recarga: confirma que la versión nueva es la activa y retira el aviso; nunca recarga otra vez. */
  function verifyAfterReload(){let f=null;try{f=JSON.parse(sessionStorage.getItem('cj_upd')||'null');sessionStorage.removeItem('cj_upd')}catch(e){}
@@ -89,8 +108,9 @@ root.PwaUI=function(K,Sh){
   navigator.serviceWorker.addEventListener('controllerchange',()=>{                       // sin la marca de «actualizando» o «silencioso» nunca se recarga solo
    let silent=false;try{silent=sessionStorage.getItem('cj_silent')==='1';sessionStorage.removeItem('cj_silent')}catch(e){}if(silent){pend=null;K.save();rerenderSettings();return}
    getInfo(swc()).then(i=>{if(i&&i.build&&i.build!==APPI.build&&!applying){pend={worker:null,build:i.build,version:i.version};refresh()}})});
-  navigator.serviceWorker.register('./sw.js').then(r=>{track(r);check(true);return navigator.serviceWorker.ready}).then(()=>{root.appOfflineReady=true;const c=$('#pwaCard');if(c){const p=c.querySelector('.pc-t p');if(p&&installMode()==='nativa')p.textContent='Se instala como una aplicación y funciona sin conexión. '+offlineLine()}rerenderSettings()}).catch(()=>{K.notice('No se pudo preparar el uso sin conexión. Puedes seguir jugando con internet.')});
+  navigator.serviceWorker.register('./sw.js').then(r=>{track(r);check(true);return navigator.serviceWorker.ready}).then(()=>{root.appOfflineReady=true;rerenderSettings()}).catch(()=>{K.notice('No se pudo preparar el uso sin conexión. Puedes seguir jugando con internet.')});
   document.addEventListener('visibilitychange',()=>{if(!document.hidden)check(false)});
+  setInterval(()=>{if(!dlg||!dlg.open)refresh()},3000);                         // reintenta cuando hay algo que ofrecer y el momento ya es tranquilo
   root.addEventListener('online',()=>check(false))}
  /* ================= AJUSTES (adultos) ================= */
  function panelHTML(){const m=installMode(),u=st().upd,inst=st().inst;
@@ -107,5 +127,5 @@ root.PwaUI=function(K,Sh){
   const ap=$('#pwaApply');if(ap)ap.onclick=()=>{const d=$('#dialog');if(d&&d.open)d.close();apply()}}
  function rerenderSettings(){const p=$('.pwapanel');if(p&&p.closest('#dialogContent')){const wrap=p.parentNode.previousElementSibling&&p.parentNode;/* se repinta solo el panel */const h=document.createElement('div');h.innerHTML=panelHTML();const nw=h.querySelector('.pwapanel');if(nw){p.replaceWith(nw);bindPanel()}}}
  const noteClassEnd=()=>{classEnded=true;refresh()};
- return{init,mountCard,refresh,panelHTML,bindPanel,noteClassEnd,apply,check,installMode,canInvite,state:()=>({mode:installMode(),pending:pend&&{build:pend.build,silent:!!pend.silent},applying,cooling:cooling(),deferred:!!deferred}),_testHooks:{setPending:w=>setPending(w),getReg:()=>reg}}};
+ return{init,refresh,panelHTML,bindPanel,noteClassEnd,apply,check,installMode,canInvite,state:()=>({mode:installMode(),pending:pend&&{build:pend.build,silent:!!pend.silent},applying,cooling:cooling(),deferred:!!deferred}),_testHooks:{setPending:w=>setPending(w),getReg:()=>reg}}};
 })(typeof globalThis!=='undefined'?globalThis:this);

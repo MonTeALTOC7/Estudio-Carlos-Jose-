@@ -86,7 +86,7 @@ function hoy(){
  '<div class="hero5-text"><span class="eyebrow">Aprendo, juego y descubro</span><h1>¡Hola, '+esc(nm())+'!</h1><div class="lvl"><span class="lvl-i" aria-hidden="true">'+lv.level.icon+'</span><span><b>'+esc(lv.level.name)+'</b><small>Nivel '+lv.level.n+(lv.next?' · camino a '+esc(lv.next.name):' · ¡el más alto!')+'</small></span></div><div class="lvbar" role="img" aria-label="Camino al siguiente nivel"><i style="width:'+Math.max(6,pct)+'%"></i></div>'+
  '<div class="path" role="img" aria-label="Unidad '+un.n+' de '+un.total+': '+esc(un.title)+'. '+un.done+' de '+un.total2+' clases hechas."><span class="path-t">'+un.icon+' Unidad '+un.n+' · '+esc(un.title)+'</span><span class="path-d" aria-hidden="true">'+un.pips.map(p=>'<i class="'+p+'"></i>').join('')+'</span></div>'+
  '<div class="row hero-actions"><button class="primary xl" id="cont"><span>▶ '+esc(contT)+'</span><small>'+esc(contS)+'</small></button><button class="soft" id="greet" aria-label="Escuchar el saludo">♫</button></div></div>'+
- '<div class="hero5-char" aria-hidden="true">'+avatar('hero')+'</div></div>'+'<div id="pwaSlot"></div>'+
+ '<div class="hero5-char" aria-hidden="true">'+avatar('hero')+'</div></div>'+
  (res?'<div class="freeres"><span class="fr-i" aria-hidden="true">'+(res.icon||'🎮')+'</span><span class="fr-t"><small>Juego libre a medias</small><b>'+esc(res.title)+'</b><small>'+esc(res.label||'')+'</small></span><button class="soft" id="freeres">Retomar</button></div>':'')+
  '<div class="section-title"><h2>Mi aventura de hoy</h2><small>Juego libre · no cambia mi camino</small></div><div class="today">'+(recs.length?recs.map((r,i)=>'<button class="tcard k-'+r.kind+'" data-rec="'+i+'"><span class="tc-i" aria-hidden="true">'+r.icon+'</span><span class="tc-t"><em>'+KIND[r.kind][0]+' '+KIND[r.kind][1]+'</em><strong>'+esc(r.title)+'</strong><small>'+esc(r.kid)+'</small></span><span class="tc-go" aria-hidden="true">›</span></button>').join(''):'<p>¡Todo al día! Juega una aventura.</p>')+'</div>'+
  '<div class="section-title"><h2>Aventuras</h2><button class="linkb" id="alladv">Ver todas ›</button></div><div class="advrow">'+(Adv?Adv.list.map(a=>advCard(a,sn.s.adv[a.id])).join(''):'')+'</div>'+
@@ -94,7 +94,7 @@ function hoy(){
  $('#cont').onclick=()=>K.course.begin();const fr=$('#freeres');if(fr)fr.onclick=()=>{if(advR&&Adv.resume())return;if(ri&&G.resume())return};
  $('#greet').onclick=()=>K.speakTap('¡Hola, '+nm()+'! ¿Listo para aprender, jugar y descubrir?');
  qa('[data-rec]').forEach(b=>b.onclick=()=>startRec(recs[+b.dataset.rec]));
- $('#alladv').onclick=jugar;$('#allach').onclick=logros;bindAdv();if(K.pwa)K.pwa.mountCard()}
+ $('#alladv').onclick=jugar;$('#allach').onclick=logros;bindAdv();if(K.pwa)K.pwa.refresh()}
 function advCard(a,rec){const done=rec&&rec.runs>0,stars=rec&&rec.stars||0;return '<button class="advcard" data-adv="'+a.id+'" style="--a:'+a.color+'"><span class="adv-i" aria-hidden="true">'+a.icon+'</span><strong>'+esc(a.title)+'</strong><small>'+esc(a.blurb)+'</small><span class="adv-s">'+(done?'⭐'.repeat(stars)+'<em>Jugada</em>':'<em>Nueva</em>')+'</span></button>'}
 function bindAdv(){qa('[data-adv]').forEach(b=>b.onclick=()=>Adv.open(b.dataset.adv))}
 

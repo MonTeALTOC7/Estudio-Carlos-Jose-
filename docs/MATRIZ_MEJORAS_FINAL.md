@@ -31,8 +31,8 @@ Convenciones de recursos: ✍️ ilustración dibujada por código (no son fotog
 
 | Tema | Problema | Cambio | Pruebas | Pendiente físico |
 |---|---|---|---|---|
-| Botón fijo «Instalar» | Botón permanente aunque no fuera posible instalar; sin explicación | Eliminado; tarjeta contextual en «Hoy» (Android/Chrome con `prompt()` solo tras un toque; iPhone/iPad con instrucciones; nada si ya instalada o sin posibilidad); cooldown 7/21/60 días; ayuda siempre en Ajustes | `qa/pwa-smoke.cjs` A1–A27 | Aparición real del diálogo en la tablet; iPhone/iPad |
-| Actualizaciones | El SW nuevo se activaba bajo una página en marcha; el aviso solo recargaba | SW nuevo en espera; «Hay una nueva versión de Carlos José» con «Actualizar ahora» / «Después de mi clase»; una sola recarga; clase y datos intactos; fallos tolerados | B1–B34 | Actualización real desde GitHub Pages |
+| Botón fijo «Instalar» | Botón permanente aunque no fuera posible instalar; sin explicación | Eliminado; **ventana modal centrada** automática (v5.3.1; `prompt()` solo tras tocar «Instalar aplicación»; iPhone/iPad con instrucciones; nada si ya instalada); espera 7/21/60 días; ayuda siempre en Ajustes | `qa/pwa-smoke.cjs` A1–A41 | Aparición real del diálogo en la tablet; iPhone/iPad |
+| Actualizaciones | El SW nuevo se activaba bajo una página en marcha; el aviso solo recargaba | SW nuevo en espera; ventana modal «Hay una nueva versión de Carlos José» con «Actualizar ahora» / «Después de mi clase» solo en un momento seguro; una sola recarga; clase y datos intactos; fallos tolerados | B1–B34 | Actualización real desde GitHub Pages |
 | Versión | `5.1.0` repetido en varios archivos | Archivo `VERSION` único → interfaz, SW, diagnóstico, pie | `test.cjs` | — |
 | Preview vs. definitiva | — | Sin cambios de diseño: claves, cachés y SW separados; PRUEBA solo en Cloudflare | `ci-visual`, `cloudflare-check` | No instalar la preview en la tablet infantil |
 | Trazar consonantes del nombre | Sin datos de trazo por letra | **PENDIENTE** (no implementado) | — | — |
@@ -41,4 +41,4 @@ Convenciones de recursos: ✍️ ilustración dibujada por código (no son fotog
 Sin cambios: portada aprobada de Carlos José médico, ícono con el cubo, nombre «Centro de Estudios Carlos José», lema «Aprendo, juego y descubro», crédito «By Carlos Tijerino». Los nuevos recursos son dibujos simples en el mismo estilo y la foto de Carlos solo aparece donde ya existía.
 
 ## E. Capturas (`docs/capturas/final_*_390.png`)
-Cinco habilidades (`emociones`, `sentidos`, `orden-eventos`, `izq-der`, `mi-nombre`), extras (`seguridad`, `dia-noche`), `final_encabezado_sin_instalar`, `final_instalar_contextual`, `final_instalar_ios`, `final_aviso_actualizacion`, `final_emociones_expresiones` (hoja de las 18 caras). Regenerables con `node qa/capturas-final.cjs`.
+Cinco habilidades (`emociones`, `sentidos`, `orden-eventos`, `izq-der`, `mi-nombre`), extras (`seguridad`, `dia-noche`), `pwa_comparativa_instalar|ios|actualizacion` y `pwa_*` por dispositivo, `pwa_encabezado_sin_instalar`, `final_emociones_expresiones` (hoja de las 18 caras). Regenerables con `node qa/capturas-final.cjs`.
